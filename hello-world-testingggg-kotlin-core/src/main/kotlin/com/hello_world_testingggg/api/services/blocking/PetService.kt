@@ -4,9 +4,11 @@ package com.hello_world_testingggg.api.services.blocking
 
 import com.google.errorprone.annotations.MustBeClosed
 import com.hello_world_testingggg.api.core.ClientOptions
+import com.hello_world_testingggg.api.core.JsonValue
 import com.hello_world_testingggg.api.core.RequestOptions
 import com.hello_world_testingggg.api.core.http.HttpResponse
 import com.hello_world_testingggg.api.core.http.HttpResponseFor
+import com.hello_world_testingggg.api.core.http.StreamResponse
 import com.hello_world_testingggg.api.models.pet.Pet
 import com.hello_world_testingggg.api.models.pet.PetCreateParams
 import com.hello_world_testingggg.api.models.pet.PetDeleteParams
@@ -17,6 +19,7 @@ import com.hello_world_testingggg.api.models.pet.PetUpdateParams
 import com.hello_world_testingggg.api.models.pet.PetUpdateWithFormParams
 import com.hello_world_testingggg.api.models.pet.PetUploadImageParams
 import com.hello_world_testingggg.api.models.pet.PetUploadImageResponse
+import com.hello_world_testingggg.api.models.pet.PetWatchStatusParams
 
 /** Everything about your Pets */
 interface PetService {
@@ -139,6 +142,33 @@ interface PetService {
         requestOptions: RequestOptions,
     ): PetUploadImageResponse =
         uploadImage(petId, body, PetUploadImageParams.none(), requestOptions)
+
+    /**
+     * Streams pet status updates over Server-Sent Events. Each `status` event contains a full `Pet`
+     * payload.
+     */
+    @MustBeClosed
+    fun watchStatusStreaming(
+        petId: Long,
+        params: PetWatchStatusParams = PetWatchStatusParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): StreamResponse<JsonValue> =
+        watchStatusStreaming(params.toBuilder().petId(petId).build(), requestOptions)
+
+    /** @see watchStatusStreaming */
+    @MustBeClosed
+    fun watchStatusStreaming(
+        params: PetWatchStatusParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): StreamResponse<JsonValue>
+
+    /** @see watchStatusStreaming */
+    @MustBeClosed
+    fun watchStatusStreaming(
+        petId: Long,
+        requestOptions: RequestOptions,
+    ): StreamResponse<JsonValue> =
+        watchStatusStreaming(petId, PetWatchStatusParams.none(), requestOptions)
 
     /** A view of [PetService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -311,5 +341,32 @@ interface PetService {
             requestOptions: RequestOptions,
         ): HttpResponseFor<PetUploadImageResponse> =
             uploadImage(petId, body, PetUploadImageParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `get /pet/{petId}/status/stream`, but is otherwise the
+         * same as [PetService.watchStatusStreaming].
+         */
+        @MustBeClosed
+        fun watchStatusStreaming(
+            petId: Long,
+            params: PetWatchStatusParams = PetWatchStatusParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<StreamResponse<JsonValue>> =
+            watchStatusStreaming(params.toBuilder().petId(petId).build(), requestOptions)
+
+        /** @see watchStatusStreaming */
+        @MustBeClosed
+        fun watchStatusStreaming(
+            params: PetWatchStatusParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<StreamResponse<JsonValue>>
+
+        /** @see watchStatusStreaming */
+        @MustBeClosed
+        fun watchStatusStreaming(
+            petId: Long,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<StreamResponse<JsonValue>> =
+            watchStatusStreaming(petId, PetWatchStatusParams.none(), requestOptions)
     }
 }

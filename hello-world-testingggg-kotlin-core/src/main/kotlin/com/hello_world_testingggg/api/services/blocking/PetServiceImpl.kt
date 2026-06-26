@@ -3,17 +3,21 @@
 package com.hello_world_testingggg.api.services.blocking
 
 import com.hello_world_testingggg.api.core.ClientOptions
+import com.hello_world_testingggg.api.core.JsonValue
 import com.hello_world_testingggg.api.core.RequestOptions
 import com.hello_world_testingggg.api.core.checkRequired
 import com.hello_world_testingggg.api.core.handlers.emptyHandler
 import com.hello_world_testingggg.api.core.handlers.errorBodyHandler
 import com.hello_world_testingggg.api.core.handlers.errorHandler
 import com.hello_world_testingggg.api.core.handlers.jsonHandler
+import com.hello_world_testingggg.api.core.handlers.mapJson
+import com.hello_world_testingggg.api.core.handlers.sseHandler
 import com.hello_world_testingggg.api.core.http.HttpMethod
 import com.hello_world_testingggg.api.core.http.HttpRequest
 import com.hello_world_testingggg.api.core.http.HttpResponse
 import com.hello_world_testingggg.api.core.http.HttpResponse.Handler
 import com.hello_world_testingggg.api.core.http.HttpResponseFor
+import com.hello_world_testingggg.api.core.http.StreamResponse
 import com.hello_world_testingggg.api.core.http.json
 import com.hello_world_testingggg.api.core.http.parseable
 import com.hello_world_testingggg.api.core.prepare
@@ -27,6 +31,7 @@ import com.hello_world_testingggg.api.models.pet.PetUpdateParams
 import com.hello_world_testingggg.api.models.pet.PetUpdateWithFormParams
 import com.hello_world_testingggg.api.models.pet.PetUploadImageParams
 import com.hello_world_testingggg.api.models.pet.PetUploadImageResponse
+import com.hello_world_testingggg.api.models.pet.PetWatchStatusParams
 
 /** Everything about your Pets */
 class PetServiceImpl internal constructor(private val clientOptions: ClientOptions) : PetService {
@@ -82,6 +87,13 @@ class PetServiceImpl internal constructor(private val clientOptions: ClientOptio
     ): PetUploadImageResponse =
         // post /pet/{petId}/uploadImage
         withRawResponse().uploadImage(params, requestOptions).parse()
+
+    override fun watchStatusStreaming(
+        params: PetWatchStatusParams,
+        requestOptions: RequestOptions,
+    ): StreamResponse<JsonValue> =
+        // get /pet/{petId}/status/stream
+        withRawResponse().watchStatusStreaming(params, requestOptions).parse()
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         PetService.WithRawResponse {
@@ -305,6 +317,31 @@ class PetServiceImpl internal constructor(private val clientOptions: ClientOptio
                             it.validate()
                         }
                     }
+            }
+        }
+
+        private val watchStatusStreamingHandler: Handler<StreamResponse<JsonValue>> =
+            sseHandler(clientOptions.jsonMapper).mapJson<JsonValue>()
+
+        override fun watchStatusStreaming(
+            params: PetWatchStatusParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<StreamResponse<JsonValue>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("petId", params.petId())
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("pet", params._pathParam(0), "status", "stream")
+                    .putHeader("Accept", "text/event-stream")
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response.let { watchStatusStreamingHandler.handle(it) }
             }
         }
     }

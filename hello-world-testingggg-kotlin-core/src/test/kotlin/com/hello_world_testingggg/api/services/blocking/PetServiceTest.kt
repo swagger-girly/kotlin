@@ -8,6 +8,7 @@ import com.hello_world_testingggg.api.models.pet.PetFindByStatusParams
 import com.hello_world_testingggg.api.models.pet.PetFindByTagsParams
 import com.hello_world_testingggg.api.models.pet.PetUpdateWithFormParams
 import com.hello_world_testingggg.api.models.pet.PetUploadImageParams
+import com.hello_world_testingggg.api.models.pet.PetWatchStatusParams
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
@@ -129,5 +130,19 @@ internal class PetServiceTest {
             )
 
         response.validate()
+    }
+
+    @Disabled("Mock server tests are disabled")
+    @Test
+    fun watchStatusStreaming() {
+        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val petService = client.pet()
+
+        val petStreamResponse =
+            petService.watchStatusStreaming(
+                PetWatchStatusParams.builder().petId(0L).lastEventId("Last-Event-ID").build()
+            )
+
+        petStreamResponse.use { petStreamResponse.asSequence().forEach {} }
     }
 }
