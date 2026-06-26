@@ -261,6 +261,59 @@ The SDK throws custom unchecked exception types:
 
 - [`HelloWorldTestinggggException`](hello-world-testingggg-kotlin-core/src/main/kotlin/com/hello_world_testingggg/api/errors/HelloWorldTestinggggException.kt): Base class for all exceptions. Most errors will result in one of the previously mentioned ones, but completely generic errors may be thrown using the base class.
 
+## Pagination
+
+The SDK defines methods that return a paginated lists of results. It provides convenient ways to access the results either one page at a time or item-by-item across all pages.
+
+### Auto-pagination
+
+To iterate through all results across all pages, use the `autoPager()` method, which automatically fetches more pages as needed.
+
+When using the synchronous client, the method returns a [`Sequence`](https://kotlinlang.org/docs/sequences.html)
+
+```kotlin
+import com.hello_world_testingggg.api.models.pet.PetListPage
+
+val page: PetListPage = client.pet().list()
+page.autoPager()
+    .take(50)
+    .forEach { pet -> println(pet) }
+```
+
+When using the asynchronous client, the method returns a [`Flow`](https://kotlinlang.org/docs/flow.html):
+
+```kotlin
+import com.hello_world_testingggg.api.models.pet.PetListPageAsync
+
+val page: PetListPageAsync = client.async().pet().list()
+page.autoPager()
+    .take(50)
+    .forEach { pet -> println(pet) }
+```
+
+### Manual pagination
+
+To access individual page items and manually request the next page, use the `items()`,
+`hasNextPage()`, and `nextPage()` methods:
+
+```kotlin
+import com.hello_world_testingggg.api.models.pet.Pet
+import com.hello_world_testingggg.api.models.pet.PetListPage
+
+val page: PetListPage = client.pet().list()
+while (true) {
+    for (pet in page.items()) {
+        println(pet)
+    }
+
+    if (!page.hasNextPage()) {
+        break
+    }
+
+    page = page.nextPage()
+}
+```
+
 ## Logging
 
 Enable logging by setting the `HELLO_WORLD_TESTINGGGG_LOG` environment variable to `info`:

@@ -26,6 +26,16 @@ import com.hello_world_testingggg.api.models.pet.PetCreateParams
 import com.hello_world_testingggg.api.models.pet.PetDeleteParams
 import com.hello_world_testingggg.api.models.pet.PetFindByStatusParams
 import com.hello_world_testingggg.api.models.pet.PetFindByTagsParams
+import com.hello_world_testingggg.api.models.pet.PetListFakePageInferredPage
+import com.hello_world_testingggg.api.models.pet.PetListFakePageInferredPageResponse
+import com.hello_world_testingggg.api.models.pet.PetListFakePageInferredParams
+import com.hello_world_testingggg.api.models.pet.PetListFakePageParams
+import com.hello_world_testingggg.api.models.pet.PetListFakePageResponse
+import com.hello_world_testingggg.api.models.pet.PetListPage
+import com.hello_world_testingggg.api.models.pet.PetListPageResponse
+import com.hello_world_testingggg.api.models.pet.PetListParams
+import com.hello_world_testingggg.api.models.pet.PetListUnpaginatedParams
+import com.hello_world_testingggg.api.models.pet.PetListUnpaginatedResponse
 import com.hello_world_testingggg.api.models.pet.PetRetrieveParams
 import com.hello_world_testingggg.api.models.pet.PetUpdateParams
 import com.hello_world_testingggg.api.models.pet.PetUpdateWithFormParams
@@ -57,6 +67,10 @@ class PetServiceImpl internal constructor(private val clientOptions: ClientOptio
         // put /pet
         withRawResponse().update(params, requestOptions).parse()
 
+    override fun list(params: PetListParams, requestOptions: RequestOptions): PetListPage =
+        // get /pet
+        withRawResponse().list(params, requestOptions).parse()
+
     override fun delete(params: PetDeleteParams, requestOptions: RequestOptions) {
         // delete /pet/{petId}
         withRawResponse().delete(params, requestOptions)
@@ -75,6 +89,27 @@ class PetServiceImpl internal constructor(private val clientOptions: ClientOptio
     ): List<Pet> =
         // get /pet/findByTags
         withRawResponse().findByTags(params, requestOptions).parse()
+
+    override fun listFakePage(
+        params: PetListFakePageParams,
+        requestOptions: RequestOptions,
+    ): PetListFakePageResponse =
+        // get /pet/fake-page
+        withRawResponse().listFakePage(params, requestOptions).parse()
+
+    override fun listFakePageInferred(
+        params: PetListFakePageInferredParams,
+        requestOptions: RequestOptions,
+    ): PetListFakePageInferredPage =
+        // get /pet/fake-page-inferred
+        withRawResponse().listFakePageInferred(params, requestOptions).parse()
+
+    override fun listUnpaginated(
+        params: PetListUnpaginatedParams,
+        requestOptions: RequestOptions,
+    ): PetListUnpaginatedResponse =
+        // get /pet/unpaginated
+        withRawResponse().listUnpaginated(params, requestOptions).parse()
 
     override fun updateWithForm(params: PetUpdateWithFormParams, requestOptions: RequestOptions) {
         // post /pet/{petId}
@@ -189,6 +224,40 @@ class PetServiceImpl internal constructor(private val clientOptions: ClientOptio
             }
         }
 
+        private val listHandler: Handler<PetListPageResponse> =
+            jsonHandler<PetListPageResponse>(clientOptions.jsonMapper)
+
+        override fun list(
+            params: PetListParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<PetListPage> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("pet")
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { listHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+                    .let {
+                        PetListPage.builder()
+                            .service(PetServiceImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
+                    }
+            }
+        }
+
         private val deleteHandler: Handler<Void?> = emptyHandler()
 
         override fun delete(params: PetDeleteParams, requestOptions: RequestOptions): HttpResponse {
@@ -259,6 +328,94 @@ class PetServiceImpl internal constructor(private val clientOptions: ClientOptio
                     .also {
                         if (requestOptions.responseValidation!!) {
                             it.forEach { it.validate() }
+                        }
+                    }
+            }
+        }
+
+        private val listFakePageHandler: Handler<PetListFakePageResponse> =
+            jsonHandler<PetListFakePageResponse>(clientOptions.jsonMapper)
+
+        override fun listFakePage(
+            params: PetListFakePageParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<PetListFakePageResponse> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("pet", "fake-page")
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { listFakePageHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
+        }
+
+        private val listFakePageInferredHandler: Handler<PetListFakePageInferredPageResponse> =
+            jsonHandler<PetListFakePageInferredPageResponse>(clientOptions.jsonMapper)
+
+        override fun listFakePageInferred(
+            params: PetListFakePageInferredParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<PetListFakePageInferredPage> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("pet", "fake-page-inferred")
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { listFakePageInferredHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+                    .let {
+                        PetListFakePageInferredPage.builder()
+                            .service(PetServiceImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
+                    }
+            }
+        }
+
+        private val listUnpaginatedHandler: Handler<PetListUnpaginatedResponse> =
+            jsonHandler<PetListUnpaginatedResponse>(clientOptions.jsonMapper)
+
+        override fun listUnpaginated(
+            params: PetListUnpaginatedParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<PetListUnpaginatedResponse> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("pet", "unpaginated")
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { listUnpaginatedHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
                         }
                     }
             }

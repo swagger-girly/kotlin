@@ -12,6 +12,14 @@ import com.hello_world_testingggg.api.models.pet.PetCreateParams
 import com.hello_world_testingggg.api.models.pet.PetDeleteParams
 import com.hello_world_testingggg.api.models.pet.PetFindByStatusParams
 import com.hello_world_testingggg.api.models.pet.PetFindByTagsParams
+import com.hello_world_testingggg.api.models.pet.PetListFakePageInferredPageAsync
+import com.hello_world_testingggg.api.models.pet.PetListFakePageInferredParams
+import com.hello_world_testingggg.api.models.pet.PetListFakePageParams
+import com.hello_world_testingggg.api.models.pet.PetListFakePageResponse
+import com.hello_world_testingggg.api.models.pet.PetListPageAsync
+import com.hello_world_testingggg.api.models.pet.PetListParams
+import com.hello_world_testingggg.api.models.pet.PetListUnpaginatedParams
+import com.hello_world_testingggg.api.models.pet.PetListUnpaginatedResponse
 import com.hello_world_testingggg.api.models.pet.PetRetrieveParams
 import com.hello_world_testingggg.api.models.pet.PetUpdateParams
 import com.hello_world_testingggg.api.models.pet.PetUpdateWithFormParams
@@ -70,6 +78,16 @@ interface PetServiceAsync {
     suspend fun update(pet: Pet, requestOptions: RequestOptions = RequestOptions.none()): Pet =
         update(PetUpdateParams.builder().pet(pet).build(), requestOptions)
 
+    /** Returns a cursor-paginated list of pets. */
+    suspend fun list(
+        params: PetListParams = PetListParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): PetListPageAsync
+
+    /** @see list */
+    suspend fun list(requestOptions: RequestOptions): PetListPageAsync =
+        list(PetListParams.none(), requestOptions)
+
     /** Deletes a pet */
     suspend fun delete(
         petId: Long,
@@ -108,6 +126,41 @@ interface PetServiceAsync {
     /** @see findByTags */
     suspend fun findByTags(requestOptions: RequestOptions): List<Pet> =
         findByTags(PetFindByTagsParams.none(), requestOptions)
+
+    /** Returns a single page-shaped pet response without SDK pagination helpers. */
+    suspend fun listFakePage(
+        params: PetListFakePageParams = PetListFakePageParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): PetListFakePageResponse
+
+    /** @see listFakePage */
+    suspend fun listFakePage(requestOptions: RequestOptions): PetListFakePageResponse =
+        listFakePage(PetListFakePageParams.none(), requestOptions)
+
+    /**
+     * Returns a single page-shaped pet response whose fake pagination behavior is inferred from the
+     * Stainless config scheme.
+     */
+    suspend fun listFakePageInferred(
+        params: PetListFakePageInferredParams = PetListFakePageInferredParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): PetListFakePageInferredPageAsync
+
+    /** @see listFakePageInferred */
+    suspend fun listFakePageInferred(
+        requestOptions: RequestOptions
+    ): PetListFakePageInferredPageAsync =
+        listFakePageInferred(PetListFakePageInferredParams.none(), requestOptions)
+
+    /** Returns the same cursor-shaped pet list response without enabling SDK pagination helpers. */
+    suspend fun listUnpaginated(
+        params: PetListUnpaginatedParams = PetListUnpaginatedParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): PetListUnpaginatedResponse
+
+    /** @see listUnpaginated */
+    suspend fun listUnpaginated(requestOptions: RequestOptions): PetListUnpaginatedResponse =
+        listUnpaginated(PetListUnpaginatedParams.none(), requestOptions)
 
     /** Updates a pet in the store with form data */
     suspend fun updateWithForm(
@@ -217,6 +270,21 @@ interface PetServiceAsync {
         ): HttpResponseFor<Pet> = update(PetUpdateParams.builder().pet(pet).build(), requestOptions)
 
         /**
+         * Returns a raw HTTP response for `get /pet`, but is otherwise the same as
+         * [PetServiceAsync.list].
+         */
+        @MustBeClosed
+        suspend fun list(
+            params: PetListParams = PetListParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<PetListPageAsync>
+
+        /** @see list */
+        @MustBeClosed
+        suspend fun list(requestOptions: RequestOptions): HttpResponseFor<PetListPageAsync> =
+            list(PetListParams.none(), requestOptions)
+
+        /**
          * Returns a raw HTTP response for `delete /pet/{petId}`, but is otherwise the same as
          * [PetServiceAsync.delete].
          */
@@ -268,6 +336,57 @@ interface PetServiceAsync {
         @MustBeClosed
         suspend fun findByTags(requestOptions: RequestOptions): HttpResponseFor<List<Pet>> =
             findByTags(PetFindByTagsParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `get /pet/fake-page`, but is otherwise the same as
+         * [PetServiceAsync.listFakePage].
+         */
+        @MustBeClosed
+        suspend fun listFakePage(
+            params: PetListFakePageParams = PetListFakePageParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<PetListFakePageResponse>
+
+        /** @see listFakePage */
+        @MustBeClosed
+        suspend fun listFakePage(
+            requestOptions: RequestOptions
+        ): HttpResponseFor<PetListFakePageResponse> =
+            listFakePage(PetListFakePageParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `get /pet/fake-page-inferred`, but is otherwise the same
+         * as [PetServiceAsync.listFakePageInferred].
+         */
+        @MustBeClosed
+        suspend fun listFakePageInferred(
+            params: PetListFakePageInferredParams = PetListFakePageInferredParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<PetListFakePageInferredPageAsync>
+
+        /** @see listFakePageInferred */
+        @MustBeClosed
+        suspend fun listFakePageInferred(
+            requestOptions: RequestOptions
+        ): HttpResponseFor<PetListFakePageInferredPageAsync> =
+            listFakePageInferred(PetListFakePageInferredParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `get /pet/unpaginated`, but is otherwise the same as
+         * [PetServiceAsync.listUnpaginated].
+         */
+        @MustBeClosed
+        suspend fun listUnpaginated(
+            params: PetListUnpaginatedParams = PetListUnpaginatedParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<PetListUnpaginatedResponse>
+
+        /** @see listUnpaginated */
+        @MustBeClosed
+        suspend fun listUnpaginated(
+            requestOptions: RequestOptions
+        ): HttpResponseFor<PetListUnpaginatedResponse> =
+            listUnpaginated(PetListUnpaginatedParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `post /pet/{petId}`, but is otherwise the same as
