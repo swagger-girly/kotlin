@@ -27,9 +27,9 @@ configure<PublishingExtension> {
                 }
 
                 scm {
-                    connection.set("scm:git:git://github.com/stainless-sdks/hello-world-testingggg-kotlin.git")
-                    developerConnection.set("scm:git:git://github.com/stainless-sdks/hello-world-testingggg-kotlin.git")
-                    url.set("https://github.com/stainless-sdks/hello-world-testingggg-kotlin")
+                    connection.set("scm:git:git://github.com/swagger-girly/kotlin.git")
+                    developerConnection.set("scm:git:git://github.com/swagger-girly/kotlin.git")
+                    url.set("https://github.com/swagger-girly/kotlin")
                 }
 
                 versionMapping {

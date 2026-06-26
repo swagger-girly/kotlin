@@ -1,7 +1,11 @@
 # Hello World Testingggg Kotlin API Library
 
+<!-- x-release-please-start-version -->
+
 [![Maven Central](https://img.shields.io/maven-central/v/com.hello_world_testingggg.api/hello-world-testingggg-kotlin)](https://central.sonatype.com/artifact/com.hello_world_testingggg.api/hello-world-testingggg-kotlin/0.0.1)
 [![javadoc](https://javadoc.io/badge2/com.hello_world_testingggg.api/hello-world-testingggg-kotlin/0.0.1/javadoc.svg)](https://javadoc.io/doc/com.hello_world_testingggg.api/hello-world-testingggg-kotlin/0.0.1)
+
+<!-- x-release-please-end -->
 
 The Hello World Testingggg Kotlin SDK provides convenient access to the [Hello World Testingggg REST API](http://swagger.io) from applications written in Kotlin.
 
@@ -16,9 +20,15 @@ Use the Hello World Testingggg MCP Server to enable AI assistants to interact wi
 
 > Note: You may need to set environment variables in your MCP client.
 
+<!-- x-release-please-start-version -->
+
 The REST API documentation can be found on [swagger.io](http://swagger.io). KDocs are available on [javadoc.io](https://javadoc.io/doc/com.hello_world_testingggg.api/hello-world-testingggg-kotlin/0.0.1).
 
+<!-- x-release-please-end -->
+
 ## Installation
+
+<!-- x-release-please-start-version -->
 
 ### Gradle
 
@@ -35,6 +45,8 @@ implementation("com.hello_world_testingggg.api:hello-world-testingggg-kotlin:0.0
   <version>0.0.1</version>
 </dependency>
 ```
+
+<!-- x-release-please-end -->
 
 ## Requirements
 
@@ -651,4 +663,4 @@ This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) con
 
 We take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.
 
-We are keen for your feedback; please open an [issue](https://www.github.com/stainless-sdks/hello-world-testingggg-kotlin/issues) with questions, bugs, or suggestions.
+We are keen for your feedback; please open an [issue](https://www.github.com/swagger-girly/kotlin/issues) with questions, bugs, or suggestions.
