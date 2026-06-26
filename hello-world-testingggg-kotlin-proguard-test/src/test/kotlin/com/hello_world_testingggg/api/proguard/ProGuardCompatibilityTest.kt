@@ -5,6 +5,7 @@ package com.hello_world_testingggg.api.proguard
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import com.hello_world_testingggg.api.client.okhttp.HelloWorldTestinggggOkHttpClient
 import com.hello_world_testingggg.api.core.jsonMapper
+import com.hello_world_testingggg.api.models.pet.ConnectClientEvent
 import com.hello_world_testingggg.api.models.pet.Pet
 import kotlin.reflect.full.memberFunctions
 import kotlin.reflect.jvm.javaMethod
@@ -71,5 +72,19 @@ internal class ProGuardCompatibilityTest {
             jsonMapper.readValue(jsonMapper.writeValueAsString(pet), jacksonTypeRef<Pet>())
 
         assertThat(roundtrippedPet).isEqualTo(pet)
+    }
+
+    @Test
+    fun connectClientEventRoundtrip() {
+        val jsonMapper = jsonMapper()
+        val connectClientEvent = ConnectClientEvent.ofPing()
+
+        val roundtrippedConnectClientEvent =
+            jsonMapper.readValue(
+                jsonMapper.writeValueAsString(connectClientEvent),
+                jacksonTypeRef<ConnectClientEvent>(),
+            )
+
+        assertThat(roundtrippedConnectClientEvent).isEqualTo(connectClientEvent)
     }
 }
