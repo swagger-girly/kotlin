@@ -6,6 +6,7 @@ import com.hello_world_testingggg.api.client.okhttp.HelloWorldTestinggggOkHttpCl
 import com.hello_world_testingggg.api.models.pet.Pet
 import com.hello_world_testingggg.api.models.pet.PetFindByStatusParams
 import com.hello_world_testingggg.api.models.pet.PetFindByTagsParams
+import com.hello_world_testingggg.api.models.pet.PetListUnpaginatedParams
 import com.hello_world_testingggg.api.models.pet.PetUpdateWithFormParams
 import com.hello_world_testingggg.api.models.pet.PetUploadImageParams
 import org.junit.jupiter.api.Disabled
@@ -68,6 +69,17 @@ internal class PetServiceAsyncTest {
 
     @Disabled("Mock server tests are disabled")
     @Test
+    suspend fun list() {
+        val client = HelloWorldTestinggggOkHttpClientAsync.builder().apiKey("My API Key").build()
+        val petServiceAsync = client.pet()
+
+        val page = petServiceAsync.list()
+
+        page.response().validate()
+    }
+
+    @Disabled("Mock server tests are disabled")
+    @Test
     suspend fun delete() {
         val client = HelloWorldTestinggggOkHttpClientAsync.builder().apiKey("My API Key").build()
         val petServiceAsync = client.pet()
@@ -101,6 +113,42 @@ internal class PetServiceAsyncTest {
             petServiceAsync.findByTags(PetFindByTagsParams.builder().addTag("string").build())
 
         pets.forEach { it.validate() }
+    }
+
+    @Disabled("Mock server tests are disabled")
+    @Test
+    suspend fun listFakePage() {
+        val client = HelloWorldTestinggggOkHttpClientAsync.builder().apiKey("My API Key").build()
+        val petServiceAsync = client.pet()
+
+        val response = petServiceAsync.listFakePage()
+
+        response.validate()
+    }
+
+    @Disabled("Mock server tests are disabled")
+    @Test
+    suspend fun listFakePageInferred() {
+        val client = HelloWorldTestinggggOkHttpClientAsync.builder().apiKey("My API Key").build()
+        val petServiceAsync = client.pet()
+
+        val page = petServiceAsync.listFakePageInferred()
+
+        page.response().validate()
+    }
+
+    @Disabled("Mock server tests are disabled")
+    @Test
+    suspend fun listUnpaginated() {
+        val client = HelloWorldTestinggggOkHttpClientAsync.builder().apiKey("My API Key").build()
+        val petServiceAsync = client.pet()
+
+        val response =
+            petServiceAsync.listUnpaginated(
+                PetListUnpaginatedParams.builder().cursor("cursor").limit(0L).build()
+            )
+
+        response.validate()
     }
 
     @Disabled("Mock server tests are disabled")
