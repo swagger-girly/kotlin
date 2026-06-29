@@ -6,6 +6,7 @@ import com.hello_world_testingggg.api.core.ClientOptions
 import com.hello_world_testingggg.api.services.async.PetServiceAsync
 import com.hello_world_testingggg.api.services.async.StoreServiceAsync
 import com.hello_world_testingggg.api.services.async.UserServiceAsync
+import com.hello_world_testingggg.api.services.async.WebhookServiceAsync
 
 /**
  * A client for interacting with the Hello World Testingggg REST API asynchronously. You can also
@@ -46,6 +47,8 @@ interface HelloWorldTestinggggClientAsync {
     /** Everything about your Pets */
     fun pet(): PetServiceAsync
 
+    fun webhooks(): WebhookServiceAsync
+
     /** Access to Petstore orders */
     fun store(): StoreServiceAsync
 
@@ -82,6 +85,8 @@ interface HelloWorldTestinggggClientAsync {
 
         /** Everything about your Pets */
         fun pet(): PetServiceAsync.WithRawResponse
+
+        fun webhooks(): WebhookServiceAsync.WithRawResponse
 
         /** Access to Petstore orders */
         fun store(): StoreServiceAsync.WithRawResponse
