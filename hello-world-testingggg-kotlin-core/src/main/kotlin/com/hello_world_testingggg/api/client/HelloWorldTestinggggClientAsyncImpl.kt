@@ -10,6 +10,8 @@ import com.hello_world_testingggg.api.services.async.StoreServiceAsync
 import com.hello_world_testingggg.api.services.async.StoreServiceAsyncImpl
 import com.hello_world_testingggg.api.services.async.UserServiceAsync
 import com.hello_world_testingggg.api.services.async.UserServiceAsyncImpl
+import com.hello_world_testingggg.api.services.async.WebhookServiceAsync
+import com.hello_world_testingggg.api.services.async.WebhookServiceAsyncImpl
 
 class HelloWorldTestinggggClientAsyncImpl(private val clientOptions: ClientOptions) :
     HelloWorldTestinggggClientAsync {
@@ -33,6 +35,10 @@ class HelloWorldTestinggggClientAsyncImpl(private val clientOptions: ClientOptio
 
     private val pet: PetServiceAsync by lazy { PetServiceAsyncImpl(clientOptionsWithUserAgent) }
 
+    private val webhooks: WebhookServiceAsync by lazy {
+        WebhookServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
+
     private val store: StoreServiceAsync by lazy {
         StoreServiceAsyncImpl(clientOptionsWithUserAgent)
     }
@@ -52,6 +58,8 @@ class HelloWorldTestinggggClientAsyncImpl(private val clientOptions: ClientOptio
     /** Everything about your Pets */
     override fun pet(): PetServiceAsync = pet
 
+    override fun webhooks(): WebhookServiceAsync = webhooks
+
     /** Access to Petstore orders */
     override fun store(): StoreServiceAsync = store
 
@@ -65,6 +73,10 @@ class HelloWorldTestinggggClientAsyncImpl(private val clientOptions: ClientOptio
 
         private val pet: PetServiceAsync.WithRawResponse by lazy {
             PetServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val webhooks: WebhookServiceAsync.WithRawResponse by lazy {
+            WebhookServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
 
         private val store: StoreServiceAsync.WithRawResponse by lazy {
@@ -84,6 +96,8 @@ class HelloWorldTestinggggClientAsyncImpl(private val clientOptions: ClientOptio
 
         /** Everything about your Pets */
         override fun pet(): PetServiceAsync.WithRawResponse = pet
+
+        override fun webhooks(): WebhookServiceAsync.WithRawResponse = webhooks
 
         /** Access to Petstore orders */
         override fun store(): StoreServiceAsync.WithRawResponse = store

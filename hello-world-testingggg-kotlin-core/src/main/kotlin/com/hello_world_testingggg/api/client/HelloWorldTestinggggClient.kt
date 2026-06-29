@@ -6,6 +6,7 @@ import com.hello_world_testingggg.api.core.ClientOptions
 import com.hello_world_testingggg.api.services.blocking.PetService
 import com.hello_world_testingggg.api.services.blocking.StoreService
 import com.hello_world_testingggg.api.services.blocking.UserService
+import com.hello_world_testingggg.api.services.blocking.WebhookService
 
 /**
  * A client for interacting with the Hello World Testingggg REST API synchronously. You can also
@@ -46,6 +47,8 @@ interface HelloWorldTestinggggClient {
     /** Everything about your Pets */
     fun pet(): PetService
 
+    fun webhooks(): WebhookService
+
     /** Access to Petstore orders */
     fun store(): StoreService
 
@@ -82,6 +85,8 @@ interface HelloWorldTestinggggClient {
 
         /** Everything about your Pets */
         fun pet(): PetService.WithRawResponse
+
+        fun webhooks(): WebhookService.WithRawResponse
 
         /** Access to Petstore orders */
         fun store(): StoreService.WithRawResponse

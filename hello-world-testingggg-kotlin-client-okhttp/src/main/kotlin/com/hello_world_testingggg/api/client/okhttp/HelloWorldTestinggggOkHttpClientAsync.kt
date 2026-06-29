@@ -250,6 +250,10 @@ class HelloWorldTestinggggOkHttpClientAsync private constructor() {
         /** The API key for authorization in the header. */
         fun apiKey(apiKey: String) = apply { clientOptions.apiKey(apiKey) }
 
+        fun webhookSecret(webhookSecret: String?) = apply {
+            clientOptions.webhookSecret(webhookSecret)
+        }
+
         fun headers(headers: Headers) = apply { clientOptions.headers(headers) }
 
         fun headers(headers: Map<String, Iterable<String>>) = apply {

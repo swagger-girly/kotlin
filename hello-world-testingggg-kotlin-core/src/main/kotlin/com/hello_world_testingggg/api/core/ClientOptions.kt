@@ -105,6 +105,7 @@ private constructor(
     val logLevel: LogLevel,
     /** The API key for authorization in the header. */
     val apiKey: String,
+    val webhookSecret: String?,
 ) {
 
     init {
@@ -161,6 +162,7 @@ private constructor(
         private var maxRetries: Int = 2
         private var logLevel: LogLevel = LogLevel.fromEnv()
         private var apiKey: String? = null
+        private var webhookSecret: String? = null
 
         internal fun from(clientOptions: ClientOptions) = apply {
             httpClient = clientOptions.originalHttpClient
@@ -176,6 +178,7 @@ private constructor(
             maxRetries = clientOptions.maxRetries
             logLevel = clientOptions.logLevel
             apiKey = clientOptions.apiKey
+            webhookSecret = clientOptions.webhookSecret
         }
 
         /**
@@ -295,6 +298,8 @@ private constructor(
         /** The API key for authorization in the header. */
         fun apiKey(apiKey: String) = apply { this.apiKey = apiKey }
 
+        fun webhookSecret(webhookSecret: String?) = apply { this.webhookSecret = webhookSecret }
+
         fun headers(headers: Headers) = apply {
             this.headers.clear()
             putAllHeaders(headers)
@@ -382,10 +387,11 @@ private constructor(
          *
          * See this table for the available options:
          *
-         * |Setter   |System property               |Environment variable             |Required|Default value|
-         * |---------|------------------------------|---------------------------------|--------|-------------|
-         * |`apiKey` |`helloworldtestingggg.apiKey` |`API_KEY`                        |true    |-            |
-         * |`baseUrl`|`helloworldtestingggg.baseUrl`|`HELLO_WORLD_TESTINGGGG_BASE_URL`|true    |`"/api/v3"`  |
+         * |Setter         |System property                             |Environment variable             |Required|Default value|
+         * |---------------|--------------------------------------------|---------------------------------|--------|-------------|
+         * |`apiKey`       |`helloworldtestingggg.apiKey`               |`API_KEY`                        |true    |-            |
+         * |`webhookSecret`|`helloworldtestingggg.petstoreWebhookSecret`|`PETSTORE_WEBHOOK_SECRET`        |false   |-            |
+         * |`baseUrl`      |`helloworldtestingggg.baseUrl`              |`HELLO_WORLD_TESTINGGGG_BASE_URL`|true    |`"/api/v3"`  |
          *
          * System properties take precedence over environment variables.
          */
@@ -397,6 +403,9 @@ private constructor(
             (System.getProperty("helloworldtestingggg.apiKey") ?: System.getenv("API_KEY"))?.let {
                 apiKey(it)
             }
+            (System.getProperty("helloworldtestingggg.petstoreWebhookSecret")
+                    ?: System.getenv("PETSTORE_WEBHOOK_SECRET"))
+                ?.let { webhookSecret(it) }
             System.getenv("HELLO_WORLD_TESTINGGGG_CUSTOM_HEADERS")?.let { customHeadersEnv ->
                 for (line in customHeadersEnv.split("\n")) {
                     val colon = line.indexOf(':')
@@ -470,6 +479,7 @@ private constructor(
                 maxRetries,
                 logLevel,
                 apiKey,
+                webhookSecret,
             )
         }
     }

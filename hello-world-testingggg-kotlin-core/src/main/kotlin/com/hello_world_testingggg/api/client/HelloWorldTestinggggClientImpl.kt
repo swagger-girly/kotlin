@@ -10,6 +10,8 @@ import com.hello_world_testingggg.api.services.blocking.StoreService
 import com.hello_world_testingggg.api.services.blocking.StoreServiceImpl
 import com.hello_world_testingggg.api.services.blocking.UserService
 import com.hello_world_testingggg.api.services.blocking.UserServiceImpl
+import com.hello_world_testingggg.api.services.blocking.WebhookService
+import com.hello_world_testingggg.api.services.blocking.WebhookServiceImpl
 
 class HelloWorldTestinggggClientImpl(private val clientOptions: ClientOptions) :
     HelloWorldTestinggggClient {
@@ -33,6 +35,8 @@ class HelloWorldTestinggggClientImpl(private val clientOptions: ClientOptions) :
 
     private val pet: PetService by lazy { PetServiceImpl(clientOptionsWithUserAgent) }
 
+    private val webhooks: WebhookService by lazy { WebhookServiceImpl(clientOptionsWithUserAgent) }
+
     private val store: StoreService by lazy { StoreServiceImpl(clientOptionsWithUserAgent) }
 
     private val user: UserService by lazy { UserServiceImpl(clientOptionsWithUserAgent) }
@@ -49,6 +53,8 @@ class HelloWorldTestinggggClientImpl(private val clientOptions: ClientOptions) :
     /** Everything about your Pets */
     override fun pet(): PetService = pet
 
+    override fun webhooks(): WebhookService = webhooks
+
     /** Access to Petstore orders */
     override fun store(): StoreService = store
 
@@ -62,6 +68,10 @@ class HelloWorldTestinggggClientImpl(private val clientOptions: ClientOptions) :
 
         private val pet: PetService.WithRawResponse by lazy {
             PetServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val webhooks: WebhookService.WithRawResponse by lazy {
+            WebhookServiceImpl.WithRawResponseImpl(clientOptions)
         }
 
         private val store: StoreService.WithRawResponse by lazy {
@@ -81,6 +91,8 @@ class HelloWorldTestinggggClientImpl(private val clientOptions: ClientOptions) :
 
         /** Everything about your Pets */
         override fun pet(): PetService.WithRawResponse = pet
+
+        override fun webhooks(): WebhookService.WithRawResponse = webhooks
 
         /** Access to Petstore orders */
         override fun store(): StoreService.WithRawResponse = store
