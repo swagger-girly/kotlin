@@ -3,7 +3,9 @@
 package com.hello_world_testingggg.api.client
 
 import com.hello_world_testingggg.api.core.ClientOptions
+import com.hello_world_testingggg.api.services.async.FileServiceAsync
 import com.hello_world_testingggg.api.services.async.PetServiceAsync
+import com.hello_world_testingggg.api.services.async.ProfileServiceAsync
 import com.hello_world_testingggg.api.services.async.StoreServiceAsync
 import com.hello_world_testingggg.api.services.async.UserServiceAsync
 import com.hello_world_testingggg.api.services.async.WebhookServiceAsync
@@ -47,6 +49,12 @@ interface HelloWorldTestinggggClientAsync {
     /** Everything about your Pets */
     fun pet(): PetServiceAsync
 
+    /** File storage operations */
+    fun files(): FileServiceAsync
+
+    /** Pet owner profile and compliance operations */
+    fun profiles(): ProfileServiceAsync
+
     fun webhooks(): WebhookServiceAsync
 
     /** Access to Petstore orders */
@@ -85,6 +93,12 @@ interface HelloWorldTestinggggClientAsync {
 
         /** Everything about your Pets */
         fun pet(): PetServiceAsync.WithRawResponse
+
+        /** File storage operations */
+        fun files(): FileServiceAsync.WithRawResponse
+
+        /** Pet owner profile and compliance operations */
+        fun profiles(): ProfileServiceAsync.WithRawResponse
 
         fun webhooks(): WebhookServiceAsync.WithRawResponse
 

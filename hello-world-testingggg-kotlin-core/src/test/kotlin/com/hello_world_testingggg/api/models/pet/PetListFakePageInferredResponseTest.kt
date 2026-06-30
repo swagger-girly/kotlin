@@ -7,12 +7,12 @@ import com.hello_world_testingggg.api.core.jsonMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-internal class PetListFakePageResponseTest {
+internal class PetListFakePageInferredResponseTest {
 
     @Test
     fun create() {
-        val petListFakePageResponse =
-            PetListFakePageResponse.builder()
+        val petListFakePageInferredResponse =
+            PetListFakePageInferredResponse.builder()
                 .addData(
                     Pet.builder()
                         .name("doggie")
@@ -26,7 +26,7 @@ internal class PetListFakePageResponseTest {
                 .hasMore(true)
                 .build()
 
-        assertThat(petListFakePageResponse.data())
+        assertThat(petListFakePageInferredResponse.data())
             .containsExactly(
                 Pet.builder()
                     .name("doggie")
@@ -37,14 +37,14 @@ internal class PetListFakePageResponseTest {
                     .addTag(Pet.Tag.builder().id(0L).name("name").build())
                     .build()
             )
-        assertThat(petListFakePageResponse.hasMore()).isEqualTo(true)
+        assertThat(petListFakePageInferredResponse.hasMore()).isEqualTo(true)
     }
 
     @Test
     fun roundtrip() {
         val jsonMapper = jsonMapper()
-        val petListFakePageResponse =
-            PetListFakePageResponse.builder()
+        val petListFakePageInferredResponse =
+            PetListFakePageInferredResponse.builder()
                 .addData(
                     Pet.builder()
                         .name("doggie")
@@ -58,12 +58,13 @@ internal class PetListFakePageResponseTest {
                 .hasMore(true)
                 .build()
 
-        val roundtrippedPetListFakePageResponse =
+        val roundtrippedPetListFakePageInferredResponse =
             jsonMapper.readValue(
-                jsonMapper.writeValueAsString(petListFakePageResponse),
-                jacksonTypeRef<PetListFakePageResponse>(),
+                jsonMapper.writeValueAsString(petListFakePageInferredResponse),
+                jacksonTypeRef<PetListFakePageInferredResponse>(),
             )
 
-        assertThat(roundtrippedPetListFakePageResponse).isEqualTo(petListFakePageResponse)
+        assertThat(roundtrippedPetListFakePageInferredResponse)
+            .isEqualTo(petListFakePageInferredResponse)
     }
 }

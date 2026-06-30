@@ -4,8 +4,12 @@ package com.hello_world_testingggg.api.client
 
 import com.hello_world_testingggg.api.core.ClientOptions
 import com.hello_world_testingggg.api.core.getPackageVersion
+import com.hello_world_testingggg.api.services.async.FileServiceAsync
+import com.hello_world_testingggg.api.services.async.FileServiceAsyncImpl
 import com.hello_world_testingggg.api.services.async.PetServiceAsync
 import com.hello_world_testingggg.api.services.async.PetServiceAsyncImpl
+import com.hello_world_testingggg.api.services.async.ProfileServiceAsync
+import com.hello_world_testingggg.api.services.async.ProfileServiceAsyncImpl
 import com.hello_world_testingggg.api.services.async.StoreServiceAsync
 import com.hello_world_testingggg.api.services.async.StoreServiceAsyncImpl
 import com.hello_world_testingggg.api.services.async.UserServiceAsync
@@ -35,6 +39,12 @@ class HelloWorldTestinggggClientAsyncImpl(private val clientOptions: ClientOptio
 
     private val pet: PetServiceAsync by lazy { PetServiceAsyncImpl(clientOptionsWithUserAgent) }
 
+    private val files: FileServiceAsync by lazy { FileServiceAsyncImpl(clientOptionsWithUserAgent) }
+
+    private val profiles: ProfileServiceAsync by lazy {
+        ProfileServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
+
     private val webhooks: WebhookServiceAsync by lazy {
         WebhookServiceAsyncImpl(clientOptionsWithUserAgent)
     }
@@ -58,6 +68,12 @@ class HelloWorldTestinggggClientAsyncImpl(private val clientOptions: ClientOptio
     /** Everything about your Pets */
     override fun pet(): PetServiceAsync = pet
 
+    /** File storage operations */
+    override fun files(): FileServiceAsync = files
+
+    /** Pet owner profile and compliance operations */
+    override fun profiles(): ProfileServiceAsync = profiles
+
     override fun webhooks(): WebhookServiceAsync = webhooks
 
     /** Access to Petstore orders */
@@ -73,6 +89,14 @@ class HelloWorldTestinggggClientAsyncImpl(private val clientOptions: ClientOptio
 
         private val pet: PetServiceAsync.WithRawResponse by lazy {
             PetServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val files: FileServiceAsync.WithRawResponse by lazy {
+            FileServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val profiles: ProfileServiceAsync.WithRawResponse by lazy {
+            ProfileServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
 
         private val webhooks: WebhookServiceAsync.WithRawResponse by lazy {
@@ -96,6 +120,12 @@ class HelloWorldTestinggggClientAsyncImpl(private val clientOptions: ClientOptio
 
         /** Everything about your Pets */
         override fun pet(): PetServiceAsync.WithRawResponse = pet
+
+        /** File storage operations */
+        override fun files(): FileServiceAsync.WithRawResponse = files
+
+        /** Pet owner profile and compliance operations */
+        override fun profiles(): ProfileServiceAsync.WithRawResponse = profiles
 
         override fun webhooks(): WebhookServiceAsync.WithRawResponse = webhooks
 
