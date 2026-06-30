@@ -20,7 +20,6 @@ import com.hello_world_testingggg.api.core.ExcludeMissing
 import com.hello_world_testingggg.api.core.JsonField
 import com.hello_world_testingggg.api.core.JsonMissing
 import com.hello_world_testingggg.api.core.JsonValue
-import com.hello_world_testingggg.api.core.allMaxBy
 import com.hello_world_testingggg.api.core.checkKnown
 import com.hello_world_testingggg.api.core.checkRequired
 import com.hello_world_testingggg.api.core.getOrThrow
@@ -31,50 +30,26 @@ import java.time.OffsetDateTime
 import java.util.Collections
 import java.util.Objects
 
-@JsonDeserialize(using = ParsedWebhookEvent.Deserializer::class)
-@JsonSerialize(using = ParsedWebhookEvent.Serializer::class)
-class ParsedWebhookEvent
+@JsonDeserialize(using = PetModerationWebhookEvent.Deserializer::class)
+@JsonSerialize(using = PetModerationWebhookEvent.Serializer::class)
+class PetModerationWebhookEvent
 private constructor(
-    private val petCreated: PetCreatedWebhookEvent? = null,
-    private val petUpdated: PetUpdatedWebhookEvent? = null,
-    private val petInventoryLow: PetInventoryLowWebhookEvent? = null,
-    private val petModerationApproved: PetModerationApprovedEvent? = null,
-    private val petModerationRejected: PetModerationRejectedEvent? = null,
+    private val approved: PetModerationApproved? = null,
+    private val rejected: PetModerationRejected? = null,
     private val _json: JsonValue? = null,
 ) {
 
-    fun petCreated(): PetCreatedWebhookEvent? = petCreated
+    fun approved(): PetModerationApproved? = approved
 
-    fun petUpdated(): PetUpdatedWebhookEvent? = petUpdated
+    fun rejected(): PetModerationRejected? = rejected
 
-    fun petInventoryLow(): PetInventoryLowWebhookEvent? = petInventoryLow
+    fun isApproved(): Boolean = approved != null
 
-    fun petModerationApproved(): PetModerationApprovedEvent? = petModerationApproved
+    fun isRejected(): Boolean = rejected != null
 
-    fun petModerationRejected(): PetModerationRejectedEvent? = petModerationRejected
+    fun asApproved(): PetModerationApproved = approved.getOrThrow("approved")
 
-    fun isPetCreated(): Boolean = petCreated != null
-
-    fun isPetUpdated(): Boolean = petUpdated != null
-
-    fun isPetInventoryLow(): Boolean = petInventoryLow != null
-
-    fun isPetModerationApproved(): Boolean = petModerationApproved != null
-
-    fun isPetModerationRejected(): Boolean = petModerationRejected != null
-
-    fun asPetCreated(): PetCreatedWebhookEvent = petCreated.getOrThrow("petCreated")
-
-    fun asPetUpdated(): PetUpdatedWebhookEvent = petUpdated.getOrThrow("petUpdated")
-
-    fun asPetInventoryLow(): PetInventoryLowWebhookEvent =
-        petInventoryLow.getOrThrow("petInventoryLow")
-
-    fun asPetModerationApproved(): PetModerationApprovedEvent =
-        petModerationApproved.getOrThrow("petModerationApproved")
-
-    fun asPetModerationRejected(): PetModerationRejectedEvent =
-        petModerationRejected.getOrThrow("petModerationRejected")
+    fun asRejected(): PetModerationRejected = rejected.getOrThrow("rejected")
 
     fun _json(): JsonValue? = _json
 
@@ -87,8 +62,8 @@ private constructor(
      * ```kotlin
      * import com.hello_world_testingggg.api.core.JsonValue
      *
-     * val result: String? = parsedWebhookEvent.accept(object : ParsedWebhookEvent.Visitor<String?> {
-     *     override fun visitPetCreated(petCreated: PetCreatedWebhookEvent): String? = petCreated.toString()
+     * val result: String? = petModerationWebhookEvent.accept(object : PetModerationWebhookEvent.Visitor<String?> {
+     *     override fun visitApproved(approved: PetModerationApproved): String? = approved.toString()
      *
      *     // ...
      *
@@ -104,13 +79,8 @@ private constructor(
      */
     fun <T> accept(visitor: Visitor<T>): T =
         when {
-            petCreated != null -> visitor.visitPetCreated(petCreated)
-            petUpdated != null -> visitor.visitPetUpdated(petUpdated)
-            petInventoryLow != null -> visitor.visitPetInventoryLow(petInventoryLow)
-            petModerationApproved != null ->
-                visitor.visitPetModerationApproved(petModerationApproved)
-            petModerationRejected != null ->
-                visitor.visitPetModerationRejected(petModerationRejected)
+            approved != null -> visitor.visitApproved(approved)
+            rejected != null -> visitor.visitRejected(rejected)
             else -> visitor.unknown(_json)
         }
 
@@ -124,35 +94,19 @@ private constructor(
      * @throws HelloWorldTestinggggInvalidDataException if any value type in this object doesn't
      *   match its expected type.
      */
-    fun validate(): ParsedWebhookEvent = apply {
+    fun validate(): PetModerationWebhookEvent = apply {
         if (validated) {
             return@apply
         }
 
         accept(
             object : Visitor<Unit> {
-                override fun visitPetCreated(petCreated: PetCreatedWebhookEvent) {
-                    petCreated.validate()
+                override fun visitApproved(approved: PetModerationApproved) {
+                    approved.validate()
                 }
 
-                override fun visitPetUpdated(petUpdated: PetUpdatedWebhookEvent) {
-                    petUpdated.validate()
-                }
-
-                override fun visitPetInventoryLow(petInventoryLow: PetInventoryLowWebhookEvent) {
-                    petInventoryLow.validate()
-                }
-
-                override fun visitPetModerationApproved(
-                    petModerationApproved: PetModerationApprovedEvent
-                ) {
-                    petModerationApproved.validate()
-                }
-
-                override fun visitPetModerationRejected(
-                    petModerationRejected: PetModerationRejectedEvent
-                ) {
-                    petModerationRejected.validate()
+                override fun visitRejected(rejected: PetModerationRejected) {
+                    rejected.validate()
                 }
             }
         )
@@ -175,22 +129,9 @@ private constructor(
     internal fun validity(): Int =
         accept(
             object : Visitor<Int> {
-                override fun visitPetCreated(petCreated: PetCreatedWebhookEvent) =
-                    petCreated.validity()
+                override fun visitApproved(approved: PetModerationApproved) = approved.validity()
 
-                override fun visitPetUpdated(petUpdated: PetUpdatedWebhookEvent) =
-                    petUpdated.validity()
-
-                override fun visitPetInventoryLow(petInventoryLow: PetInventoryLowWebhookEvent) =
-                    petInventoryLow.validity()
-
-                override fun visitPetModerationApproved(
-                    petModerationApproved: PetModerationApprovedEvent
-                ) = petModerationApproved.validity()
-
-                override fun visitPetModerationRejected(
-                    petModerationRejected: PetModerationRejectedEvent
-                ) = petModerationRejected.validity()
+                override fun visitRejected(rejected: PetModerationRejected) = rejected.validity()
 
                 override fun unknown(json: JsonValue?) = 0
             }
@@ -201,150 +142,104 @@ private constructor(
             return true
         }
 
-        return other is ParsedWebhookEvent &&
-            petCreated == other.petCreated &&
-            petUpdated == other.petUpdated &&
-            petInventoryLow == other.petInventoryLow &&
-            petModerationApproved == other.petModerationApproved &&
-            petModerationRejected == other.petModerationRejected
+        return other is PetModerationWebhookEvent &&
+            approved == other.approved &&
+            rejected == other.rejected
     }
 
-    override fun hashCode(): Int =
-        Objects.hash(
-            petCreated,
-            petUpdated,
-            petInventoryLow,
-            petModerationApproved,
-            petModerationRejected,
-        )
+    override fun hashCode(): Int = Objects.hash(approved, rejected)
 
     override fun toString(): String =
         when {
-            petCreated != null -> "ParsedWebhookEvent{petCreated=$petCreated}"
-            petUpdated != null -> "ParsedWebhookEvent{petUpdated=$petUpdated}"
-            petInventoryLow != null -> "ParsedWebhookEvent{petInventoryLow=$petInventoryLow}"
-            petModerationApproved != null ->
-                "ParsedWebhookEvent{petModerationApproved=$petModerationApproved}"
-            petModerationRejected != null ->
-                "ParsedWebhookEvent{petModerationRejected=$petModerationRejected}"
-            _json != null -> "ParsedWebhookEvent{_unknown=$_json}"
-            else -> throw IllegalStateException("Invalid ParsedWebhookEvent")
+            approved != null -> "PetModerationWebhookEvent{approved=$approved}"
+            rejected != null -> "PetModerationWebhookEvent{rejected=$rejected}"
+            _json != null -> "PetModerationWebhookEvent{_unknown=$_json}"
+            else -> throw IllegalStateException("Invalid PetModerationWebhookEvent")
         }
 
     companion object {
 
-        fun ofPetCreated(petCreated: PetCreatedWebhookEvent) =
-            ParsedWebhookEvent(petCreated = petCreated)
+        fun ofApproved(approved: PetModerationApproved) =
+            PetModerationWebhookEvent(approved = approved)
 
-        fun ofPetUpdated(petUpdated: PetUpdatedWebhookEvent) =
-            ParsedWebhookEvent(petUpdated = petUpdated)
-
-        fun ofPetInventoryLow(petInventoryLow: PetInventoryLowWebhookEvent) =
-            ParsedWebhookEvent(petInventoryLow = petInventoryLow)
-
-        fun ofPetModerationApproved(petModerationApproved: PetModerationApprovedEvent) =
-            ParsedWebhookEvent(petModerationApproved = petModerationApproved)
-
-        fun ofPetModerationRejected(petModerationRejected: PetModerationRejectedEvent) =
-            ParsedWebhookEvent(petModerationRejected = petModerationRejected)
+        fun ofRejected(rejected: PetModerationRejected) =
+            PetModerationWebhookEvent(rejected = rejected)
     }
 
     /**
-     * An interface that defines how to map each variant of [ParsedWebhookEvent] to a value of type
-     * [T].
+     * An interface that defines how to map each variant of [PetModerationWebhookEvent] to a value
+     * of type [T].
      */
     interface Visitor<out T> {
 
-        fun visitPetCreated(petCreated: PetCreatedWebhookEvent): T
+        fun visitApproved(approved: PetModerationApproved): T
 
-        fun visitPetUpdated(petUpdated: PetUpdatedWebhookEvent): T
-
-        fun visitPetInventoryLow(petInventoryLow: PetInventoryLowWebhookEvent): T
-
-        fun visitPetModerationApproved(petModerationApproved: PetModerationApprovedEvent): T
-
-        fun visitPetModerationRejected(petModerationRejected: PetModerationRejectedEvent): T
+        fun visitRejected(rejected: PetModerationRejected): T
 
         /**
-         * Maps an unknown variant of [ParsedWebhookEvent] to a value of type [T].
+         * Maps an unknown variant of [PetModerationWebhookEvent] to a value of type [T].
          *
-         * An instance of [ParsedWebhookEvent] can contain an unknown variant if it was deserialized
-         * from data that doesn't match any known variant. For example, if the SDK is on an older
-         * version than the API, then the API may respond with new variants that the SDK is unaware
-         * of.
+         * An instance of [PetModerationWebhookEvent] can contain an unknown variant if it was
+         * deserialized from data that doesn't match any known variant. For example, if the SDK is
+         * on an older version than the API, then the API may respond with new variants that the SDK
+         * is unaware of.
          *
          * @throws HelloWorldTestinggggInvalidDataException in the default implementation.
          */
         fun unknown(json: JsonValue?): T {
-            throw HelloWorldTestinggggInvalidDataException("Unknown ParsedWebhookEvent: $json")
+            throw HelloWorldTestinggggInvalidDataException(
+                "Unknown PetModerationWebhookEvent: $json"
+            )
         }
     }
 
-    internal class Deserializer : BaseDeserializer<ParsedWebhookEvent>(ParsedWebhookEvent::class) {
+    internal class Deserializer :
+        BaseDeserializer<PetModerationWebhookEvent>(PetModerationWebhookEvent::class) {
 
-        override fun ObjectCodec.deserialize(node: JsonNode): ParsedWebhookEvent {
+        override fun ObjectCodec.deserialize(node: JsonNode): PetModerationWebhookEvent {
             val json = JsonValue.fromJsonNode(node)
+            val type = json.asObject()?.get("type")?.asString()
 
-            val bestMatches =
-                sequenceOf(
-                        tryDeserialize(node, jacksonTypeRef<PetCreatedWebhookEvent>())?.let {
-                            ParsedWebhookEvent(petCreated = it, _json = json)
-                        },
-                        tryDeserialize(node, jacksonTypeRef<PetUpdatedWebhookEvent>())?.let {
-                            ParsedWebhookEvent(petUpdated = it, _json = json)
-                        },
-                        tryDeserialize(node, jacksonTypeRef<PetInventoryLowWebhookEvent>())?.let {
-                            ParsedWebhookEvent(petInventoryLow = it, _json = json)
-                        },
-                        tryDeserialize(node, jacksonTypeRef<PetModerationApprovedEvent>())?.let {
-                            ParsedWebhookEvent(petModerationApproved = it, _json = json)
-                        },
-                        tryDeserialize(node, jacksonTypeRef<PetModerationRejectedEvent>())?.let {
-                            ParsedWebhookEvent(petModerationRejected = it, _json = json)
-                        },
-                    )
-                    .filterNotNull()
-                    .allMaxBy { it.validity() }
-                    .toList()
-            return when (bestMatches.size) {
-                // This can happen if what we're deserializing is completely incompatible with all
-                // the possible variants (e.g. deserializing from boolean).
-                0 -> ParsedWebhookEvent(_json = json)
-                1 -> bestMatches.single()
-                // If there's more than one match with the highest validity, then use the first
-                // completely valid match, or simply the first match if none are completely valid.
-                else -> bestMatches.firstOrNull { it.isValid() } ?: bestMatches.first()
+            when (type) {
+                "pet.moderation.approved" -> {
+                    return tryDeserialize(node, jacksonTypeRef<PetModerationApproved>())?.let {
+                        PetModerationWebhookEvent(approved = it, _json = json)
+                    } ?: PetModerationWebhookEvent(_json = json)
+                }
+                "pet.moderation.rejected" -> {
+                    return tryDeserialize(node, jacksonTypeRef<PetModerationRejected>())?.let {
+                        PetModerationWebhookEvent(rejected = it, _json = json)
+                    } ?: PetModerationWebhookEvent(_json = json)
+                }
             }
+
+            return PetModerationWebhookEvent(_json = json)
         }
     }
 
-    internal class Serializer : BaseSerializer<ParsedWebhookEvent>(ParsedWebhookEvent::class) {
+    internal class Serializer :
+        BaseSerializer<PetModerationWebhookEvent>(PetModerationWebhookEvent::class) {
 
         override fun serialize(
-            value: ParsedWebhookEvent,
+            value: PetModerationWebhookEvent,
             generator: JsonGenerator,
             provider: SerializerProvider,
         ) {
             when {
-                value.petCreated != null -> generator.writeObject(value.petCreated)
-                value.petUpdated != null -> generator.writeObject(value.petUpdated)
-                value.petInventoryLow != null -> generator.writeObject(value.petInventoryLow)
-                value.petModerationApproved != null ->
-                    generator.writeObject(value.petModerationApproved)
-                value.petModerationRejected != null ->
-                    generator.writeObject(value.petModerationRejected)
+                value.approved != null -> generator.writeObject(value.approved)
+                value.rejected != null -> generator.writeObject(value.rejected)
                 value._json != null -> generator.writeObject(value._json)
-                else -> throw IllegalStateException("Invalid ParsedWebhookEvent")
+                else -> throw IllegalStateException("Invalid PetModerationWebhookEvent")
             }
         }
     }
 
-    class PetModerationApprovedEvent
+    class PetModerationApproved
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val approvedAt: JsonField<OffsetDateTime>,
         private val pet: JsonField<Pet>,
-        private val type: JsonField<Type>,
+        private val type: JsonValue,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
@@ -354,7 +249,7 @@ private constructor(
             @ExcludeMissing
             approvedAt: JsonField<OffsetDateTime> = JsonMissing.of(),
             @JsonProperty("pet") @ExcludeMissing pet: JsonField<Pet> = JsonMissing.of(),
-            @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
+            @JsonProperty("type") @ExcludeMissing type: JsonValue = JsonMissing.of(),
         ) : this(approvedAt, pet, type, mutableMapOf())
 
         /**
@@ -372,11 +267,15 @@ private constructor(
         fun pet(): Pet = pet.getRequired("pet")
 
         /**
-         * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
-         *   or is unexpectedly missing or null (e.g. if the server responded with an unexpected
-         *   value).
+         * Expected to always return the following:
+         * ```kotlin
+         * JsonValue.from("pet.moderation.approved")
+         * ```
+         *
+         * However, this method can be useful for debugging and logging (e.g. if the server
+         * responded with an unexpected value).
          */
-        fun type(): Type = type.getRequired("type")
+        @JsonProperty("type") @ExcludeMissing fun _type(): JsonValue = type
 
         /**
          * Returns the raw JSON value of [approvedAt].
@@ -394,13 +293,6 @@ private constructor(
          */
         @JsonProperty("pet") @ExcludeMissing fun _pet(): JsonField<Pet> = pet
 
-        /**
-         * Returns the raw JSON value of [type].
-         *
-         * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
-
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
             additionalProperties.put(key, value)
@@ -416,33 +308,30 @@ private constructor(
         companion object {
 
             /**
-             * Returns a mutable builder for constructing an instance of
-             * [PetModerationApprovedEvent].
+             * Returns a mutable builder for constructing an instance of [PetModerationApproved].
              *
              * The following fields are required:
              * ```kotlin
              * .approvedAt()
              * .pet()
-             * .type()
              * ```
              */
             fun builder() = Builder()
         }
 
-        /** A builder for [PetModerationApprovedEvent]. */
+        /** A builder for [PetModerationApproved]. */
         class Builder internal constructor() {
 
             private var approvedAt: JsonField<OffsetDateTime>? = null
             private var pet: JsonField<Pet>? = null
-            private var type: JsonField<Type>? = null
+            private var type: JsonValue = JsonValue.from("pet.moderation.approved")
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
-            internal fun from(petModerationApprovedEvent: PetModerationApprovedEvent) = apply {
-                approvedAt = petModerationApprovedEvent.approvedAt
-                pet = petModerationApprovedEvent.pet
-                type = petModerationApprovedEvent.type
-                additionalProperties =
-                    petModerationApprovedEvent.additionalProperties.toMutableMap()
+            internal fun from(petModerationApproved: PetModerationApproved) = apply {
+                approvedAt = petModerationApproved.approvedAt
+                pet = petModerationApproved.pet
+                type = petModerationApproved.type
+                additionalProperties = petModerationApproved.additionalProperties.toMutableMap()
             }
 
             fun approvedAt(approvedAt: OffsetDateTime) = approvedAt(JsonField.of(approvedAt))
@@ -469,16 +358,19 @@ private constructor(
              */
             fun pet(pet: JsonField<Pet>) = apply { this.pet = pet }
 
-            fun type(type: Type) = type(JsonField.of(type))
-
             /**
-             * Sets [Builder.type] to an arbitrary JSON value.
+             * Sets the field to an arbitrary JSON value.
              *
-             * You should usually call [Builder.type] with a well-typed [Type] value instead. This
-             * method is primarily for setting the field to an undocumented or not yet supported
-             * value.
+             * It is usually unnecessary to call this method because the field defaults to the
+             * following:
+             * ```kotlin
+             * JsonValue.from("pet.moderation.approved")
+             * ```
+             *
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
-            fun type(type: JsonField<Type>) = apply { this.type = type }
+            fun type(type: JsonValue) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -500,7 +392,7 @@ private constructor(
             }
 
             /**
-             * Returns an immutable instance of [PetModerationApprovedEvent].
+             * Returns an immutable instance of [PetModerationApproved].
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              *
@@ -508,16 +400,15 @@ private constructor(
              * ```kotlin
              * .approvedAt()
              * .pet()
-             * .type()
              * ```
              *
              * @throws IllegalStateException if any required field is unset.
              */
-            fun build(): PetModerationApprovedEvent =
-                PetModerationApprovedEvent(
+            fun build(): PetModerationApproved =
+                PetModerationApproved(
                     checkRequired("approvedAt", approvedAt),
                     checkRequired("pet", pet),
-                    checkRequired("type", type),
+                    type,
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -533,14 +424,20 @@ private constructor(
          * @throws HelloWorldTestinggggInvalidDataException if any value type in this object doesn't
          *   match its expected type.
          */
-        fun validate(): PetModerationApprovedEvent = apply {
+        fun validate(): PetModerationApproved = apply {
             if (validated) {
                 return@apply
             }
 
             approvedAt()
             pet().validate()
-            type().validate()
+            _type().let {
+                if (it != JsonValue.from("pet.moderation.approved")) {
+                    throw HelloWorldTestinggggInvalidDataException(
+                        "'type' is invalid, received $it"
+                    )
+                }
+            }
             validated = true
         }
 
@@ -561,144 +458,14 @@ private constructor(
         internal fun validity(): Int =
             (if (approvedAt.asKnown() == null) 0 else 1) +
                 (pet.asKnown()?.validity() ?: 0) +
-                (type.asKnown()?.validity() ?: 0)
-
-        class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
-
-            /**
-             * Returns this class instance's raw value.
-             *
-             * This is usually only useful if this instance was deserialized from data that doesn't
-             * match any known member, and you want to know that value. For example, if the SDK is
-             * on an older version than the API, then the API may respond with new members that the
-             * SDK is unaware of.
-             */
-            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-            companion object {
-
-                val PET_MODERATION_APPROVED = of("pet.moderation.approved")
-
-                fun of(value: String) = Type(JsonField.of(value))
-            }
-
-            /** An enum containing [Type]'s known values. */
-            enum class Known {
-                PET_MODERATION_APPROVED
-            }
-
-            /**
-             * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
-             *
-             * An instance of [Type] can contain an unknown value in a couple of cases:
-             * - It was deserialized from data that doesn't match any known member. For example, if
-             *   the SDK is on an older version than the API, then the API may respond with new
-             *   members that the SDK is unaware of.
-             * - It was constructed with an arbitrary value using the [of] method.
-             */
-            enum class Value {
-                PET_MODERATION_APPROVED,
-                /** An enum member indicating that [Type] was instantiated with an unknown value. */
-                _UNKNOWN,
-            }
-
-            /**
-             * Returns an enum member corresponding to this class instance's value, or
-             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
-             *
-             * Use the [known] method instead if you're certain the value is always known or if you
-             * want to throw for the unknown case.
-             */
-            fun value(): Value =
-                when (this) {
-                    PET_MODERATION_APPROVED -> Value.PET_MODERATION_APPROVED
-                    else -> Value._UNKNOWN
-                }
-
-            /**
-             * Returns an enum member corresponding to this class instance's value.
-             *
-             * Use the [value] method instead if you're uncertain the value is always known and
-             * don't want to throw for the unknown case.
-             *
-             * @throws HelloWorldTestinggggInvalidDataException if this class instance's value is a
-             *   not a known member.
-             */
-            fun known(): Known =
-                when (this) {
-                    PET_MODERATION_APPROVED -> Known.PET_MODERATION_APPROVED
-                    else -> throw HelloWorldTestinggggInvalidDataException("Unknown Type: $value")
-                }
-
-            /**
-             * Returns this class instance's primitive wire representation.
-             *
-             * This differs from the [toString] method because that method is primarily for
-             * debugging and generally doesn't throw.
-             *
-             * @throws HelloWorldTestinggggInvalidDataException if this class instance's value does
-             *   not have the expected primitive type.
-             */
-            fun asString(): String =
-                _value().asString()
-                    ?: throw HelloWorldTestinggggInvalidDataException("Value is not a String")
-
-            private var validated: Boolean = false
-
-            /**
-             * Validates that the types of all values in this object match their expected types
-             * recursively.
-             *
-             * This method is _not_ forwards compatible with new types from the API for existing
-             * fields.
-             *
-             * @throws HelloWorldTestinggggInvalidDataException if any value type in this object
-             *   doesn't match its expected type.
-             */
-            fun validate(): Type = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                known()
-                validated = true
-            }
-
-            fun isValid(): Boolean =
-                try {
-                    validate()
-                    true
-                } catch (e: HelloWorldTestinggggInvalidDataException) {
-                    false
-                }
-
-            /**
-             * Returns a score indicating how many valid values are contained in this object
-             * recursively.
-             *
-             * Used for best match union deserialization.
-             */
-            internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is Type && value == other.value
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-        }
+                type.let { if (it == JsonValue.from("pet.moderation.approved")) 1 else 0 }
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
                 return true
             }
 
-            return other is PetModerationApprovedEvent &&
+            return other is PetModerationApproved &&
                 approvedAt == other.approvedAt &&
                 pet == other.pet &&
                 type == other.type &&
@@ -712,15 +479,15 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "PetModerationApprovedEvent{approvedAt=$approvedAt, pet=$pet, type=$type, additionalProperties=$additionalProperties}"
+            "PetModerationApproved{approvedAt=$approvedAt, pet=$pet, type=$type, additionalProperties=$additionalProperties}"
     }
 
-    class PetModerationRejectedEvent
+    class PetModerationRejected
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val pet: JsonField<Pet>,
         private val reason: JsonField<Reason>,
-        private val type: JsonField<Type>,
+        private val type: JsonValue,
         private val reviewNotes: JsonField<List<ReviewNote>>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
@@ -729,7 +496,7 @@ private constructor(
         private constructor(
             @JsonProperty("pet") @ExcludeMissing pet: JsonField<Pet> = JsonMissing.of(),
             @JsonProperty("reason") @ExcludeMissing reason: JsonField<Reason> = JsonMissing.of(),
-            @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
+            @JsonProperty("type") @ExcludeMissing type: JsonValue = JsonMissing.of(),
             @JsonProperty("review_notes")
             @ExcludeMissing
             reviewNotes: JsonField<List<ReviewNote>> = JsonMissing.of(),
@@ -750,11 +517,15 @@ private constructor(
         fun reason(): Reason = reason.getRequired("reason")
 
         /**
-         * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
-         *   or is unexpectedly missing or null (e.g. if the server responded with an unexpected
-         *   value).
+         * Expected to always return the following:
+         * ```kotlin
+         * JsonValue.from("pet.moderation.rejected")
+         * ```
+         *
+         * However, this method can be useful for debugging and logging (e.g. if the server
+         * responded with an unexpected value).
          */
-        fun type(): Type = type.getRequired("type")
+        @JsonProperty("type") @ExcludeMissing fun _type(): JsonValue = type
 
         /**
          * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
@@ -775,13 +546,6 @@ private constructor(
          * Unlike [reason], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("reason") @ExcludeMissing fun _reason(): JsonField<Reason> = reason
-
-        /**
-         * Returns the raw JSON value of [type].
-         *
-         * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
         /**
          * Returns the raw JSON value of [reviewNotes].
@@ -807,35 +571,32 @@ private constructor(
         companion object {
 
             /**
-             * Returns a mutable builder for constructing an instance of
-             * [PetModerationRejectedEvent].
+             * Returns a mutable builder for constructing an instance of [PetModerationRejected].
              *
              * The following fields are required:
              * ```kotlin
              * .pet()
              * .reason()
-             * .type()
              * ```
              */
             fun builder() = Builder()
         }
 
-        /** A builder for [PetModerationRejectedEvent]. */
+        /** A builder for [PetModerationRejected]. */
         class Builder internal constructor() {
 
             private var pet: JsonField<Pet>? = null
             private var reason: JsonField<Reason>? = null
-            private var type: JsonField<Type>? = null
+            private var type: JsonValue = JsonValue.from("pet.moderation.rejected")
             private var reviewNotes: JsonField<MutableList<ReviewNote>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
-            internal fun from(petModerationRejectedEvent: PetModerationRejectedEvent) = apply {
-                pet = petModerationRejectedEvent.pet
-                reason = petModerationRejectedEvent.reason
-                type = petModerationRejectedEvent.type
-                reviewNotes = petModerationRejectedEvent.reviewNotes.map { it.toMutableList() }
-                additionalProperties =
-                    petModerationRejectedEvent.additionalProperties.toMutableMap()
+            internal fun from(petModerationRejected: PetModerationRejected) = apply {
+                pet = petModerationRejected.pet
+                reason = petModerationRejected.reason
+                type = petModerationRejected.type
+                reviewNotes = petModerationRejected.reviewNotes.map { it.toMutableList() }
+                additionalProperties = petModerationRejected.additionalProperties.toMutableMap()
             }
 
             fun pet(pet: Pet) = pet(JsonField.of(pet))
@@ -860,16 +621,19 @@ private constructor(
              */
             fun reason(reason: JsonField<Reason>) = apply { this.reason = reason }
 
-            fun type(type: Type) = type(JsonField.of(type))
-
             /**
-             * Sets [Builder.type] to an arbitrary JSON value.
+             * Sets the field to an arbitrary JSON value.
              *
-             * You should usually call [Builder.type] with a well-typed [Type] value instead. This
-             * method is primarily for setting the field to an undocumented or not yet supported
-             * value.
+             * It is usually unnecessary to call this method because the field defaults to the
+             * following:
+             * ```kotlin
+             * JsonValue.from("pet.moderation.rejected")
+             * ```
+             *
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
-            fun type(type: JsonField<Type>) = apply { this.type = type }
+            fun type(type: JsonValue) = apply { this.type = type }
 
             fun reviewNotes(reviewNotes: List<ReviewNote>) = reviewNotes(JsonField.of(reviewNotes))
 
@@ -916,7 +680,7 @@ private constructor(
             }
 
             /**
-             * Returns an immutable instance of [PetModerationRejectedEvent].
+             * Returns an immutable instance of [PetModerationRejected].
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              *
@@ -924,16 +688,15 @@ private constructor(
              * ```kotlin
              * .pet()
              * .reason()
-             * .type()
              * ```
              *
              * @throws IllegalStateException if any required field is unset.
              */
-            fun build(): PetModerationRejectedEvent =
-                PetModerationRejectedEvent(
+            fun build(): PetModerationRejected =
+                PetModerationRejected(
                     checkRequired("pet", pet),
                     checkRequired("reason", reason),
-                    checkRequired("type", type),
+                    type,
                     (reviewNotes ?: JsonMissing.of()).map { it.toImmutable() },
                     additionalProperties.toMutableMap(),
                 )
@@ -950,14 +713,20 @@ private constructor(
          * @throws HelloWorldTestinggggInvalidDataException if any value type in this object doesn't
          *   match its expected type.
          */
-        fun validate(): PetModerationRejectedEvent = apply {
+        fun validate(): PetModerationRejected = apply {
             if (validated) {
                 return@apply
             }
 
             pet().validate()
             reason().validate()
-            type().validate()
+            _type().let {
+                if (it != JsonValue.from("pet.moderation.rejected")) {
+                    throw HelloWorldTestinggggInvalidDataException(
+                        "'type' is invalid, received $it"
+                    )
+                }
+            }
             reviewNotes()?.forEach { it.validate() }
             validated = true
         }
@@ -979,7 +748,7 @@ private constructor(
         internal fun validity(): Int =
             (pet.asKnown()?.validity() ?: 0) +
                 (reason.asKnown()?.validity() ?: 0) +
-                (type.asKnown()?.validity() ?: 0) +
+                type.let { if (it == JsonValue.from("pet.moderation.rejected")) 1 else 0 } +
                 (reviewNotes.asKnown()?.sumOf { it.validity().toInt() } ?: 0)
 
         class Reason @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
@@ -1119,136 +888,6 @@ private constructor(
                 }
 
                 return other is Reason && value == other.value
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-        }
-
-        class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
-
-            /**
-             * Returns this class instance's raw value.
-             *
-             * This is usually only useful if this instance was deserialized from data that doesn't
-             * match any known member, and you want to know that value. For example, if the SDK is
-             * on an older version than the API, then the API may respond with new members that the
-             * SDK is unaware of.
-             */
-            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-            companion object {
-
-                val PET_MODERATION_REJECTED = of("pet.moderation.rejected")
-
-                fun of(value: String) = Type(JsonField.of(value))
-            }
-
-            /** An enum containing [Type]'s known values. */
-            enum class Known {
-                PET_MODERATION_REJECTED
-            }
-
-            /**
-             * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
-             *
-             * An instance of [Type] can contain an unknown value in a couple of cases:
-             * - It was deserialized from data that doesn't match any known member. For example, if
-             *   the SDK is on an older version than the API, then the API may respond with new
-             *   members that the SDK is unaware of.
-             * - It was constructed with an arbitrary value using the [of] method.
-             */
-            enum class Value {
-                PET_MODERATION_REJECTED,
-                /** An enum member indicating that [Type] was instantiated with an unknown value. */
-                _UNKNOWN,
-            }
-
-            /**
-             * Returns an enum member corresponding to this class instance's value, or
-             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
-             *
-             * Use the [known] method instead if you're certain the value is always known or if you
-             * want to throw for the unknown case.
-             */
-            fun value(): Value =
-                when (this) {
-                    PET_MODERATION_REJECTED -> Value.PET_MODERATION_REJECTED
-                    else -> Value._UNKNOWN
-                }
-
-            /**
-             * Returns an enum member corresponding to this class instance's value.
-             *
-             * Use the [value] method instead if you're uncertain the value is always known and
-             * don't want to throw for the unknown case.
-             *
-             * @throws HelloWorldTestinggggInvalidDataException if this class instance's value is a
-             *   not a known member.
-             */
-            fun known(): Known =
-                when (this) {
-                    PET_MODERATION_REJECTED -> Known.PET_MODERATION_REJECTED
-                    else -> throw HelloWorldTestinggggInvalidDataException("Unknown Type: $value")
-                }
-
-            /**
-             * Returns this class instance's primitive wire representation.
-             *
-             * This differs from the [toString] method because that method is primarily for
-             * debugging and generally doesn't throw.
-             *
-             * @throws HelloWorldTestinggggInvalidDataException if this class instance's value does
-             *   not have the expected primitive type.
-             */
-            fun asString(): String =
-                _value().asString()
-                    ?: throw HelloWorldTestinggggInvalidDataException("Value is not a String")
-
-            private var validated: Boolean = false
-
-            /**
-             * Validates that the types of all values in this object match their expected types
-             * recursively.
-             *
-             * This method is _not_ forwards compatible with new types from the API for existing
-             * fields.
-             *
-             * @throws HelloWorldTestinggggInvalidDataException if any value type in this object
-             *   doesn't match its expected type.
-             */
-            fun validate(): Type = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                known()
-                validated = true
-            }
-
-            fun isValid(): Boolean =
-                try {
-                    validate()
-                    true
-                } catch (e: HelloWorldTestinggggInvalidDataException) {
-                    false
-                }
-
-            /**
-             * Returns a score indicating how many valid values are contained in this object
-             * recursively.
-             *
-             * Used for best match union deserialization.
-             */
-            internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is Type && value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -1910,7 +1549,7 @@ private constructor(
                 return true
             }
 
-            return other is PetModerationRejectedEvent &&
+            return other is PetModerationRejected &&
                 pet == other.pet &&
                 reason == other.reason &&
                 type == other.type &&
@@ -1925,6 +1564,6 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "PetModerationRejectedEvent{pet=$pet, reason=$reason, type=$type, reviewNotes=$reviewNotes, additionalProperties=$additionalProperties}"
+            "PetModerationRejected{pet=$pet, reason=$reason, type=$type, reviewNotes=$reviewNotes, additionalProperties=$additionalProperties}"
     }
 }
