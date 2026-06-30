@@ -121,9 +121,9 @@ internal class PetServiceAsyncTest {
         val client = HelloWorldTestinggggOkHttpClientAsync.builder().apiKey("My API Key").build()
         val petServiceAsync = client.pet()
 
-        val response = petServiceAsync.listFakePage()
+        val page = petServiceAsync.listFakePage()
 
-        response.validate()
+        page.response().validate()
     }
 
     @Disabled("Mock server tests are disabled")
@@ -132,9 +132,9 @@ internal class PetServiceAsyncTest {
         val client = HelloWorldTestinggggOkHttpClientAsync.builder().apiKey("My API Key").build()
         val petServiceAsync = client.pet()
 
-        val page = petServiceAsync.listFakePageInferred()
+        val response = petServiceAsync.listFakePageInferred()
 
-        page.response().validate()
+        response.validate()
     }
 
     @Disabled("Mock server tests are disabled")

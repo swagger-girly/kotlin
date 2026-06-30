@@ -9,6 +9,7 @@ import com.hello_world_testingggg.api.core.http.HttpResponseFor
 import com.hello_world_testingggg.api.models.store.StoreListInventoryParams
 import com.hello_world_testingggg.api.models.store.StoreListInventoryResponse
 import com.hello_world_testingggg.api.services.async.store.OrderServiceAsync
+import com.hello_world_testingggg.api.services.async.store.ReportServiceAsync
 
 /** Access to Petstore orders */
 interface StoreServiceAsync {
@@ -27,6 +28,9 @@ interface StoreServiceAsync {
 
     /** Access to Petstore orders */
     fun order(): OrderServiceAsync
+
+    /** Access to Petstore orders */
+    fun reports(): ReportServiceAsync
 
     /** Returns a map of status codes to quantities */
     suspend fun listInventory(
@@ -52,6 +56,9 @@ interface StoreServiceAsync {
 
         /** Access to Petstore orders */
         fun order(): OrderServiceAsync.WithRawResponse
+
+        /** Access to Petstore orders */
+        fun reports(): ReportServiceAsync.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `get /store/inventory`, but is otherwise the same as

@@ -17,7 +17,7 @@ import com.hello_world_testingggg.api.errors.HelloWorldTestinggggInvalidDataExce
 import java.util.Collections
 import java.util.Objects
 
-class PetListFakePageInferredPageResponse
+class PetListFakePagePageResponse
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val data: JsonField<List<Pet>>,
@@ -72,8 +72,7 @@ private constructor(
     companion object {
 
         /**
-         * Returns a mutable builder for constructing an instance of
-         * [PetListFakePageInferredPageResponse].
+         * Returns a mutable builder for constructing an instance of [PetListFakePagePageResponse].
          *
          * The following fields are required:
          * ```kotlin
@@ -84,20 +83,17 @@ private constructor(
         fun builder() = Builder()
     }
 
-    /** A builder for [PetListFakePageInferredPageResponse]. */
+    /** A builder for [PetListFakePagePageResponse]. */
     class Builder internal constructor() {
 
         private var data: JsonField<MutableList<Pet>>? = null
         private var hasMore: JsonField<Boolean>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
-        internal fun from(
-            petListFakePageInferredPageResponse: PetListFakePageInferredPageResponse
-        ) = apply {
-            data = petListFakePageInferredPageResponse.data.map { it.toMutableList() }
-            hasMore = petListFakePageInferredPageResponse.hasMore
-            additionalProperties =
-                petListFakePageInferredPageResponse.additionalProperties.toMutableMap()
+        internal fun from(petListFakePagePageResponse: PetListFakePagePageResponse) = apply {
+            data = petListFakePagePageResponse.data.map { it.toMutableList() }
+            hasMore = petListFakePagePageResponse.hasMore
+            additionalProperties = petListFakePagePageResponse.additionalProperties.toMutableMap()
         }
 
         fun data(data: List<Pet>) = data(JsonField.of(data))
@@ -152,7 +148,7 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [PetListFakePageInferredPageResponse].
+         * Returns an immutable instance of [PetListFakePagePageResponse].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          *
@@ -164,8 +160,8 @@ private constructor(
          *
          * @throws IllegalStateException if any required field is unset.
          */
-        fun build(): PetListFakePageInferredPageResponse =
-            PetListFakePageInferredPageResponse(
+        fun build(): PetListFakePagePageResponse =
+            PetListFakePagePageResponse(
                 checkRequired("data", data).map { it.toImmutable() },
                 checkRequired("hasMore", hasMore),
                 additionalProperties.toMutableMap(),
@@ -182,7 +178,7 @@ private constructor(
      * @throws HelloWorldTestinggggInvalidDataException if any value type in this object doesn't
      *   match its expected type.
      */
-    fun validate(): PetListFakePageInferredPageResponse = apply {
+    fun validate(): PetListFakePagePageResponse = apply {
         if (validated) {
             return@apply
         }
@@ -214,7 +210,7 @@ private constructor(
             return true
         }
 
-        return other is PetListFakePageInferredPageResponse &&
+        return other is PetListFakePagePageResponse &&
             data == other.data &&
             hasMore == other.hasMore &&
             additionalProperties == other.additionalProperties
@@ -225,5 +221,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "PetListFakePageInferredPageResponse{data=$data, hasMore=$hasMore, additionalProperties=$additionalProperties}"
+        "PetListFakePagePageResponse{data=$data, hasMore=$hasMore, additionalProperties=$additionalProperties}"
 }

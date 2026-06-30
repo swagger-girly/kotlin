@@ -22,11 +22,11 @@ import com.hello_world_testingggg.api.models.pet.PetCreateParams
 import com.hello_world_testingggg.api.models.pet.PetDeleteParams
 import com.hello_world_testingggg.api.models.pet.PetFindByStatusParams
 import com.hello_world_testingggg.api.models.pet.PetFindByTagsParams
-import com.hello_world_testingggg.api.models.pet.PetListFakePageInferredPageAsync
-import com.hello_world_testingggg.api.models.pet.PetListFakePageInferredPageResponse
 import com.hello_world_testingggg.api.models.pet.PetListFakePageInferredParams
+import com.hello_world_testingggg.api.models.pet.PetListFakePageInferredResponse
+import com.hello_world_testingggg.api.models.pet.PetListFakePagePageAsync
+import com.hello_world_testingggg.api.models.pet.PetListFakePagePageResponse
 import com.hello_world_testingggg.api.models.pet.PetListFakePageParams
-import com.hello_world_testingggg.api.models.pet.PetListFakePageResponse
 import com.hello_world_testingggg.api.models.pet.PetListPageAsync
 import com.hello_world_testingggg.api.models.pet.PetListPageResponse
 import com.hello_world_testingggg.api.models.pet.PetListParams
@@ -92,14 +92,14 @@ class PetServiceAsyncImpl internal constructor(private val clientOptions: Client
     override suspend fun listFakePage(
         params: PetListFakePageParams,
         requestOptions: RequestOptions,
-    ): PetListFakePageResponse =
+    ): PetListFakePagePageAsync =
         // get /pet/fake-page
         withRawResponse().listFakePage(params, requestOptions).parse()
 
     override suspend fun listFakePageInferred(
         params: PetListFakePageInferredParams,
         requestOptions: RequestOptions,
-    ): PetListFakePageInferredPageAsync =
+    ): PetListFakePageInferredResponse =
         // get /pet/fake-page-inferred
         withRawResponse().listFakePageInferred(params, requestOptions).parse()
 
@@ -333,13 +333,13 @@ class PetServiceAsyncImpl internal constructor(private val clientOptions: Client
             }
         }
 
-        private val listFakePageHandler: Handler<PetListFakePageResponse> =
-            jsonHandler<PetListFakePageResponse>(clientOptions.jsonMapper)
+        private val listFakePageHandler: Handler<PetListFakePagePageResponse> =
+            jsonHandler<PetListFakePagePageResponse>(clientOptions.jsonMapper)
 
         override suspend fun listFakePage(
             params: PetListFakePageParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<PetListFakePageResponse> {
+        ): HttpResponseFor<PetListFakePagePageAsync> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -357,16 +357,23 @@ class PetServiceAsyncImpl internal constructor(private val clientOptions: Client
                             it.validate()
                         }
                     }
+                    .let {
+                        PetListFakePagePageAsync.builder()
+                            .service(PetServiceAsyncImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
+                    }
             }
         }
 
-        private val listFakePageInferredHandler: Handler<PetListFakePageInferredPageResponse> =
-            jsonHandler<PetListFakePageInferredPageResponse>(clientOptions.jsonMapper)
+        private val listFakePageInferredHandler: Handler<PetListFakePageInferredResponse> =
+            jsonHandler<PetListFakePageInferredResponse>(clientOptions.jsonMapper)
 
         override suspend fun listFakePageInferred(
             params: PetListFakePageInferredParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<PetListFakePageInferredPageAsync> {
+        ): HttpResponseFor<PetListFakePageInferredResponse> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -383,13 +390,6 @@ class PetServiceAsyncImpl internal constructor(private val clientOptions: Client
                         if (requestOptions.responseValidation!!) {
                             it.validate()
                         }
-                    }
-                    .let {
-                        PetListFakePageInferredPageAsync.builder()
-                            .service(PetServiceAsyncImpl(clientOptions))
-                            .params(params)
-                            .response(it)
-                            .build()
                     }
             }
         }

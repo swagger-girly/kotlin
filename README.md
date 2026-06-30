@@ -206,6 +206,110 @@ client.pet().watchStatusStreaming(params).use { response ->
 }
 ```
 
+## File uploads
+
+The SDK defines methods that accept files.
+
+To upload a file, pass a [`Path`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html):
+
+```kotlin
+import com.hello_world_testingggg.api.models.files.File
+import com.hello_world_testingggg.api.models.files.FileUpdateParams
+import java.nio.file.Paths
+
+val params: FileUpdateParams = FileUpdateParams.builder()
+    .path("path")
+    .file(Paths.get("/path/to/file"))
+    .build()
+val file: File = client.files().update(params)
+```
+
+Or an arbitrary [`InputStream`](https://docs.oracle.com/javase/8/docs/api/java/io/InputStream.html):
+
+```kotlin
+import com.hello_world_testingggg.api.models.files.File
+import com.hello_world_testingggg.api.models.files.FileUpdateParams
+import java.net.URL
+
+val params: FileUpdateParams = FileUpdateParams.builder()
+    .path("path")
+    .file(URL("https://example.com//path/to/file").openStream())
+    .build()
+val file: File = client.files().update(params)
+```
+
+Or a `ByteArray`:
+
+```kotlin
+import com.hello_world_testingggg.api.models.files.File
+import com.hello_world_testingggg.api.models.files.FileUpdateParams
+
+val params: FileUpdateParams = FileUpdateParams.builder()
+    .path("path")
+    .file("content".toByteArray())
+    .build()
+val file: File = client.files().update(params)
+```
+
+Note that when passing a non-`Path` its filename is unknown so it will not be included in the request. To manually set a filename, pass a [`MultipartField`](hello-world-testingggg-kotlin-core/src/main/kotlin/com/hello_world_testingggg/api/core/Values.kt):
+
+```kotlin
+import com.hello_world_testingggg.api.core.MultipartField
+import com.hello_world_testingggg.api.models.files.File
+import com.hello_world_testingggg.api.models.files.FileUpdateParams
+import java.io.InputStream
+import java.net.URL
+
+val params: FileUpdateParams = FileUpdateParams.builder()
+    .path("path")
+    .file(MultipartField.builder<InputStream>()
+        .value(URL("https://example.com//path/to/file").openStream())
+        .filename("/path/to/file")
+        .build())
+    .build()
+val file: File = client.files().update(params)
+```
+
+## Binary responses
+
+The SDK defines methods that return binary responses, which are used for API responses that shouldn't necessarily be parsed, like non-JSON data.
+
+These methods return [`HttpResponse`](hello-world-testingggg-kotlin-core/src/main/kotlin/com/hello_world_testingggg/api/core/http/HttpResponse.kt):
+
+```kotlin
+import com.hello_world_testingggg.api.core.http.HttpResponse
+import com.hello_world_testingggg.api.models.files.FileDownloadParams
+
+val response: HttpResponse = client.files().download("path")
+```
+
+To save the response content to a file, use the [`Files.copy(...)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#copy-java.io.InputStream-java.nio.file.Path-java.nio.file.CopyOption...-) method:
+
+```kotlin
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.nio.file.StandardCopyOption
+
+client.files().download(params).use {
+    Files.copy(
+        it.body(),
+        Paths.get(path),
+        StandardCopyOption.REPLACE_EXISTING
+    )
+}
+```
+
+Or transfer the response content to any [`OutputStream`](https://docs.oracle.com/javase/8/docs/api/java/io/OutputStream.html):
+
+```kotlin
+import java.nio.file.Files
+import java.nio.file.Paths
+
+client.files().download(params).use {
+    it.body().transferTo(Files.newOutputStream(Paths.get(path)))
+}
+```
+
 ## Raw responses
 
 The SDK defines methods that deserialize responses into instances of Kotlin classes. However, these methods don't provide access to the response headers, status code, or the raw response body.

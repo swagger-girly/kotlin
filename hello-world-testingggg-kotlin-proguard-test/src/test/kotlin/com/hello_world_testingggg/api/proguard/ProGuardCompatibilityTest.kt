@@ -51,6 +51,8 @@ internal class ProGuardCompatibilityTest {
 
         assertThat(client).isNotNull()
         assertThat(client.pet()).isNotNull()
+        assertThat(client.files()).isNotNull()
+        assertThat(client.profiles()).isNotNull()
         assertThat(client.webhooks()).isNotNull()
         assertThat(client.store()).isNotNull()
         assertThat(client.user()).isNotNull()

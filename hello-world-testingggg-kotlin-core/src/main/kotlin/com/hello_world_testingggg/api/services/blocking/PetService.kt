@@ -14,10 +14,10 @@ import com.hello_world_testingggg.api.models.pet.PetCreateParams
 import com.hello_world_testingggg.api.models.pet.PetDeleteParams
 import com.hello_world_testingggg.api.models.pet.PetFindByStatusParams
 import com.hello_world_testingggg.api.models.pet.PetFindByTagsParams
-import com.hello_world_testingggg.api.models.pet.PetListFakePageInferredPage
 import com.hello_world_testingggg.api.models.pet.PetListFakePageInferredParams
+import com.hello_world_testingggg.api.models.pet.PetListFakePageInferredResponse
+import com.hello_world_testingggg.api.models.pet.PetListFakePagePage
 import com.hello_world_testingggg.api.models.pet.PetListFakePageParams
-import com.hello_world_testingggg.api.models.pet.PetListFakePageResponse
 import com.hello_world_testingggg.api.models.pet.PetListPage
 import com.hello_world_testingggg.api.models.pet.PetListParams
 import com.hello_world_testingggg.api.models.pet.PetListUnpaginatedParams
@@ -125,10 +125,10 @@ interface PetService {
     fun listFakePage(
         params: PetListFakePageParams = PetListFakePageParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): PetListFakePageResponse
+    ): PetListFakePagePage
 
     /** @see listFakePage */
-    fun listFakePage(requestOptions: RequestOptions): PetListFakePageResponse =
+    fun listFakePage(requestOptions: RequestOptions): PetListFakePagePage =
         listFakePage(PetListFakePageParams.none(), requestOptions)
 
     /**
@@ -138,10 +138,10 @@ interface PetService {
     fun listFakePageInferred(
         params: PetListFakePageInferredParams = PetListFakePageInferredParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): PetListFakePageInferredPage
+    ): PetListFakePageInferredResponse
 
     /** @see listFakePageInferred */
-    fun listFakePageInferred(requestOptions: RequestOptions): PetListFakePageInferredPage =
+    fun listFakePageInferred(requestOptions: RequestOptions): PetListFakePageInferredResponse =
         listFakePageInferred(PetListFakePageInferredParams.none(), requestOptions)
 
     /** Returns the same cursor-shaped pet list response without enabling SDK pagination helpers. */
@@ -364,11 +364,11 @@ interface PetService {
         fun listFakePage(
             params: PetListFakePageParams = PetListFakePageParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<PetListFakePageResponse>
+        ): HttpResponseFor<PetListFakePagePage>
 
         /** @see listFakePage */
         @MustBeClosed
-        fun listFakePage(requestOptions: RequestOptions): HttpResponseFor<PetListFakePageResponse> =
+        fun listFakePage(requestOptions: RequestOptions): HttpResponseFor<PetListFakePagePage> =
             listFakePage(PetListFakePageParams.none(), requestOptions)
 
         /**
@@ -379,13 +379,13 @@ interface PetService {
         fun listFakePageInferred(
             params: PetListFakePageInferredParams = PetListFakePageInferredParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<PetListFakePageInferredPage>
+        ): HttpResponseFor<PetListFakePageInferredResponse>
 
         /** @see listFakePageInferred */
         @MustBeClosed
         fun listFakePageInferred(
             requestOptions: RequestOptions
-        ): HttpResponseFor<PetListFakePageInferredPage> =
+        ): HttpResponseFor<PetListFakePageInferredResponse> =
             listFakePageInferred(PetListFakePageInferredParams.none(), requestOptions)
 
         /**

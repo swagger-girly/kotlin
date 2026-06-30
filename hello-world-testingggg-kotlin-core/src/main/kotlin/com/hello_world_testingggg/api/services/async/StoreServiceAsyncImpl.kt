@@ -18,6 +18,8 @@ import com.hello_world_testingggg.api.models.store.StoreListInventoryParams
 import com.hello_world_testingggg.api.models.store.StoreListInventoryResponse
 import com.hello_world_testingggg.api.services.async.store.OrderServiceAsync
 import com.hello_world_testingggg.api.services.async.store.OrderServiceAsyncImpl
+import com.hello_world_testingggg.api.services.async.store.ReportServiceAsync
+import com.hello_world_testingggg.api.services.async.store.ReportServiceAsyncImpl
 
 /** Access to Petstore orders */
 class StoreServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -29,6 +31,8 @@ class StoreServiceAsyncImpl internal constructor(private val clientOptions: Clie
 
     private val order: OrderServiceAsync by lazy { OrderServiceAsyncImpl(clientOptions) }
 
+    private val reports: ReportServiceAsync by lazy { ReportServiceAsyncImpl(clientOptions) }
+
     override fun withRawResponse(): StoreServiceAsync.WithRawResponse = withRawResponse
 
     override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): StoreServiceAsync =
@@ -36,6 +40,9 @@ class StoreServiceAsyncImpl internal constructor(private val clientOptions: Clie
 
     /** Access to Petstore orders */
     override fun order(): OrderServiceAsync = order
+
+    /** Access to Petstore orders */
+    override fun reports(): ReportServiceAsync = reports
 
     override suspend fun listInventory(
         params: StoreListInventoryParams,
@@ -54,6 +61,10 @@ class StoreServiceAsyncImpl internal constructor(private val clientOptions: Clie
             OrderServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
 
+        private val reports: ReportServiceAsync.WithRawResponse by lazy {
+            ReportServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
         override fun withOptions(
             modifier: (ClientOptions.Builder) -> Unit
         ): StoreServiceAsync.WithRawResponse =
@@ -63,6 +74,9 @@ class StoreServiceAsyncImpl internal constructor(private val clientOptions: Clie
 
         /** Access to Petstore orders */
         override fun order(): OrderServiceAsync.WithRawResponse = order
+
+        /** Access to Petstore orders */
+        override fun reports(): ReportServiceAsync.WithRawResponse = reports
 
         private val listInventoryHandler: Handler<StoreListInventoryResponse> =
             jsonHandler<StoreListInventoryResponse>(clientOptions.jsonMapper)

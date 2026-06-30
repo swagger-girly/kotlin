@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless.
 
-package com.hello_world_testingggg.api.models.pet
+package com.hello_world_testingggg.api.models.files
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
@@ -17,45 +17,30 @@ import com.hello_world_testingggg.api.errors.HelloWorldTestinggggInvalidDataExce
 import java.util.Collections
 import java.util.Objects
 
-class PetListFakePageResponse
+class Fileslist
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
-    private val data: JsonField<List<Pet>>,
-    private val hasMore: JsonField<Boolean>,
+    private val data: JsonField<List<File>>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
     @JsonCreator
     private constructor(
-        @JsonProperty("data") @ExcludeMissing data: JsonField<List<Pet>> = JsonMissing.of(),
-        @JsonProperty("has_more") @ExcludeMissing hasMore: JsonField<Boolean> = JsonMissing.of(),
-    ) : this(data, hasMore, mutableMapOf())
+        @JsonProperty("data") @ExcludeMissing data: JsonField<List<File>> = JsonMissing.of()
+    ) : this(data, mutableMapOf())
 
     /**
      * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type or
      *   is unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun data(): List<Pet> = data.getRequired("data")
-
-    /**
-     * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type or
-     *   is unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-     */
-    fun hasMore(): Boolean = hasMore.getRequired("has_more")
+    fun data(): List<File> = data.getRequired("data")
 
     /**
      * Returns the raw JSON value of [data].
      *
      * Unlike [data], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @JsonProperty("data") @ExcludeMissing fun _data(): JsonField<List<Pet>> = data
-
-    /**
-     * Returns the raw JSON value of [hasMore].
-     *
-     * Unlike [hasMore], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("has_more") @ExcludeMissing fun _hasMore(): JsonField<Boolean> = hasMore
+    @JsonProperty("data") @ExcludeMissing fun _data(): JsonField<List<File>> = data
 
     @JsonAnySetter
     private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -72,61 +57,50 @@ private constructor(
     companion object {
 
         /**
-         * Returns a mutable builder for constructing an instance of [PetListFakePageResponse].
+         * Returns a mutable builder for constructing an instance of [Fileslist].
          *
          * The following fields are required:
          * ```kotlin
          * .data()
-         * .hasMore()
          * ```
          */
         fun builder() = Builder()
     }
 
-    /** A builder for [PetListFakePageResponse]. */
+    /** A builder for [Fileslist]. */
     class Builder internal constructor() {
 
-        private var data: JsonField<MutableList<Pet>>? = null
-        private var hasMore: JsonField<Boolean>? = null
+        private var data: JsonField<MutableList<File>>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
-        internal fun from(petListFakePageResponse: PetListFakePageResponse) = apply {
-            data = petListFakePageResponse.data.map { it.toMutableList() }
-            hasMore = petListFakePageResponse.hasMore
-            additionalProperties = petListFakePageResponse.additionalProperties.toMutableMap()
+        internal fun from(fileslist: Fileslist) = apply {
+            data = fileslist.data.map { it.toMutableList() }
+            additionalProperties = fileslist.additionalProperties.toMutableMap()
         }
 
-        fun data(data: List<Pet>) = data(JsonField.of(data))
+        fun data(data: List<File>) = data(JsonField.of(data))
 
         /**
          * Sets [Builder.data] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.data] with a well-typed `List<Pet>` value instead. This
+         * You should usually call [Builder.data] with a well-typed `List<File>` value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun data(data: JsonField<List<Pet>>) = apply { this.data = data.map { it.toMutableList() } }
+        fun data(data: JsonField<List<File>>) = apply {
+            this.data = data.map { it.toMutableList() }
+        }
 
         /**
-         * Adds a single [Pet] to [Builder.data].
+         * Adds a single [File] to [Builder.data].
          *
          * @throws IllegalStateException if the field was previously set to a non-list.
          */
-        fun addData(data: Pet) = apply {
+        fun addData(data: File) = apply {
             this.data =
                 (this.data ?: JsonField.of(mutableListOf())).also {
                     checkKnown("data", it).add(data)
                 }
         }
-
-        fun hasMore(hasMore: Boolean) = hasMore(JsonField.of(hasMore))
-
-        /**
-         * Sets [Builder.hasMore] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.hasMore] with a well-typed [Boolean] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun hasMore(hasMore: JsonField<Boolean>) = apply { this.hasMore = hasMore }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -148,22 +122,20 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [PetListFakePageResponse].
+         * Returns an immutable instance of [Fileslist].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
          * ```kotlin
          * .data()
-         * .hasMore()
          * ```
          *
          * @throws IllegalStateException if any required field is unset.
          */
-        fun build(): PetListFakePageResponse =
-            PetListFakePageResponse(
+        fun build(): Fileslist =
+            Fileslist(
                 checkRequired("data", data).map { it.toImmutable() },
-                checkRequired("hasMore", hasMore),
                 additionalProperties.toMutableMap(),
             )
     }
@@ -178,13 +150,12 @@ private constructor(
      * @throws HelloWorldTestinggggInvalidDataException if any value type in this object doesn't
      *   match its expected type.
      */
-    fun validate(): PetListFakePageResponse = apply {
+    fun validate(): Fileslist = apply {
         if (validated) {
             return@apply
         }
 
         data().forEach { it.validate() }
-        hasMore()
         validated = true
     }
 
@@ -201,25 +172,21 @@ private constructor(
      *
      * Used for best match union deserialization.
      */
-    internal fun validity(): Int =
-        (data.asKnown()?.sumOf { it.validity().toInt() } ?: 0) +
-            (if (hasMore.asKnown() == null) 0 else 1)
+    internal fun validity(): Int = (data.asKnown()?.sumOf { it.validity().toInt() } ?: 0)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
         }
 
-        return other is PetListFakePageResponse &&
+        return other is Fileslist &&
             data == other.data &&
-            hasMore == other.hasMore &&
             additionalProperties == other.additionalProperties
     }
 
-    private val hashCode: Int by lazy { Objects.hash(data, hasMore, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(data, additionalProperties) }
 
     override fun hashCode(): Int = hashCode
 
-    override fun toString() =
-        "PetListFakePageResponse{data=$data, hasMore=$hasMore, additionalProperties=$additionalProperties}"
+    override fun toString() = "Fileslist{data=$data, additionalProperties=$additionalProperties}"
 }

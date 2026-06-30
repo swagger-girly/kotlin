@@ -7,6 +7,7 @@ import com.hello_world_testingggg.api.core.JsonValue
 import com.hello_world_testingggg.api.core.jsonMapper
 import com.hello_world_testingggg.api.errors.HelloWorldTestinggggInvalidDataException
 import com.hello_world_testingggg.api.models.pet.Pet
+import com.hello_world_testingggg.api.models.store.reports.Report
 import java.time.OffsetDateTime
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -40,6 +41,7 @@ internal class ParsedWebhookEventTest {
         assertThat(parsedWebhookEvent.petInventoryLow()).isNull()
         assertThat(parsedWebhookEvent.petModerationApproved()).isNull()
         assertThat(parsedWebhookEvent.petModerationRejected()).isNull()
+        assertThat(parsedWebhookEvent.storeReportGenerated()).isNull()
     }
 
     @Test
@@ -102,6 +104,7 @@ internal class ParsedWebhookEventTest {
         assertThat(parsedWebhookEvent.petInventoryLow()).isNull()
         assertThat(parsedWebhookEvent.petModerationApproved()).isNull()
         assertThat(parsedWebhookEvent.petModerationRejected()).isNull()
+        assertThat(parsedWebhookEvent.storeReportGenerated()).isNull()
     }
 
     @Test
@@ -184,6 +187,7 @@ internal class ParsedWebhookEventTest {
         assertThat(parsedWebhookEvent.petInventoryLow()).isEqualTo(petInventoryLow)
         assertThat(parsedWebhookEvent.petModerationApproved()).isNull()
         assertThat(parsedWebhookEvent.petModerationRejected()).isNull()
+        assertThat(parsedWebhookEvent.storeReportGenerated()).isNull()
     }
 
     @Test
@@ -260,6 +264,7 @@ internal class ParsedWebhookEventTest {
         assertThat(parsedWebhookEvent.petInventoryLow()).isNull()
         assertThat(parsedWebhookEvent.petModerationApproved()).isEqualTo(petModerationApproved)
         assertThat(parsedWebhookEvent.petModerationRejected()).isNull()
+        assertThat(parsedWebhookEvent.storeReportGenerated()).isNull()
     }
 
     @Test
@@ -337,6 +342,7 @@ internal class ParsedWebhookEventTest {
         assertThat(parsedWebhookEvent.petInventoryLow()).isNull()
         assertThat(parsedWebhookEvent.petModerationApproved()).isNull()
         assertThat(parsedWebhookEvent.petModerationRejected()).isEqualTo(petModerationRejected)
+        assertThat(parsedWebhookEvent.storeReportGenerated()).isNull()
     }
 
     @Test
@@ -373,6 +379,82 @@ internal class ParsedWebhookEventTest {
                                     .phone("12345")
                                     .username("theUser")
                                     .userStatus(1)
+                                    .build()
+                            )
+                            .build()
+                    )
+                    .build()
+            )
+
+        val roundtrippedParsedWebhookEvent =
+            jsonMapper.readValue(
+                jsonMapper.writeValueAsString(parsedWebhookEvent),
+                jacksonTypeRef<ParsedWebhookEvent>(),
+            )
+
+        assertThat(roundtrippedParsedWebhookEvent).isEqualTo(parsedWebhookEvent)
+    }
+
+    @Test
+    fun ofStoreReportGenerated() {
+        val storeReportGenerated =
+            StoreReportGeneratedWebhookEvent.builder()
+                .id("id")
+                .createdAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                .metrics(JsonValue.from(mapOf<String, Any>()))
+                .report(
+                    Report.builder()
+                        .id("id")
+                        .createdAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .status(Report.Status.QUEUED)
+                        .completedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .filters(
+                            Report.Filters.builder()
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                .build()
+                        )
+                        .totals(
+                            Report.Totals.builder()
+                                .putAdditionalProperty("foo", JsonValue.from(0))
+                                .build()
+                        )
+                        .build()
+                )
+                .build()
+
+        val parsedWebhookEvent = ParsedWebhookEvent.ofStoreReportGenerated(storeReportGenerated)
+
+        assertThat(parsedWebhookEvent.petCreated()).isNull()
+        assertThat(parsedWebhookEvent.petUpdated()).isNull()
+        assertThat(parsedWebhookEvent.petInventoryLow()).isNull()
+        assertThat(parsedWebhookEvent.petModerationApproved()).isNull()
+        assertThat(parsedWebhookEvent.petModerationRejected()).isNull()
+        assertThat(parsedWebhookEvent.storeReportGenerated()).isEqualTo(storeReportGenerated)
+    }
+
+    @Test
+    fun ofStoreReportGeneratedRoundtrip() {
+        val jsonMapper = jsonMapper()
+        val parsedWebhookEvent =
+            ParsedWebhookEvent.ofStoreReportGenerated(
+                StoreReportGeneratedWebhookEvent.builder()
+                    .id("id")
+                    .createdAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                    .metrics(JsonValue.from(mapOf<String, Any>()))
+                    .report(
+                        Report.builder()
+                            .id("id")
+                            .createdAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                            .status(Report.Status.QUEUED)
+                            .completedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                            .filters(
+                                Report.Filters.builder()
+                                    .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                    .build()
+                            )
+                            .totals(
+                                Report.Totals.builder()
+                                    .putAdditionalProperty("foo", JsonValue.from(0))
                                     .build()
                             )
                             .build()

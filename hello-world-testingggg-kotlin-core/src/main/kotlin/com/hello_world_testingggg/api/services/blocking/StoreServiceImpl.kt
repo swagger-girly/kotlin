@@ -18,6 +18,8 @@ import com.hello_world_testingggg.api.models.store.StoreListInventoryParams
 import com.hello_world_testingggg.api.models.store.StoreListInventoryResponse
 import com.hello_world_testingggg.api.services.blocking.store.OrderService
 import com.hello_world_testingggg.api.services.blocking.store.OrderServiceImpl
+import com.hello_world_testingggg.api.services.blocking.store.ReportService
+import com.hello_world_testingggg.api.services.blocking.store.ReportServiceImpl
 
 /** Access to Petstore orders */
 class StoreServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -29,6 +31,8 @@ class StoreServiceImpl internal constructor(private val clientOptions: ClientOpt
 
     private val order: OrderService by lazy { OrderServiceImpl(clientOptions) }
 
+    private val reports: ReportService by lazy { ReportServiceImpl(clientOptions) }
+
     override fun withRawResponse(): StoreService.WithRawResponse = withRawResponse
 
     override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): StoreService =
@@ -36,6 +40,9 @@ class StoreServiceImpl internal constructor(private val clientOptions: ClientOpt
 
     /** Access to Petstore orders */
     override fun order(): OrderService = order
+
+    /** Access to Petstore orders */
+    override fun reports(): ReportService = reports
 
     override fun listInventory(
         params: StoreListInventoryParams,
@@ -54,6 +61,10 @@ class StoreServiceImpl internal constructor(private val clientOptions: ClientOpt
             OrderServiceImpl.WithRawResponseImpl(clientOptions)
         }
 
+        private val reports: ReportService.WithRawResponse by lazy {
+            ReportServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
         override fun withOptions(
             modifier: (ClientOptions.Builder) -> Unit
         ): StoreService.WithRawResponse =
@@ -61,6 +72,9 @@ class StoreServiceImpl internal constructor(private val clientOptions: ClientOpt
 
         /** Access to Petstore orders */
         override fun order(): OrderService.WithRawResponse = order
+
+        /** Access to Petstore orders */
+        override fun reports(): ReportService.WithRawResponse = reports
 
         private val listInventoryHandler: Handler<StoreListInventoryResponse> =
             jsonHandler<StoreListInventoryResponse>(clientOptions.jsonMapper)
