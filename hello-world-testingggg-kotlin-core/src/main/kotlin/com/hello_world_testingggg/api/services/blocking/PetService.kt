@@ -4,7 +4,6 @@ package com.hello_world_testingggg.api.services.blocking
 
 import com.google.errorprone.annotations.MustBeClosed
 import com.hello_world_testingggg.api.core.ClientOptions
-import com.hello_world_testingggg.api.core.JsonValue
 import com.hello_world_testingggg.api.core.RequestOptions
 import com.hello_world_testingggg.api.core.http.HttpResponse
 import com.hello_world_testingggg.api.core.http.HttpResponseFor
@@ -203,7 +202,7 @@ interface PetService {
         petId: Long,
         params: PetWatchStatusParams = PetWatchStatusParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): StreamResponse<JsonValue> =
+    ): StreamResponse<Pet> =
         watchStatusStreaming(params.toBuilder().petId(petId).build(), requestOptions)
 
     /** @see watchStatusStreaming */
@@ -211,14 +210,11 @@ interface PetService {
     fun watchStatusStreaming(
         params: PetWatchStatusParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): StreamResponse<JsonValue>
+    ): StreamResponse<Pet>
 
     /** @see watchStatusStreaming */
     @MustBeClosed
-    fun watchStatusStreaming(
-        petId: Long,
-        requestOptions: RequestOptions,
-    ): StreamResponse<JsonValue> =
+    fun watchStatusStreaming(petId: Long, requestOptions: RequestOptions): StreamResponse<Pet> =
         watchStatusStreaming(petId, PetWatchStatusParams.none(), requestOptions)
 
     /** A view of [PetService] that provides access to raw HTTP responses for each method. */
@@ -466,7 +462,7 @@ interface PetService {
             petId: Long,
             params: PetWatchStatusParams = PetWatchStatusParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<StreamResponse<JsonValue>> =
+        ): HttpResponseFor<StreamResponse<Pet>> =
             watchStatusStreaming(params.toBuilder().petId(petId).build(), requestOptions)
 
         /** @see watchStatusStreaming */
@@ -474,14 +470,14 @@ interface PetService {
         fun watchStatusStreaming(
             params: PetWatchStatusParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<StreamResponse<JsonValue>>
+        ): HttpResponseFor<StreamResponse<Pet>>
 
         /** @see watchStatusStreaming */
         @MustBeClosed
         fun watchStatusStreaming(
             petId: Long,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<StreamResponse<JsonValue>> =
+        ): HttpResponseFor<StreamResponse<Pet>> =
             watchStatusStreaming(petId, PetWatchStatusParams.none(), requestOptions)
     }
 }

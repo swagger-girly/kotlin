@@ -3,7 +3,6 @@
 package com.hello_world_testingggg.api.services.blocking
 
 import com.hello_world_testingggg.api.core.ClientOptions
-import com.hello_world_testingggg.api.core.JsonValue
 import com.hello_world_testingggg.api.core.RequestOptions
 import com.hello_world_testingggg.api.core.checkRequired
 import com.hello_world_testingggg.api.core.handlers.emptyHandler
@@ -19,6 +18,7 @@ import com.hello_world_testingggg.api.core.http.HttpResponse.Handler
 import com.hello_world_testingggg.api.core.http.HttpResponseFor
 import com.hello_world_testingggg.api.core.http.StreamResponse
 import com.hello_world_testingggg.api.core.http.json
+import com.hello_world_testingggg.api.core.http.map
 import com.hello_world_testingggg.api.core.http.parseable
 import com.hello_world_testingggg.api.core.prepare
 import com.hello_world_testingggg.api.models.pet.Pet
@@ -126,7 +126,7 @@ class PetServiceImpl internal constructor(private val clientOptions: ClientOptio
     override fun watchStatusStreaming(
         params: PetWatchStatusParams,
         requestOptions: RequestOptions,
-    ): StreamResponse<JsonValue> =
+    ): StreamResponse<Pet> =
         // get /pet/{petId}/status/stream
         withRawResponse().watchStatusStreaming(params, requestOptions).parse()
 
@@ -477,13 +477,13 @@ class PetServiceImpl internal constructor(private val clientOptions: ClientOptio
             }
         }
 
-        private val watchStatusStreamingHandler: Handler<StreamResponse<JsonValue>> =
-            sseHandler(clientOptions.jsonMapper).mapJson<JsonValue>()
+        private val watchStatusStreamingHandler: Handler<StreamResponse<Pet>> =
+            sseHandler(clientOptions.jsonMapper).mapJson<Pet>()
 
         override fun watchStatusStreaming(
             params: PetWatchStatusParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<StreamResponse<JsonValue>> {
+        ): HttpResponseFor<StreamResponse<Pet>> {
             // We check here instead of in the params builder because this can be specified
             // positionally or in the params class.
             checkRequired("petId", params.petId())
@@ -498,7 +498,15 @@ class PetServiceImpl internal constructor(private val clientOptions: ClientOptio
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
             return errorHandler.handle(response).parseable {
-                response.let { watchStatusStreamingHandler.handle(it) }
+                response
+                    .let { watchStatusStreamingHandler.handle(it) }
+                    .let { streamResponse ->
+                        if (requestOptions.responseValidation!!) {
+                            streamResponse.map { it.validate() }
+                        } else {
+                            streamResponse
+                        }
+                    }
             }
         }
     }

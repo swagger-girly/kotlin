@@ -191,6 +191,6 @@ internal class PetServiceTest {
                 PetWatchStatusParams.builder().petId(0L).lastEventId("Last-Event-ID").build()
             )
 
-        petStreamResponse.use { petStreamResponse.asSequence().forEach {} }
+        petStreamResponse.use { petStreamResponse.asSequence().forEach { pet -> pet.validate() } }
     }
 }
