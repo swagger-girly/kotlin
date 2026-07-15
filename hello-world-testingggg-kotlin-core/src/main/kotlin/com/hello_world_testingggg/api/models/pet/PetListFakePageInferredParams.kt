@@ -9,7 +9,7 @@ import java.util.Objects
 
 /**
  * Returns a single page-shaped pet response whose fake pagination behavior is inferred from the
- * Stainless config scheme.
+ * config scheme.
  */
 class PetListFakePageInferredParams
 private constructor(

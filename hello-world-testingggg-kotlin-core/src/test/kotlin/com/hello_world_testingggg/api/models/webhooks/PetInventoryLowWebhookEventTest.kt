@@ -4,7 +4,10 @@ package com.hello_world_testingggg.api.models.webhooks
 
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import com.hello_world_testingggg.api.core.jsonMapper
+import com.hello_world_testingggg.api.models.Address
+import com.hello_world_testingggg.api.models.Money
 import com.hello_world_testingggg.api.models.pet.Pet
+import com.hello_world_testingggg.api.models.pet.PetStatus
 import java.time.OffsetDateTime
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -20,8 +23,15 @@ internal class PetInventoryLowWebhookEventTest {
                         .name("doggie")
                         .addPhotoUrl("string")
                         .id(10L)
-                        .category(Pet.Category.builder().id(1L).name("Dogs").build())
-                        .status(Pet.Status.AVAILABLE)
+                        .category(
+                            Pet.Category.builder()
+                                .id(1L)
+                                .name("Dogs")
+                                .subcategories(listOf())
+                                .build()
+                        )
+                        .microchipId("string")
+                        .status(PetStatus.AVAILABLE)
                         .addTag(Pet.Tag.builder().id(0L).name("name").build())
                         .build()
                 )
@@ -36,11 +46,13 @@ internal class PetInventoryLowWebhookEventTest {
                         .quantity(7)
                         .shipDate(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                         .status(PetInventoryLowWebhookEvent.LastOrder.Status.APPROVED)
+                        .total(Money.builder().amount(2500L).currency("USD").build())
                         .build()
                 )
                 .addLocation(
-                    PetInventoryLowWebhookEvent.Location.builder()
+                    Address.builder()
                         .city("Palo Alto")
+                        .geo(Address.Geo.builder().latitude(37.4443).longitude(-122.1598).build())
                         .state("CA")
                         .street("437 Lytton")
                         .zip("94301")
@@ -54,8 +66,11 @@ internal class PetInventoryLowWebhookEventTest {
                     .name("doggie")
                     .addPhotoUrl("string")
                     .id(10L)
-                    .category(Pet.Category.builder().id(1L).name("Dogs").build())
-                    .status(Pet.Status.AVAILABLE)
+                    .category(
+                        Pet.Category.builder().id(1L).name("Dogs").subcategories(listOf()).build()
+                    )
+                    .microchipId("string")
+                    .status(PetStatus.AVAILABLE)
                     .addTag(Pet.Tag.builder().id(0L).name("name").build())
                     .build()
             )
@@ -72,12 +87,14 @@ internal class PetInventoryLowWebhookEventTest {
                     .quantity(7)
                     .shipDate(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                     .status(PetInventoryLowWebhookEvent.LastOrder.Status.APPROVED)
+                    .total(Money.builder().amount(2500L).currency("USD").build())
                     .build()
             )
         assertThat(petInventoryLowWebhookEvent.locations())
             .containsExactly(
-                PetInventoryLowWebhookEvent.Location.builder()
+                Address.builder()
                     .city("Palo Alto")
+                    .geo(Address.Geo.builder().latitude(37.4443).longitude(-122.1598).build())
                     .state("CA")
                     .street("437 Lytton")
                     .zip("94301")
@@ -95,8 +112,15 @@ internal class PetInventoryLowWebhookEventTest {
                         .name("doggie")
                         .addPhotoUrl("string")
                         .id(10L)
-                        .category(Pet.Category.builder().id(1L).name("Dogs").build())
-                        .status(Pet.Status.AVAILABLE)
+                        .category(
+                            Pet.Category.builder()
+                                .id(1L)
+                                .name("Dogs")
+                                .subcategories(listOf())
+                                .build()
+                        )
+                        .microchipId("string")
+                        .status(PetStatus.AVAILABLE)
                         .addTag(Pet.Tag.builder().id(0L).name("name").build())
                         .build()
                 )
@@ -111,11 +135,13 @@ internal class PetInventoryLowWebhookEventTest {
                         .quantity(7)
                         .shipDate(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                         .status(PetInventoryLowWebhookEvent.LastOrder.Status.APPROVED)
+                        .total(Money.builder().amount(2500L).currency("USD").build())
                         .build()
                 )
                 .addLocation(
-                    PetInventoryLowWebhookEvent.Location.builder()
+                    Address.builder()
                         .city("Palo Alto")
+                        .geo(Address.Geo.builder().latitude(37.4443).longitude(-122.1598).build())
                         .state("CA")
                         .street("437 Lytton")
                         .zip("94301")

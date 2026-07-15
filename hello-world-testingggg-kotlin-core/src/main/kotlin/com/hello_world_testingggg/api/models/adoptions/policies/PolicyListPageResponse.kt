@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless.
 
-package com.hello_world_testingggg.api.models.pet
+package com.hello_world_testingggg.api.models.adoptions.policies
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
@@ -17,45 +17,47 @@ import com.hello_world_testingggg.api.errors.HelloWorldTestinggggInvalidDataExce
 import java.util.Collections
 import java.util.Objects
 
-class PetListFakePagePageResponse
+class PolicyListPageResponse
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
-    private val data: JsonField<List<Pet>>,
-    private val hasMore: JsonField<Boolean>,
+    private val items: JsonField<List<Policy>>,
+    private val nextCursor: JsonField<String>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
     @JsonCreator
     private constructor(
-        @JsonProperty("data") @ExcludeMissing data: JsonField<List<Pet>> = JsonMissing.of(),
-        @JsonProperty("has_more") @ExcludeMissing hasMore: JsonField<Boolean> = JsonMissing.of(),
-    ) : this(data, hasMore, mutableMapOf())
+        @JsonProperty("items") @ExcludeMissing items: JsonField<List<Policy>> = JsonMissing.of(),
+        @JsonProperty("next_cursor")
+        @ExcludeMissing
+        nextCursor: JsonField<String> = JsonMissing.of(),
+    ) : this(items, nextCursor, mutableMapOf())
 
     /**
      * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type or
      *   is unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun data(): List<Pet> = data.getRequired("data")
+    fun items(): List<Policy> = items.getRequired("items")
 
     /**
-     * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type or
-     *   is unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
+     *   (e.g. if the server responded with an unexpected value).
      */
-    fun hasMore(): Boolean = hasMore.getRequired("has_more")
+    fun nextCursor(): String? = nextCursor.getNullable("next_cursor")
 
     /**
-     * Returns the raw JSON value of [data].
+     * Returns the raw JSON value of [items].
      *
-     * Unlike [data], this method doesn't throw if the JSON field has an unexpected type.
+     * Unlike [items], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @JsonProperty("data") @ExcludeMissing fun _data(): JsonField<List<Pet>> = data
+    @JsonProperty("items") @ExcludeMissing fun _items(): JsonField<List<Policy>> = items
 
     /**
-     * Returns the raw JSON value of [hasMore].
+     * Returns the raw JSON value of [nextCursor].
      *
-     * Unlike [hasMore], this method doesn't throw if the JSON field has an unexpected type.
+     * Unlike [nextCursor], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @JsonProperty("has_more") @ExcludeMissing fun _hasMore(): JsonField<Boolean> = hasMore
+    @JsonProperty("next_cursor") @ExcludeMissing fun _nextCursor(): JsonField<String> = nextCursor
 
     @JsonAnySetter
     private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -72,61 +74,62 @@ private constructor(
     companion object {
 
         /**
-         * Returns a mutable builder for constructing an instance of [PetListFakePagePageResponse].
+         * Returns a mutable builder for constructing an instance of [PolicyListPageResponse].
          *
          * The following fields are required:
          * ```kotlin
-         * .data()
-         * .hasMore()
+         * .items()
          * ```
          */
         fun builder() = Builder()
     }
 
-    /** A builder for [PetListFakePagePageResponse]. */
+    /** A builder for [PolicyListPageResponse]. */
     class Builder internal constructor() {
 
-        private var data: JsonField<MutableList<Pet>>? = null
-        private var hasMore: JsonField<Boolean>? = null
+        private var items: JsonField<MutableList<Policy>>? = null
+        private var nextCursor: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
-        internal fun from(petListFakePagePageResponse: PetListFakePagePageResponse) = apply {
-            data = petListFakePagePageResponse.data.map { it.toMutableList() }
-            hasMore = petListFakePagePageResponse.hasMore
-            additionalProperties = petListFakePagePageResponse.additionalProperties.toMutableMap()
+        internal fun from(policyListPageResponse: PolicyListPageResponse) = apply {
+            items = policyListPageResponse.items.map { it.toMutableList() }
+            nextCursor = policyListPageResponse.nextCursor
+            additionalProperties = policyListPageResponse.additionalProperties.toMutableMap()
         }
 
-        fun data(data: List<Pet>) = data(JsonField.of(data))
+        fun items(items: List<Policy>) = items(JsonField.of(items))
 
         /**
-         * Sets [Builder.data] to an arbitrary JSON value.
+         * Sets [Builder.items] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.data] with a well-typed `List<Pet>` value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
+         * You should usually call [Builder.items] with a well-typed `List<Policy>` value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
-        fun data(data: JsonField<List<Pet>>) = apply { this.data = data.map { it.toMutableList() } }
+        fun items(items: JsonField<List<Policy>>) = apply {
+            this.items = items.map { it.toMutableList() }
+        }
 
         /**
-         * Adds a single [Pet] to [Builder.data].
+         * Adds a single [Policy] to [items].
          *
          * @throws IllegalStateException if the field was previously set to a non-list.
          */
-        fun addData(data: Pet) = apply {
-            this.data =
-                (this.data ?: JsonField.of(mutableListOf())).also {
-                    checkKnown("data", it).add(data)
-                }
+        fun addItem(item: Policy) = apply {
+            items =
+                (items ?: JsonField.of(mutableListOf())).also { checkKnown("items", it).add(item) }
         }
 
-        fun hasMore(hasMore: Boolean) = hasMore(JsonField.of(hasMore))
+        fun nextCursor(nextCursor: String?) = nextCursor(JsonField.ofNullable(nextCursor))
 
         /**
-         * Sets [Builder.hasMore] to an arbitrary JSON value.
+         * Sets [Builder.nextCursor] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.hasMore] with a well-typed [Boolean] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
+         * You should usually call [Builder.nextCursor] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
-        fun hasMore(hasMore: JsonField<Boolean>) = apply { this.hasMore = hasMore }
+        fun nextCursor(nextCursor: JsonField<String>) = apply { this.nextCursor = nextCursor }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -148,22 +151,21 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [PetListFakePagePageResponse].
+         * Returns an immutable instance of [PolicyListPageResponse].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
          * ```kotlin
-         * .data()
-         * .hasMore()
+         * .items()
          * ```
          *
          * @throws IllegalStateException if any required field is unset.
          */
-        fun build(): PetListFakePagePageResponse =
-            PetListFakePagePageResponse(
-                checkRequired("data", data).map { it.toImmutable() },
-                checkRequired("hasMore", hasMore),
+        fun build(): PolicyListPageResponse =
+            PolicyListPageResponse(
+                checkRequired("items", items).map { it.toImmutable() },
+                nextCursor,
                 additionalProperties.toMutableMap(),
             )
     }
@@ -178,13 +180,13 @@ private constructor(
      * @throws HelloWorldTestinggggInvalidDataException if any value type in this object doesn't
      *   match its expected type.
      */
-    fun validate(): PetListFakePagePageResponse = apply {
+    fun validate(): PolicyListPageResponse = apply {
         if (validated) {
             return@apply
         }
 
-        data().forEach { it.validate() }
-        hasMore()
+        items().forEach { it.validate() }
+        nextCursor()
         validated = true
     }
 
@@ -202,24 +204,24 @@ private constructor(
      * Used for best match union deserialization.
      */
     internal fun validity(): Int =
-        (data.asKnown()?.sumOf { it.validity().toInt() } ?: 0) +
-            (if (hasMore.asKnown() == null) 0 else 1)
+        (items.asKnown()?.sumOf { it.validity().toInt() } ?: 0) +
+            (if (nextCursor.asKnown() == null) 0 else 1)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
         }
 
-        return other is PetListFakePagePageResponse &&
-            data == other.data &&
-            hasMore == other.hasMore &&
+        return other is PolicyListPageResponse &&
+            items == other.items &&
+            nextCursor == other.nextCursor &&
             additionalProperties == other.additionalProperties
     }
 
-    private val hashCode: Int by lazy { Objects.hash(data, hasMore, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(items, nextCursor, additionalProperties) }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "PetListFakePagePageResponse{data=$data, hasMore=$hasMore, additionalProperties=$additionalProperties}"
+        "PolicyListPageResponse{items=$items, nextCursor=$nextCursor, additionalProperties=$additionalProperties}"
 }

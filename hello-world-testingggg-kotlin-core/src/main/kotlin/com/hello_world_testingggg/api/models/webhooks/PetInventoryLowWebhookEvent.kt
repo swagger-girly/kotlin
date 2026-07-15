@@ -15,6 +15,8 @@ import com.hello_world_testingggg.api.core.checkKnown
 import com.hello_world_testingggg.api.core.checkRequired
 import com.hello_world_testingggg.api.core.toImmutable
 import com.hello_world_testingggg.api.errors.HelloWorldTestinggggInvalidDataException
+import com.hello_world_testingggg.api.models.Address
+import com.hello_world_testingggg.api.models.Money
 import com.hello_world_testingggg.api.models.pet.Pet
 import java.time.OffsetDateTime
 import java.util.Collections
@@ -28,7 +30,7 @@ private constructor(
     private val threshold: JsonField<Int>,
     private val type: JsonField<Type>,
     private val lastOrder: JsonField<LastOrder>,
-    private val locations: JsonField<List<Location>>,
+    private val locations: JsonField<List<Address>>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
@@ -43,7 +45,7 @@ private constructor(
         lastOrder: JsonField<LastOrder> = JsonMissing.of(),
         @JsonProperty("locations")
         @ExcludeMissing
-        locations: JsonField<List<Location>> = JsonMissing.of(),
+        locations: JsonField<List<Address>> = JsonMissing.of(),
     ) : this(pet, quantity, threshold, type, lastOrder, locations, mutableMapOf())
 
     /**
@@ -80,7 +82,7 @@ private constructor(
      * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
      *   (e.g. if the server responded with an unexpected value).
      */
-    fun locations(): List<Location>? = locations.getNullable("locations")
+    fun locations(): List<Address>? = locations.getNullable("locations")
 
     /**
      * Returns the raw JSON value of [pet].
@@ -124,7 +126,7 @@ private constructor(
      */
     @JsonProperty("locations")
     @ExcludeMissing
-    fun _locations(): JsonField<List<Location>> = locations
+    fun _locations(): JsonField<List<Address>> = locations
 
     @JsonAnySetter
     private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -162,7 +164,7 @@ private constructor(
         private var threshold: JsonField<Int>? = null
         private var type: JsonField<Type>? = null
         private var lastOrder: JsonField<LastOrder> = JsonMissing.of()
-        private var locations: JsonField<MutableList<Location>>? = null
+        private var locations: JsonField<MutableList<Address>>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(petInventoryLowWebhookEvent: PetInventoryLowWebhookEvent) = apply {
@@ -226,25 +228,25 @@ private constructor(
          */
         fun lastOrder(lastOrder: JsonField<LastOrder>) = apply { this.lastOrder = lastOrder }
 
-        fun locations(locations: List<Location>) = locations(JsonField.of(locations))
+        fun locations(locations: List<Address>) = locations(JsonField.of(locations))
 
         /**
          * Sets [Builder.locations] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.locations] with a well-typed `List<Location>` value
+         * You should usually call [Builder.locations] with a well-typed `List<Address>` value
          * instead. This method is primarily for setting the field to an undocumented or not yet
          * supported value.
          */
-        fun locations(locations: JsonField<List<Location>>) = apply {
+        fun locations(locations: JsonField<List<Address>>) = apply {
             this.locations = locations.map { it.toMutableList() }
         }
 
         /**
-         * Adds a single [Location] to [locations].
+         * Adds a single [Address] to [locations].
          *
          * @throws IllegalStateException if the field was previously set to a non-list.
          */
-        fun addLocation(location: Location) = apply {
+        fun addLocation(location: Address) = apply {
             locations =
                 (locations ?: JsonField.of(mutableListOf())).also {
                     checkKnown("locations", it).add(location)
@@ -480,6 +482,7 @@ private constructor(
         private val quantity: JsonField<Int>,
         private val shipDate: JsonField<OffsetDateTime>,
         private val status: JsonField<Status>,
+        private val total: JsonField<Money>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
@@ -495,7 +498,8 @@ private constructor(
             @ExcludeMissing
             shipDate: JsonField<OffsetDateTime> = JsonMissing.of(),
             @JsonProperty("status") @ExcludeMissing status: JsonField<Status> = JsonMissing.of(),
-        ) : this(id, complete, petId, quantity, shipDate, status, mutableMapOf())
+            @JsonProperty("total") @ExcludeMissing total: JsonField<Money> = JsonMissing.of(),
+        ) : this(id, complete, petId, quantity, shipDate, status, total, mutableMapOf())
 
         /**
          * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
@@ -534,6 +538,12 @@ private constructor(
          *   (e.g. if the server responded with an unexpected value).
          */
         fun status(): Status? = status.getNullable("status")
+
+        /**
+         * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
+         *   (e.g. if the server responded with an unexpected value).
+         */
+        fun total(): Money? = total.getNullable("total")
 
         /**
          * Returns the raw JSON value of [id].
@@ -579,6 +589,13 @@ private constructor(
          */
         @JsonProperty("status") @ExcludeMissing fun _status(): JsonField<Status> = status
 
+        /**
+         * Returns the raw JSON value of [total].
+         *
+         * Unlike [total], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("total") @ExcludeMissing fun _total(): JsonField<Money> = total
+
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
             additionalProperties.put(key, value)
@@ -606,6 +623,7 @@ private constructor(
             private var quantity: JsonField<Int> = JsonMissing.of()
             private var shipDate: JsonField<OffsetDateTime> = JsonMissing.of()
             private var status: JsonField<Status> = JsonMissing.of()
+            private var total: JsonField<Money> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(lastOrder: LastOrder) = apply {
@@ -615,6 +633,7 @@ private constructor(
                 quantity = lastOrder.quantity
                 shipDate = lastOrder.shipDate
                 status = lastOrder.status
+                total = lastOrder.total
                 additionalProperties = lastOrder.additionalProperties.toMutableMap()
             }
 
@@ -685,6 +704,17 @@ private constructor(
              */
             fun status(status: JsonField<Status>) = apply { this.status = status }
 
+            fun total(total: Money) = total(JsonField.of(total))
+
+            /**
+             * Sets [Builder.total] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.total] with a well-typed [Money] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
+            fun total(total: JsonField<Money>) = apply { this.total = total }
+
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
@@ -717,6 +747,7 @@ private constructor(
                     quantity,
                     shipDate,
                     status,
+                    total,
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -743,6 +774,7 @@ private constructor(
             quantity()
             shipDate()
             status()?.validate()
+            total()?.validate()
             validated = true
         }
 
@@ -766,7 +798,8 @@ private constructor(
                 (if (petId.asKnown() == null) 0 else 1) +
                 (if (quantity.asKnown() == null) 0 else 1) +
                 (if (shipDate.asKnown() == null) 0 else 1) +
-                (status.asKnown()?.validity() ?: 0)
+                (status.asKnown()?.validity() ?: 0) +
+                (total.asKnown()?.validity() ?: 0)
 
         /** Order Status */
         class Status @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
@@ -925,260 +958,27 @@ private constructor(
                 quantity == other.quantity &&
                 shipDate == other.shipDate &&
                 status == other.status &&
+                total == other.total &&
                 additionalProperties == other.additionalProperties
         }
 
         private val hashCode: Int by lazy {
-            Objects.hash(id, complete, petId, quantity, shipDate, status, additionalProperties)
+            Objects.hash(
+                id,
+                complete,
+                petId,
+                quantity,
+                shipDate,
+                status,
+                total,
+                additionalProperties,
+            )
         }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "LastOrder{id=$id, complete=$complete, petId=$petId, quantity=$quantity, shipDate=$shipDate, status=$status, additionalProperties=$additionalProperties}"
-    }
-
-    class Location
-    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
-    private constructor(
-        private val city: JsonField<String>,
-        private val state: JsonField<String>,
-        private val street: JsonField<String>,
-        private val zip: JsonField<String>,
-        private val additionalProperties: MutableMap<String, JsonValue>,
-    ) {
-
-        @JsonCreator
-        private constructor(
-            @JsonProperty("city") @ExcludeMissing city: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("state") @ExcludeMissing state: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("street") @ExcludeMissing street: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("zip") @ExcludeMissing zip: JsonField<String> = JsonMissing.of(),
-        ) : this(city, state, street, zip, mutableMapOf())
-
-        /**
-         * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
-         *   (e.g. if the server responded with an unexpected value).
-         */
-        fun city(): String? = city.getNullable("city")
-
-        /**
-         * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
-         *   (e.g. if the server responded with an unexpected value).
-         */
-        fun state(): String? = state.getNullable("state")
-
-        /**
-         * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
-         *   (e.g. if the server responded with an unexpected value).
-         */
-        fun street(): String? = street.getNullable("street")
-
-        /**
-         * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
-         *   (e.g. if the server responded with an unexpected value).
-         */
-        fun zip(): String? = zip.getNullable("zip")
-
-        /**
-         * Returns the raw JSON value of [city].
-         *
-         * Unlike [city], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("city") @ExcludeMissing fun _city(): JsonField<String> = city
-
-        /**
-         * Returns the raw JSON value of [state].
-         *
-         * Unlike [state], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("state") @ExcludeMissing fun _state(): JsonField<String> = state
-
-        /**
-         * Returns the raw JSON value of [street].
-         *
-         * Unlike [street], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("street") @ExcludeMissing fun _street(): JsonField<String> = street
-
-        /**
-         * Returns the raw JSON value of [zip].
-         *
-         * Unlike [zip], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("zip") @ExcludeMissing fun _zip(): JsonField<String> = zip
-
-        @JsonAnySetter
-        private fun putAdditionalProperty(key: String, value: JsonValue) {
-            additionalProperties.put(key, value)
-        }
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> =
-            Collections.unmodifiableMap(additionalProperties)
-
-        fun toBuilder() = Builder().from(this)
-
-        companion object {
-
-            /** Returns a mutable builder for constructing an instance of [Location]. */
-            fun builder() = Builder()
-        }
-
-        /** A builder for [Location]. */
-        class Builder internal constructor() {
-
-            private var city: JsonField<String> = JsonMissing.of()
-            private var state: JsonField<String> = JsonMissing.of()
-            private var street: JsonField<String> = JsonMissing.of()
-            private var zip: JsonField<String> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            internal fun from(location: Location) = apply {
-                city = location.city
-                state = location.state
-                street = location.street
-                zip = location.zip
-                additionalProperties = location.additionalProperties.toMutableMap()
-            }
-
-            fun city(city: String) = city(JsonField.of(city))
-
-            /**
-             * Sets [Builder.city] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.city] with a well-typed [String] value instead. This
-             * method is primarily for setting the field to an undocumented or not yet supported
-             * value.
-             */
-            fun city(city: JsonField<String>) = apply { this.city = city }
-
-            fun state(state: String) = state(JsonField.of(state))
-
-            /**
-             * Sets [Builder.state] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.state] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun state(state: JsonField<String>) = apply { this.state = state }
-
-            fun street(street: String) = street(JsonField.of(street))
-
-            /**
-             * Sets [Builder.street] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.street] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun street(street: JsonField<String>) = apply { this.street = street }
-
-            fun zip(zip: String) = zip(JsonField.of(zip))
-
-            /**
-             * Sets [Builder.zip] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.zip] with a well-typed [String] value instead. This
-             * method is primarily for setting the field to an undocumented or not yet supported
-             * value.
-             */
-            fun zip(zip: JsonField<String>) = apply { this.zip = zip }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
-
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
-
-            /**
-             * Returns an immutable instance of [Location].
-             *
-             * Further updates to this [Builder] will not mutate the returned instance.
-             */
-            fun build(): Location =
-                Location(city, state, street, zip, additionalProperties.toMutableMap())
-        }
-
-        private var validated: Boolean = false
-
-        /**
-         * Validates that the types of all values in this object match their expected types
-         * recursively.
-         *
-         * This method is _not_ forwards compatible with new types from the API for existing fields.
-         *
-         * @throws HelloWorldTestinggggInvalidDataException if any value type in this object doesn't
-         *   match its expected type.
-         */
-        fun validate(): Location = apply {
-            if (validated) {
-                return@apply
-            }
-
-            city()
-            state()
-            street()
-            zip()
-            validated = true
-        }
-
-        fun isValid(): Boolean =
-            try {
-                validate()
-                true
-            } catch (e: HelloWorldTestinggggInvalidDataException) {
-                false
-            }
-
-        /**
-         * Returns a score indicating how many valid values are contained in this object
-         * recursively.
-         *
-         * Used for best match union deserialization.
-         */
-        internal fun validity(): Int =
-            (if (city.asKnown() == null) 0 else 1) +
-                (if (state.asKnown() == null) 0 else 1) +
-                (if (street.asKnown() == null) 0 else 1) +
-                (if (zip.asKnown() == null) 0 else 1)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Location &&
-                city == other.city &&
-                state == other.state &&
-                street == other.street &&
-                zip == other.zip &&
-                additionalProperties == other.additionalProperties
-        }
-
-        private val hashCode: Int by lazy {
-            Objects.hash(city, state, street, zip, additionalProperties)
-        }
-
-        override fun hashCode(): Int = hashCode
-
-        override fun toString() =
-            "Location{city=$city, state=$state, street=$street, zip=$zip, additionalProperties=$additionalProperties}"
+            "LastOrder{id=$id, complete=$complete, petId=$petId, quantity=$quantity, shipDate=$shipDate, status=$status, total=$total, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

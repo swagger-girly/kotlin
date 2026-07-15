@@ -2,12 +2,22 @@
 
 package com.hello_world_testingggg.api.client
 
+import com.google.errorprone.annotations.MustBeClosed
 import com.hello_world_testingggg.api.core.ClientOptions
+import com.hello_world_testingggg.api.core.RequestOptions
+import com.hello_world_testingggg.api.core.http.HttpResponseFor
+import com.hello_world_testingggg.api.models.ClientHealthParams
+import com.hello_world_testingggg.api.models.ClientRetrieveRateLimitsParams
+import com.hello_world_testingggg.api.models.ClientRetrieveRateLimitsResponse
+import com.hello_world_testingggg.api.models.SystemHealth
+import com.hello_world_testingggg.api.services.blocking.AdoptionService
 import com.hello_world_testingggg.api.services.blocking.FileService
 import com.hello_world_testingggg.api.services.blocking.PetService
+import com.hello_world_testingggg.api.services.blocking.PlacementService
 import com.hello_world_testingggg.api.services.blocking.ProfileService
 import com.hello_world_testingggg.api.services.blocking.StoreService
 import com.hello_world_testingggg.api.services.blocking.UserService
+import com.hello_world_testingggg.api.services.blocking.VeterinaryService
 import com.hello_world_testingggg.api.services.blocking.WebhookService
 
 /**
@@ -55,6 +65,14 @@ interface HelloWorldTestinggggClient {
     /** Pet owner profile and compliance operations */
     fun profiles(): ProfileService
 
+    /** Adoption policies and applications */
+    fun adoptions(): AdoptionService
+
+    /** Post-adoption placement tracking */
+    fun placements(): PlacementService
+
+    fun veterinary(): VeterinaryService
+
     fun webhooks(): WebhookService
 
     /** Access to Petstore orders */
@@ -62,6 +80,26 @@ interface HelloWorldTestinggggClient {
 
     /** Operations about user */
     fun user(): UserService
+
+    /** Returns the current API health, including per-service statuses. */
+    fun health(
+        params: ClientHealthParams = ClientHealthParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): SystemHealth
+
+    /** @see health */
+    fun health(requestOptions: RequestOptions): SystemHealth =
+        health(ClientHealthParams.none(), requestOptions)
+
+    /** Returns the caller's current rate-limit budget. */
+    fun retrieveRateLimits(
+        params: ClientRetrieveRateLimitsParams = ClientRetrieveRateLimitsParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): ClientRetrieveRateLimitsResponse
+
+    /** @see retrieveRateLimits */
+    fun retrieveRateLimits(requestOptions: RequestOptions): ClientRetrieveRateLimitsResponse =
+        retrieveRateLimits(ClientRetrieveRateLimitsParams.none(), requestOptions)
 
     /**
      * Closes this client, relinquishing any underlying resources.
@@ -100,6 +138,14 @@ interface HelloWorldTestinggggClient {
         /** Pet owner profile and compliance operations */
         fun profiles(): ProfileService.WithRawResponse
 
+        /** Adoption policies and applications */
+        fun adoptions(): AdoptionService.WithRawResponse
+
+        /** Post-adoption placement tracking */
+        fun placements(): PlacementService.WithRawResponse
+
+        fun veterinary(): VeterinaryService.WithRawResponse
+
         fun webhooks(): WebhookService.WithRawResponse
 
         /** Access to Petstore orders */
@@ -107,5 +153,37 @@ interface HelloWorldTestinggggClient {
 
         /** Operations about user */
         fun user(): UserService.WithRawResponse
+
+        /**
+         * Returns a raw HTTP response for `get /health`, but is otherwise the same as
+         * [HelloWorldTestinggggClient.health].
+         */
+        @MustBeClosed
+        fun health(
+            params: ClientHealthParams = ClientHealthParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<SystemHealth>
+
+        /** @see health */
+        @MustBeClosed
+        fun health(requestOptions: RequestOptions): HttpResponseFor<SystemHealth> =
+            health(ClientHealthParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `get /rate_limits`, but is otherwise the same as
+         * [HelloWorldTestinggggClient.retrieveRateLimits].
+         */
+        @MustBeClosed
+        fun retrieveRateLimits(
+            params: ClientRetrieveRateLimitsParams = ClientRetrieveRateLimitsParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<ClientRetrieveRateLimitsResponse>
+
+        /** @see retrieveRateLimits */
+        @MustBeClosed
+        fun retrieveRateLimits(
+            requestOptions: RequestOptions
+        ): HttpResponseFor<ClientRetrieveRateLimitsResponse> =
+            retrieveRateLimits(ClientRetrieveRateLimitsParams.none(), requestOptions)
     }
 }

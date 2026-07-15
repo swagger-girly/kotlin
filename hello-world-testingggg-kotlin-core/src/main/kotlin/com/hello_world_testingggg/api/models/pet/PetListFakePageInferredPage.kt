@@ -8,25 +8,25 @@ import com.hello_world_testingggg.api.core.checkRequired
 import com.hello_world_testingggg.api.services.blocking.PetService
 import java.util.Objects
 
-/** @see PetService.listFakePage */
-class PetListFakePagePage
+/** @see PetService.listFakePageInferred */
+class PetListFakePageInferredPage
 private constructor(
     private val service: PetService,
-    private val params: PetListFakePageParams,
-    private val response: PetListFakePagePageResponse,
+    private val params: PetListFakePageInferredParams,
+    private val response: PetListFakePageInferredPageResponse,
 ) : Page<Pet> {
 
     /**
-     * Delegates to [PetListFakePagePageResponse], but gracefully handles missing data.
+     * Delegates to [PetListFakePageInferredPageResponse], but gracefully handles missing data.
      *
-     * @see PetListFakePagePageResponse.data
+     * @see PetListFakePageInferredPageResponse.data
      */
     fun data(): List<Pet> = response._data().getNullable("data") ?: emptyList()
 
     /**
-     * Delegates to [PetListFakePagePageResponse], but gracefully handles missing data.
+     * Delegates to [PetListFakePageInferredPageResponse], but gracefully handles missing data.
      *
-     * @see PetListFakePagePageResponse.hasMore
+     * @see PetListFakePageInferredPageResponse.hasMore
      */
     fun hasMore(): Boolean? = response._hasMore().getNullable("has_more")
 
@@ -34,25 +34,26 @@ private constructor(
 
     override fun hasNextPage(): Boolean = false
 
-    fun nextPageParams(): PetListFakePageParams =
+    fun nextPageParams(): PetListFakePageInferredParams =
         throw IllegalStateException("Cannot construct next page params")
 
-    override fun nextPage(): PetListFakePagePage = service.listFakePage(nextPageParams())
+    override fun nextPage(): PetListFakePageInferredPage =
+        service.listFakePageInferred(nextPageParams())
 
     fun autoPager(): AutoPager<Pet> = AutoPager.from(this)
 
     /** The parameters that were used to request this page. */
-    fun params(): PetListFakePageParams = params
+    fun params(): PetListFakePageInferredParams = params
 
     /** The response that this page was parsed from. */
-    fun response(): PetListFakePagePageResponse = response
+    fun response(): PetListFakePageInferredPageResponse = response
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
         /**
-         * Returns a mutable builder for constructing an instance of [PetListFakePagePage].
+         * Returns a mutable builder for constructing an instance of [PetListFakePageInferredPage].
          *
          * The following fields are required:
          * ```kotlin
@@ -64,29 +65,31 @@ private constructor(
         fun builder() = Builder()
     }
 
-    /** A builder for [PetListFakePagePage]. */
+    /** A builder for [PetListFakePageInferredPage]. */
     class Builder internal constructor() {
 
         private var service: PetService? = null
-        private var params: PetListFakePageParams? = null
-        private var response: PetListFakePagePageResponse? = null
+        private var params: PetListFakePageInferredParams? = null
+        private var response: PetListFakePageInferredPageResponse? = null
 
-        internal fun from(petListFakePagePage: PetListFakePagePage) = apply {
-            service = petListFakePagePage.service
-            params = petListFakePagePage.params
-            response = petListFakePagePage.response
+        internal fun from(petListFakePageInferredPage: PetListFakePageInferredPage) = apply {
+            service = petListFakePageInferredPage.service
+            params = petListFakePageInferredPage.params
+            response = petListFakePageInferredPage.response
         }
 
         fun service(service: PetService) = apply { this.service = service }
 
         /** The parameters that were used to request this page. */
-        fun params(params: PetListFakePageParams) = apply { this.params = params }
+        fun params(params: PetListFakePageInferredParams) = apply { this.params = params }
 
         /** The response that this page was parsed from. */
-        fun response(response: PetListFakePagePageResponse) = apply { this.response = response }
+        fun response(response: PetListFakePageInferredPageResponse) = apply {
+            this.response = response
+        }
 
         /**
-         * Returns an immutable instance of [PetListFakePagePage].
+         * Returns an immutable instance of [PetListFakePageInferredPage].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          *
@@ -99,8 +102,8 @@ private constructor(
          *
          * @throws IllegalStateException if any required field is unset.
          */
-        fun build(): PetListFakePagePage =
-            PetListFakePagePage(
+        fun build(): PetListFakePageInferredPage =
+            PetListFakePageInferredPage(
                 checkRequired("service", service),
                 checkRequired("params", params),
                 checkRequired("response", response),
@@ -112,7 +115,7 @@ private constructor(
             return true
         }
 
-        return other is PetListFakePagePage &&
+        return other is PetListFakePageInferredPage &&
             service == other.service &&
             params == other.params &&
             response == other.response
@@ -121,5 +124,5 @@ private constructor(
     override fun hashCode(): Int = Objects.hash(service, params, response)
 
     override fun toString() =
-        "PetListFakePagePage{service=$service, params=$params, response=$response}"
+        "PetListFakePageInferredPage{service=$service, params=$params, response=$response}"
 }

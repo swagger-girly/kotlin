@@ -16,6 +16,7 @@ import com.hello_world_testingggg.api.core.checkRequired
 import com.hello_world_testingggg.api.core.toImmutable
 import com.hello_world_testingggg.api.errors.HelloWorldTestinggggInvalidDataException
 import com.hello_world_testingggg.api.models.pet.Pet
+import com.hello_world_testingggg.api.models.pet.PetStatus
 import java.util.Collections
 import java.util.Objects
 
@@ -26,7 +27,7 @@ private constructor(
     private val pet: JsonField<Pet>,
     private val type: JsonField<Type>,
     private val metadata: JsonField<Metadata>,
-    private val previousStatus: JsonField<PreviousStatus>,
+    private val previousStatus: JsonField<PetStatus>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
@@ -40,7 +41,7 @@ private constructor(
         @JsonProperty("metadata") @ExcludeMissing metadata: JsonField<Metadata> = JsonMissing.of(),
         @JsonProperty("previous_status")
         @ExcludeMissing
-        previousStatus: JsonField<PreviousStatus> = JsonMissing.of(),
+        previousStatus: JsonField<PetStatus> = JsonMissing.of(),
     ) : this(changedFields, pet, type, metadata, previousStatus, mutableMapOf())
 
     /**
@@ -68,10 +69,12 @@ private constructor(
     fun metadata(): Metadata? = metadata.getNullable("metadata")
 
     /**
+     * pet status in the store
+     *
      * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
      *   (e.g. if the server responded with an unexpected value).
      */
-    fun previousStatus(): PreviousStatus? = previousStatus.getNullable("previous_status")
+    fun previousStatus(): PetStatus? = previousStatus.getNullable("previous_status")
 
     /**
      * Returns the raw JSON value of [changedFields].
@@ -110,7 +113,7 @@ private constructor(
      */
     @JsonProperty("previous_status")
     @ExcludeMissing
-    fun _previousStatus(): JsonField<PreviousStatus> = previousStatus
+    fun _previousStatus(): JsonField<PetStatus> = previousStatus
 
     @JsonAnySetter
     private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -146,7 +149,7 @@ private constructor(
         private var pet: JsonField<Pet>? = null
         private var type: JsonField<Type>? = null
         private var metadata: JsonField<Metadata> = JsonMissing.of()
-        private var previousStatus: JsonField<PreviousStatus> = JsonMissing.of()
+        private var previousStatus: JsonField<PetStatus> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(petUpdatedWebhookEvent: PetUpdatedWebhookEvent) = apply {
@@ -215,17 +218,18 @@ private constructor(
          */
         fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
-        fun previousStatus(previousStatus: PreviousStatus?) =
+        /** pet status in the store */
+        fun previousStatus(previousStatus: PetStatus?) =
             previousStatus(JsonField.ofNullable(previousStatus))
 
         /**
          * Sets [Builder.previousStatus] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.previousStatus] with a well-typed [PreviousStatus] value
+         * You should usually call [Builder.previousStatus] with a well-typed [PetStatus] value
          * instead. This method is primarily for setting the field to an undocumented or not yet
          * supported value.
          */
-        fun previousStatus(previousStatus: JsonField<PreviousStatus>) = apply {
+        fun previousStatus(previousStatus: JsonField<PetStatus>) = apply {
             this.previousStatus = previousStatus
         }
 
@@ -700,152 +704,6 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() = "Metadata{additionalProperties=$additionalProperties}"
-    }
-
-    class PreviousStatus @JsonCreator private constructor(private val value: JsonField<String>) :
-        Enum {
-
-        /**
-         * Returns this class instance's raw value.
-         *
-         * This is usually only useful if this instance was deserialized from data that doesn't
-         * match any known member, and you want to know that value. For example, if the SDK is on an
-         * older version than the API, then the API may respond with new members that the SDK is
-         * unaware of.
-         */
-        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-        companion object {
-
-            val AVAILABLE = of("available")
-
-            val PENDING = of("pending")
-
-            val SOLD = of("sold")
-
-            fun of(value: String) = PreviousStatus(JsonField.of(value))
-        }
-
-        /** An enum containing [PreviousStatus]'s known values. */
-        enum class Known {
-            AVAILABLE,
-            PENDING,
-            SOLD,
-        }
-
-        /**
-         * An enum containing [PreviousStatus]'s known values, as well as an [_UNKNOWN] member.
-         *
-         * An instance of [PreviousStatus] can contain an unknown value in a couple of cases:
-         * - It was deserialized from data that doesn't match any known member. For example, if the
-         *   SDK is on an older version than the API, then the API may respond with new members that
-         *   the SDK is unaware of.
-         * - It was constructed with an arbitrary value using the [of] method.
-         */
-        enum class Value {
-            AVAILABLE,
-            PENDING,
-            SOLD,
-            /**
-             * An enum member indicating that [PreviousStatus] was instantiated with an unknown
-             * value.
-             */
-            _UNKNOWN,
-        }
-
-        /**
-         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
-         * if the class was instantiated with an unknown value.
-         *
-         * Use the [known] method instead if you're certain the value is always known or if you want
-         * to throw for the unknown case.
-         */
-        fun value(): Value =
-            when (this) {
-                AVAILABLE -> Value.AVAILABLE
-                PENDING -> Value.PENDING
-                SOLD -> Value.SOLD
-                else -> Value._UNKNOWN
-            }
-
-        /**
-         * Returns an enum member corresponding to this class instance's value.
-         *
-         * Use the [value] method instead if you're uncertain the value is always known and don't
-         * want to throw for the unknown case.
-         *
-         * @throws HelloWorldTestinggggInvalidDataException if this class instance's value is a not
-         *   a known member.
-         */
-        fun known(): Known =
-            when (this) {
-                AVAILABLE -> Known.AVAILABLE
-                PENDING -> Known.PENDING
-                SOLD -> Known.SOLD
-                else ->
-                    throw HelloWorldTestinggggInvalidDataException("Unknown PreviousStatus: $value")
-            }
-
-        /**
-         * Returns this class instance's primitive wire representation.
-         *
-         * This differs from the [toString] method because that method is primarily for debugging
-         * and generally doesn't throw.
-         *
-         * @throws HelloWorldTestinggggInvalidDataException if this class instance's value does not
-         *   have the expected primitive type.
-         */
-        fun asString(): String =
-            _value().asString()
-                ?: throw HelloWorldTestinggggInvalidDataException("Value is not a String")
-
-        private var validated: Boolean = false
-
-        /**
-         * Validates that the types of all values in this object match their expected types
-         * recursively.
-         *
-         * This method is _not_ forwards compatible with new types from the API for existing fields.
-         *
-         * @throws HelloWorldTestinggggInvalidDataException if any value type in this object doesn't
-         *   match its expected type.
-         */
-        fun validate(): PreviousStatus = apply {
-            if (validated) {
-                return@apply
-            }
-
-            known()
-            validated = true
-        }
-
-        fun isValid(): Boolean =
-            try {
-                validate()
-                true
-            } catch (e: HelloWorldTestinggggInvalidDataException) {
-                false
-            }
-
-        /**
-         * Returns a score indicating how many valid values are contained in this object
-         * recursively.
-         *
-         * Used for best match union deserialization.
-         */
-        internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is PreviousStatus && value == other.value
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
     }
 
     override fun equals(other: Any?): Boolean {

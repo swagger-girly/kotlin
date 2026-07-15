@@ -38,10 +38,7 @@ internal class ConnectClientEventTest {
 
     @Test
     fun ofSubscribe() {
-        val subscribe =
-            ConnectClientEvent.Subscribe.builder()
-                .status(ConnectClientEvent.Subscribe.Status.AVAILABLE)
-                .build()
+        val subscribe = ConnectClientEvent.Subscribe.builder().status(PetStatus.AVAILABLE).build()
 
         val connectClientEvent = ConnectClientEvent.ofSubscribe(subscribe)
 
@@ -54,9 +51,7 @@ internal class ConnectClientEventTest {
         val jsonMapper = jsonMapper()
         val connectClientEvent =
             ConnectClientEvent.ofSubscribe(
-                ConnectClientEvent.Subscribe.builder()
-                    .status(ConnectClientEvent.Subscribe.Status.AVAILABLE)
-                    .build()
+                ConnectClientEvent.Subscribe.builder().status(PetStatus.AVAILABLE).build()
             )
 
         val roundtrippedConnectClientEvent =

@@ -16,16 +16,21 @@ internal class PetTest {
                 .name("doggie")
                 .addPhotoUrl("string")
                 .id(10L)
-                .category(Pet.Category.builder().id(1L).name("Dogs").build())
-                .status(Pet.Status.AVAILABLE)
+                .category(
+                    Pet.Category.builder().id(1L).name("Dogs").subcategories(listOf()).build()
+                )
+                .microchipId("string")
+                .status(PetStatus.AVAILABLE)
                 .addTag(Pet.Tag.builder().id(0L).name("name").build())
                 .build()
 
         assertThat(pet.name()).isEqualTo("doggie")
         assertThat(pet.photoUrls()).containsExactly("string")
         assertThat(pet.id()).isEqualTo(10L)
-        assertThat(pet.category()).isEqualTo(Pet.Category.builder().id(1L).name("Dogs").build())
-        assertThat(pet.status()).isEqualTo(Pet.Status.AVAILABLE)
+        assertThat(pet.category())
+            .isEqualTo(Pet.Category.builder().id(1L).name("Dogs").subcategories(listOf()).build())
+        assertThat(pet.microchipId()).isEqualTo(Pet.MicrochipId.ofString("string"))
+        assertThat(pet.status()).isEqualTo(PetStatus.AVAILABLE)
         assertThat(pet.tags()).containsExactly(Pet.Tag.builder().id(0L).name("name").build())
     }
 
@@ -37,8 +42,11 @@ internal class PetTest {
                 .name("doggie")
                 .addPhotoUrl("string")
                 .id(10L)
-                .category(Pet.Category.builder().id(1L).name("Dogs").build())
-                .status(Pet.Status.AVAILABLE)
+                .category(
+                    Pet.Category.builder().id(1L).name("Dogs").subcategories(listOf()).build()
+                )
+                .microchipId("string")
+                .status(PetStatus.AVAILABLE)
                 .addTag(Pet.Tag.builder().id(0L).name("name").build())
                 .build()
 

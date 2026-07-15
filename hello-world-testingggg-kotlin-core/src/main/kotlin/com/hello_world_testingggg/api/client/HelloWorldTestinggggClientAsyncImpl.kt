@@ -3,17 +3,38 @@
 package com.hello_world_testingggg.api.client
 
 import com.hello_world_testingggg.api.core.ClientOptions
+import com.hello_world_testingggg.api.core.RequestOptions
 import com.hello_world_testingggg.api.core.getPackageVersion
+import com.hello_world_testingggg.api.core.handlers.errorBodyHandler
+import com.hello_world_testingggg.api.core.handlers.errorHandler
+import com.hello_world_testingggg.api.core.handlers.jsonHandler
+import com.hello_world_testingggg.api.core.http.HttpMethod
+import com.hello_world_testingggg.api.core.http.HttpRequest
+import com.hello_world_testingggg.api.core.http.HttpResponse
+import com.hello_world_testingggg.api.core.http.HttpResponse.Handler
+import com.hello_world_testingggg.api.core.http.HttpResponseFor
+import com.hello_world_testingggg.api.core.http.parseable
+import com.hello_world_testingggg.api.core.prepareAsync
+import com.hello_world_testingggg.api.models.ClientHealthParams
+import com.hello_world_testingggg.api.models.ClientRetrieveRateLimitsParams
+import com.hello_world_testingggg.api.models.ClientRetrieveRateLimitsResponse
+import com.hello_world_testingggg.api.models.SystemHealth
+import com.hello_world_testingggg.api.services.async.AdoptionServiceAsync
+import com.hello_world_testingggg.api.services.async.AdoptionServiceAsyncImpl
 import com.hello_world_testingggg.api.services.async.FileServiceAsync
 import com.hello_world_testingggg.api.services.async.FileServiceAsyncImpl
 import com.hello_world_testingggg.api.services.async.PetServiceAsync
 import com.hello_world_testingggg.api.services.async.PetServiceAsyncImpl
+import com.hello_world_testingggg.api.services.async.PlacementServiceAsync
+import com.hello_world_testingggg.api.services.async.PlacementServiceAsyncImpl
 import com.hello_world_testingggg.api.services.async.ProfileServiceAsync
 import com.hello_world_testingggg.api.services.async.ProfileServiceAsyncImpl
 import com.hello_world_testingggg.api.services.async.StoreServiceAsync
 import com.hello_world_testingggg.api.services.async.StoreServiceAsyncImpl
 import com.hello_world_testingggg.api.services.async.UserServiceAsync
 import com.hello_world_testingggg.api.services.async.UserServiceAsyncImpl
+import com.hello_world_testingggg.api.services.async.VeterinaryServiceAsync
+import com.hello_world_testingggg.api.services.async.VeterinaryServiceAsyncImpl
 import com.hello_world_testingggg.api.services.async.WebhookServiceAsync
 import com.hello_world_testingggg.api.services.async.WebhookServiceAsyncImpl
 
@@ -45,6 +66,18 @@ class HelloWorldTestinggggClientAsyncImpl(private val clientOptions: ClientOptio
         ProfileServiceAsyncImpl(clientOptionsWithUserAgent)
     }
 
+    private val adoptions: AdoptionServiceAsync by lazy {
+        AdoptionServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
+
+    private val placements: PlacementServiceAsync by lazy {
+        PlacementServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
+
+    private val veterinary: VeterinaryServiceAsync by lazy {
+        VeterinaryServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
+
     private val webhooks: WebhookServiceAsync by lazy {
         WebhookServiceAsyncImpl(clientOptionsWithUserAgent)
     }
@@ -74,6 +107,14 @@ class HelloWorldTestinggggClientAsyncImpl(private val clientOptions: ClientOptio
     /** Pet owner profile and compliance operations */
     override fun profiles(): ProfileServiceAsync = profiles
 
+    /** Adoption policies and applications */
+    override fun adoptions(): AdoptionServiceAsync = adoptions
+
+    /** Post-adoption placement tracking */
+    override fun placements(): PlacementServiceAsync = placements
+
+    override fun veterinary(): VeterinaryServiceAsync = veterinary
+
     override fun webhooks(): WebhookServiceAsync = webhooks
 
     /** Access to Petstore orders */
@@ -82,10 +123,27 @@ class HelloWorldTestinggggClientAsyncImpl(private val clientOptions: ClientOptio
     /** Operations about user */
     override fun user(): UserServiceAsync = user
 
+    override suspend fun health(
+        params: ClientHealthParams,
+        requestOptions: RequestOptions,
+    ): SystemHealth =
+        // get /health
+        withRawResponse().health(params, requestOptions).parse()
+
+    override suspend fun retrieveRateLimits(
+        params: ClientRetrieveRateLimitsParams,
+        requestOptions: RequestOptions,
+    ): ClientRetrieveRateLimitsResponse =
+        // get /rate_limits
+        withRawResponse().retrieveRateLimits(params, requestOptions).parse()
+
     override fun close() = clientOptions.close()
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         HelloWorldTestinggggClientAsync.WithRawResponse {
+
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         private val pet: PetServiceAsync.WithRawResponse by lazy {
             PetServiceAsyncImpl.WithRawResponseImpl(clientOptions)
@@ -97,6 +155,18 @@ class HelloWorldTestinggggClientAsyncImpl(private val clientOptions: ClientOptio
 
         private val profiles: ProfileServiceAsync.WithRawResponse by lazy {
             ProfileServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val adoptions: AdoptionServiceAsync.WithRawResponse by lazy {
+            AdoptionServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val placements: PlacementServiceAsync.WithRawResponse by lazy {
+            PlacementServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val veterinary: VeterinaryServiceAsync.WithRawResponse by lazy {
+            VeterinaryServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
 
         private val webhooks: WebhookServiceAsync.WithRawResponse by lazy {
@@ -127,6 +197,14 @@ class HelloWorldTestinggggClientAsyncImpl(private val clientOptions: ClientOptio
         /** Pet owner profile and compliance operations */
         override fun profiles(): ProfileServiceAsync.WithRawResponse = profiles
 
+        /** Adoption policies and applications */
+        override fun adoptions(): AdoptionServiceAsync.WithRawResponse = adoptions
+
+        /** Post-adoption placement tracking */
+        override fun placements(): PlacementServiceAsync.WithRawResponse = placements
+
+        override fun veterinary(): VeterinaryServiceAsync.WithRawResponse = veterinary
+
         override fun webhooks(): WebhookServiceAsync.WithRawResponse = webhooks
 
         /** Access to Petstore orders */
@@ -134,5 +212,59 @@ class HelloWorldTestinggggClientAsyncImpl(private val clientOptions: ClientOptio
 
         /** Operations about user */
         override fun user(): UserServiceAsync.WithRawResponse = user
+
+        private val healthHandler: Handler<SystemHealth> =
+            jsonHandler<SystemHealth>(clientOptions.jsonMapper)
+
+        override suspend fun health(
+            params: ClientHealthParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<SystemHealth> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("health")
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { healthHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
+        }
+
+        private val retrieveRateLimitsHandler: Handler<ClientRetrieveRateLimitsResponse> =
+            jsonHandler<ClientRetrieveRateLimitsResponse>(clientOptions.jsonMapper)
+
+        override suspend fun retrieveRateLimits(
+            params: ClientRetrieveRateLimitsParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<ClientRetrieveRateLimitsResponse> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("rate_limits")
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { retrieveRateLimitsHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
+        }
     }
 }
