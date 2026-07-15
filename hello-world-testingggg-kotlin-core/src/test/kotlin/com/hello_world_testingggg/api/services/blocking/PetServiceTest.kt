@@ -7,6 +7,7 @@ import com.hello_world_testingggg.api.models.pet.Pet
 import com.hello_world_testingggg.api.models.pet.PetFindByStatusParams
 import com.hello_world_testingggg.api.models.pet.PetFindByTagsParams
 import com.hello_world_testingggg.api.models.pet.PetListUnpaginatedParams
+import com.hello_world_testingggg.api.models.pet.PetStatus
 import com.hello_world_testingggg.api.models.pet.PetUpdateWithFormParams
 import com.hello_world_testingggg.api.models.pet.PetUploadImageParams
 import com.hello_world_testingggg.api.models.pet.PetWatchStatusParams
@@ -27,8 +28,11 @@ internal class PetServiceTest {
                     .name("doggie")
                     .addPhotoUrl("string")
                     .id(10L)
-                    .category(Pet.Category.builder().id(1L).name("Dogs").build())
-                    .status(Pet.Status.AVAILABLE)
+                    .category(
+                        Pet.Category.builder().id(1L).name("Dogs").subcategories(listOf()).build()
+                    )
+                    .microchipId("string")
+                    .status(PetStatus.AVAILABLE)
                     .addTag(Pet.Tag.builder().id(0L).name("name").build())
                     .build()
             )
@@ -59,8 +63,11 @@ internal class PetServiceTest {
                     .name("doggie")
                     .addPhotoUrl("string")
                     .id(10L)
-                    .category(Pet.Category.builder().id(1L).name("Dogs").build())
-                    .status(Pet.Status.AVAILABLE)
+                    .category(
+                        Pet.Category.builder().id(1L).name("Dogs").subcategories(listOf()).build()
+                    )
+                    .microchipId("string")
+                    .status(PetStatus.AVAILABLE)
                     .addTag(Pet.Tag.builder().id(0L).name("name").build())
                     .build()
             )
@@ -121,9 +128,9 @@ internal class PetServiceTest {
         val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
         val petService = client.pet()
 
-        val page = petService.listFakePage()
+        val response = petService.listFakePage()
 
-        page.response().validate()
+        response.validate()
     }
 
     @Disabled("Mock server tests are disabled")
@@ -132,9 +139,9 @@ internal class PetServiceTest {
         val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
         val petService = client.pet()
 
-        val response = petService.listFakePageInferred()
+        val page = petService.listFakePageInferred()
 
-        response.validate()
+        page.response().validate()
     }
 
     @Disabled("Mock server tests are disabled")
@@ -147,6 +154,17 @@ internal class PetServiceTest {
             petService.listUnpaginated(
                 PetListUnpaginatedParams.builder().cursor("cursor").limit(0L).build()
             )
+
+        response.validate()
+    }
+
+    @Disabled("Mock server tests are disabled")
+    @Test
+    fun retrievePremium() {
+        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val petService = client.pet()
+
+        val response = petService.retrievePremium(0L)
 
         response.validate()
     }

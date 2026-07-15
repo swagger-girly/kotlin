@@ -14,6 +14,7 @@ import com.github.tomakehurst.wiremock.junit5.WireMockTest
 import com.hello_world_testingggg.api.client.HelloWorldTestinggggClient
 import com.hello_world_testingggg.api.client.okhttp.HelloWorldTestinggggOkHttpClient
 import com.hello_world_testingggg.api.models.pet.Pet
+import com.hello_world_testingggg.api.models.pet.PetStatus
 import com.hello_world_testingggg.api.models.pet.PetUpdateParams
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
@@ -48,8 +49,15 @@ internal class ServiceParamsTest {
                         .name("doggie")
                         .addPhotoUrl("string")
                         .id(10L)
-                        .category(Pet.Category.builder().id(1L).name("Dogs").build())
-                        .status(Pet.Status.AVAILABLE)
+                        .category(
+                            Pet.Category.builder()
+                                .id(1L)
+                                .name("Dogs")
+                                .subcategories(listOf())
+                                .build()
+                        )
+                        .microchipId("string")
+                        .status(PetStatus.AVAILABLE)
                         .addTag(Pet.Tag.builder().id(0L).name("name").build())
                         .build()
                 )

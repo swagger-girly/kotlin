@@ -7,6 +7,7 @@ import com.hello_world_testingggg.api.client.okhttp.HelloWorldTestinggggOkHttpCl
 import com.hello_world_testingggg.api.core.jsonMapper
 import com.hello_world_testingggg.api.models.pet.ConnectClientEvent
 import com.hello_world_testingggg.api.models.pet.Pet
+import com.hello_world_testingggg.api.models.pet.PetStatus
 import kotlin.reflect.full.memberFunctions
 import kotlin.reflect.jvm.javaMethod
 import org.assertj.core.api.Assertions.assertThat
@@ -53,6 +54,9 @@ internal class ProGuardCompatibilityTest {
         assertThat(client.pet()).isNotNull()
         assertThat(client.files()).isNotNull()
         assertThat(client.profiles()).isNotNull()
+        assertThat(client.adoptions()).isNotNull()
+        assertThat(client.placements()).isNotNull()
+        assertThat(client.veterinary()).isNotNull()
         assertThat(client.webhooks()).isNotNull()
         assertThat(client.store()).isNotNull()
         assertThat(client.user()).isNotNull()
@@ -66,8 +70,11 @@ internal class ProGuardCompatibilityTest {
                 .name("doggie")
                 .addPhotoUrl("string")
                 .id(10L)
-                .category(Pet.Category.builder().id(1L).name("Dogs").build())
-                .status(Pet.Status.AVAILABLE)
+                .category(
+                    Pet.Category.builder().id(1L).name("Dogs").subcategories(listOf()).build()
+                )
+                .microchipId("string")
+                .status(PetStatus.AVAILABLE)
                 .addTag(Pet.Tag.builder().id(0L).name("name").build())
                 .build()
 
@@ -89,5 +96,19 @@ internal class ProGuardCompatibilityTest {
             )
 
         assertThat(roundtrippedConnectClientEvent).isEqualTo(connectClientEvent)
+    }
+
+    @Test
+    fun petStatusRoundtrip() {
+        val jsonMapper = jsonMapper()
+        val petStatus = PetStatus.AVAILABLE
+
+        val roundtrippedPetStatus =
+            jsonMapper.readValue(
+                jsonMapper.writeValueAsString(petStatus),
+                jacksonTypeRef<PetStatus>(),
+            )
+
+        assertThat(roundtrippedPetStatus).isEqualTo(petStatus)
     }
 }

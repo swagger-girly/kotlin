@@ -3,6 +3,7 @@
 package com.hello_world_testingggg.api.services.async.store
 
 import com.hello_world_testingggg.api.client.okhttp.HelloWorldTestinggggOkHttpClientAsync
+import com.hello_world_testingggg.api.models.Money
 import com.hello_world_testingggg.api.models.store.order.OrderCreateParams
 import java.time.OffsetDateTime
 import org.junit.jupiter.api.Disabled
@@ -25,6 +26,7 @@ internal class OrderServiceAsyncTest {
                     .quantity(7)
                     .shipDate(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                     .status(OrderCreateParams.Status.APPROVED)
+                    .total(Money.builder().amount(2500L).currency("USD").build())
                     .build()
             )
 

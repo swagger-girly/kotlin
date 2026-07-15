@@ -7,6 +7,7 @@ import com.hello_world_testingggg.api.core.JsonValue
 import com.hello_world_testingggg.api.core.jsonMapper
 import com.hello_world_testingggg.api.errors.HelloWorldTestinggggInvalidDataException
 import com.hello_world_testingggg.api.models.pet.Pet
+import com.hello_world_testingggg.api.models.pet.PetStatus
 import java.time.OffsetDateTime
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -26,8 +27,15 @@ internal class PetModerationWebhookEventTest {
                         .name("doggie")
                         .addPhotoUrl("string")
                         .id(10L)
-                        .category(Pet.Category.builder().id(1L).name("Dogs").build())
-                        .status(Pet.Status.AVAILABLE)
+                        .category(
+                            Pet.Category.builder()
+                                .id(1L)
+                                .name("Dogs")
+                                .subcategories(listOf())
+                                .build()
+                        )
+                        .microchipId("string")
+                        .status(PetStatus.AVAILABLE)
                         .addTag(Pet.Tag.builder().id(0L).name("name").build())
                         .build()
                 )
@@ -51,8 +59,15 @@ internal class PetModerationWebhookEventTest {
                             .name("doggie")
                             .addPhotoUrl("string")
                             .id(10L)
-                            .category(Pet.Category.builder().id(1L).name("Dogs").build())
-                            .status(Pet.Status.AVAILABLE)
+                            .category(
+                                Pet.Category.builder()
+                                    .id(1L)
+                                    .name("Dogs")
+                                    .subcategories(listOf())
+                                    .build()
+                            )
+                            .microchipId("string")
+                            .status(PetStatus.AVAILABLE)
                             .addTag(Pet.Tag.builder().id(0L).name("name").build())
                             .build()
                     )
@@ -77,8 +92,15 @@ internal class PetModerationWebhookEventTest {
                         .name("doggie")
                         .addPhotoUrl("string")
                         .id(10L)
-                        .category(Pet.Category.builder().id(1L).name("Dogs").build())
-                        .status(Pet.Status.AVAILABLE)
+                        .category(
+                            Pet.Category.builder()
+                                .id(1L)
+                                .name("Dogs")
+                                .subcategories(listOf())
+                                .build()
+                        )
+                        .microchipId("string")
+                        .status(PetStatus.AVAILABLE)
                         .addTag(Pet.Tag.builder().id(0L).name("name").build())
                         .build()
                 )
@@ -120,8 +142,15 @@ internal class PetModerationWebhookEventTest {
                             .name("doggie")
                             .addPhotoUrl("string")
                             .id(10L)
-                            .category(Pet.Category.builder().id(1L).name("Dogs").build())
-                            .status(Pet.Status.AVAILABLE)
+                            .category(
+                                Pet.Category.builder()
+                                    .id(1L)
+                                    .name("Dogs")
+                                    .subcategories(listOf())
+                                    .build()
+                            )
+                            .microchipId("string")
+                            .status(PetStatus.AVAILABLE)
                             .addTag(Pet.Tag.builder().id(0L).name("name").build())
                             .build()
                     )

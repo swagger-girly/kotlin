@@ -5,6 +5,7 @@ package com.hello_world_testingggg.api.models.webhooks
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import com.hello_world_testingggg.api.core.jsonMapper
 import com.hello_world_testingggg.api.models.pet.Pet
+import com.hello_world_testingggg.api.models.pet.PetStatus
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -19,8 +20,15 @@ internal class PetCreatedWebhookEventTest {
                         .name("doggie")
                         .addPhotoUrl("string")
                         .id(10L)
-                        .category(Pet.Category.builder().id(1L).name("Dogs").build())
-                        .status(Pet.Status.AVAILABLE)
+                        .category(
+                            Pet.Category.builder()
+                                .id(1L)
+                                .name("Dogs")
+                                .subcategories(listOf())
+                                .build()
+                        )
+                        .microchipId("string")
+                        .status(PetStatus.AVAILABLE)
                         .addTag(Pet.Tag.builder().id(0L).name("name").build())
                         .build()
                 )
@@ -33,8 +41,11 @@ internal class PetCreatedWebhookEventTest {
                     .name("doggie")
                     .addPhotoUrl("string")
                     .id(10L)
-                    .category(Pet.Category.builder().id(1L).name("Dogs").build())
-                    .status(Pet.Status.AVAILABLE)
+                    .category(
+                        Pet.Category.builder().id(1L).name("Dogs").subcategories(listOf()).build()
+                    )
+                    .microchipId("string")
+                    .status(PetStatus.AVAILABLE)
                     .addTag(Pet.Tag.builder().id(0L).name("name").build())
                     .build()
             )
@@ -51,8 +62,15 @@ internal class PetCreatedWebhookEventTest {
                         .name("doggie")
                         .addPhotoUrl("string")
                         .id(10L)
-                        .category(Pet.Category.builder().id(1L).name("Dogs").build())
-                        .status(Pet.Status.AVAILABLE)
+                        .category(
+                            Pet.Category.builder()
+                                .id(1L)
+                                .name("Dogs")
+                                .subcategories(listOf())
+                                .build()
+                        )
+                        .microchipId("string")
+                        .status(PetStatus.AVAILABLE)
                         .addTag(Pet.Tag.builder().id(0L).name("name").build())
                         .build()
                 )

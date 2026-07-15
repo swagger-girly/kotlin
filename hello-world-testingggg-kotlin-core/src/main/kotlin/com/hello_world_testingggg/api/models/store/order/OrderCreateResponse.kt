@@ -12,6 +12,7 @@ import com.hello_world_testingggg.api.core.JsonField
 import com.hello_world_testingggg.api.core.JsonMissing
 import com.hello_world_testingggg.api.core.JsonValue
 import com.hello_world_testingggg.api.errors.HelloWorldTestinggggInvalidDataException
+import com.hello_world_testingggg.api.models.Money
 import java.time.OffsetDateTime
 import java.util.Collections
 import java.util.Objects
@@ -25,6 +26,7 @@ private constructor(
     private val quantity: JsonField<Int>,
     private val shipDate: JsonField<OffsetDateTime>,
     private val status: JsonField<Status>,
+    private val total: JsonField<Money>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
@@ -38,7 +40,8 @@ private constructor(
         @ExcludeMissing
         shipDate: JsonField<OffsetDateTime> = JsonMissing.of(),
         @JsonProperty("status") @ExcludeMissing status: JsonField<Status> = JsonMissing.of(),
-    ) : this(id, complete, petId, quantity, shipDate, status, mutableMapOf())
+        @JsonProperty("total") @ExcludeMissing total: JsonField<Money> = JsonMissing.of(),
+    ) : this(id, complete, petId, quantity, shipDate, status, total, mutableMapOf())
 
     /**
      * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
@@ -77,6 +80,12 @@ private constructor(
      *   (e.g. if the server responded with an unexpected value).
      */
     fun status(): Status? = status.getNullable("status")
+
+    /**
+     * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
+     *   (e.g. if the server responded with an unexpected value).
+     */
+    fun total(): Money? = total.getNullable("total")
 
     /**
      * Returns the raw JSON value of [id].
@@ -120,6 +129,13 @@ private constructor(
      */
     @JsonProperty("status") @ExcludeMissing fun _status(): JsonField<Status> = status
 
+    /**
+     * Returns the raw JSON value of [total].
+     *
+     * Unlike [total], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("total") @ExcludeMissing fun _total(): JsonField<Money> = total
+
     @JsonAnySetter
     private fun putAdditionalProperty(key: String, value: JsonValue) {
         additionalProperties.put(key, value)
@@ -147,6 +163,7 @@ private constructor(
         private var quantity: JsonField<Int> = JsonMissing.of()
         private var shipDate: JsonField<OffsetDateTime> = JsonMissing.of()
         private var status: JsonField<Status> = JsonMissing.of()
+        private var total: JsonField<Money> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(orderCreateResponse: OrderCreateResponse) = apply {
@@ -156,6 +173,7 @@ private constructor(
             quantity = orderCreateResponse.quantity
             shipDate = orderCreateResponse.shipDate
             status = orderCreateResponse.status
+            total = orderCreateResponse.total
             additionalProperties = orderCreateResponse.additionalProperties.toMutableMap()
         }
 
@@ -222,6 +240,16 @@ private constructor(
          */
         fun status(status: JsonField<Status>) = apply { this.status = status }
 
+        fun total(total: Money) = total(JsonField.of(total))
+
+        /**
+         * Sets [Builder.total] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.total] with a well-typed [Money] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun total(total: JsonField<Money>) = apply { this.total = total }
+
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
             putAllAdditionalProperties(additionalProperties)
@@ -254,6 +282,7 @@ private constructor(
                 quantity,
                 shipDate,
                 status,
+                total,
                 additionalProperties.toMutableMap(),
             )
     }
@@ -279,6 +308,7 @@ private constructor(
         quantity()
         shipDate()
         status()?.validate()
+        total()?.validate()
         validated = true
     }
 
@@ -301,7 +331,8 @@ private constructor(
             (if (petId.asKnown() == null) 0 else 1) +
             (if (quantity.asKnown() == null) 0 else 1) +
             (if (shipDate.asKnown() == null) 0 else 1) +
-            (status.asKnown()?.validity() ?: 0)
+            (status.asKnown()?.validity() ?: 0) +
+            (total.asKnown()?.validity() ?: 0)
 
     /** Order Status */
     class Status @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
@@ -457,15 +488,16 @@ private constructor(
             quantity == other.quantity &&
             shipDate == other.shipDate &&
             status == other.status &&
+            total == other.total &&
             additionalProperties == other.additionalProperties
     }
 
     private val hashCode: Int by lazy {
-        Objects.hash(id, complete, petId, quantity, shipDate, status, additionalProperties)
+        Objects.hash(id, complete, petId, quantity, shipDate, status, total, additionalProperties)
     }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "OrderCreateResponse{id=$id, complete=$complete, petId=$petId, quantity=$quantity, shipDate=$shipDate, status=$status, additionalProperties=$additionalProperties}"
+        "OrderCreateResponse{id=$id, complete=$complete, petId=$petId, quantity=$quantity, shipDate=$shipDate, status=$status, total=$total, additionalProperties=$additionalProperties}"
 }

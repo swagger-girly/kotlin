@@ -22,17 +22,19 @@ import com.hello_world_testingggg.api.models.pet.PetCreateParams
 import com.hello_world_testingggg.api.models.pet.PetDeleteParams
 import com.hello_world_testingggg.api.models.pet.PetFindByStatusParams
 import com.hello_world_testingggg.api.models.pet.PetFindByTagsParams
+import com.hello_world_testingggg.api.models.pet.PetListFakePageInferredPageAsync
+import com.hello_world_testingggg.api.models.pet.PetListFakePageInferredPageResponse
 import com.hello_world_testingggg.api.models.pet.PetListFakePageInferredParams
-import com.hello_world_testingggg.api.models.pet.PetListFakePageInferredResponse
-import com.hello_world_testingggg.api.models.pet.PetListFakePagePageAsync
-import com.hello_world_testingggg.api.models.pet.PetListFakePagePageResponse
 import com.hello_world_testingggg.api.models.pet.PetListFakePageParams
+import com.hello_world_testingggg.api.models.pet.PetListFakePageResponse
 import com.hello_world_testingggg.api.models.pet.PetListPageAsync
 import com.hello_world_testingggg.api.models.pet.PetListPageResponse
 import com.hello_world_testingggg.api.models.pet.PetListParams
 import com.hello_world_testingggg.api.models.pet.PetListUnpaginatedParams
 import com.hello_world_testingggg.api.models.pet.PetListUnpaginatedResponse
 import com.hello_world_testingggg.api.models.pet.PetRetrieveParams
+import com.hello_world_testingggg.api.models.pet.PetRetrievePremiumParams
+import com.hello_world_testingggg.api.models.pet.PetRetrievePremiumResponse
 import com.hello_world_testingggg.api.models.pet.PetUpdateParams
 import com.hello_world_testingggg.api.models.pet.PetUpdateWithFormParams
 import com.hello_world_testingggg.api.models.pet.PetUploadImageParams
@@ -92,14 +94,14 @@ class PetServiceAsyncImpl internal constructor(private val clientOptions: Client
     override suspend fun listFakePage(
         params: PetListFakePageParams,
         requestOptions: RequestOptions,
-    ): PetListFakePagePageAsync =
+    ): PetListFakePageResponse =
         // get /pet/fake-page
         withRawResponse().listFakePage(params, requestOptions).parse()
 
     override suspend fun listFakePageInferred(
         params: PetListFakePageInferredParams,
         requestOptions: RequestOptions,
-    ): PetListFakePageInferredResponse =
+    ): PetListFakePageInferredPageAsync =
         // get /pet/fake-page-inferred
         withRawResponse().listFakePageInferred(params, requestOptions).parse()
 
@@ -109,6 +111,13 @@ class PetServiceAsyncImpl internal constructor(private val clientOptions: Client
     ): PetListUnpaginatedResponse =
         // get /pet/unpaginated
         withRawResponse().listUnpaginated(params, requestOptions).parse()
+
+    override suspend fun retrievePremium(
+        params: PetRetrievePremiumParams,
+        requestOptions: RequestOptions,
+    ): PetRetrievePremiumResponse =
+        // get /pet/{petId}/premium
+        withRawResponse().retrievePremium(params, requestOptions).parse()
 
     override suspend fun updateWithForm(
         params: PetUpdateWithFormParams,
@@ -333,13 +342,13 @@ class PetServiceAsyncImpl internal constructor(private val clientOptions: Client
             }
         }
 
-        private val listFakePageHandler: Handler<PetListFakePagePageResponse> =
-            jsonHandler<PetListFakePagePageResponse>(clientOptions.jsonMapper)
+        private val listFakePageHandler: Handler<PetListFakePageResponse> =
+            jsonHandler<PetListFakePageResponse>(clientOptions.jsonMapper)
 
         override suspend fun listFakePage(
             params: PetListFakePageParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<PetListFakePagePageAsync> {
+        ): HttpResponseFor<PetListFakePageResponse> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -357,23 +366,16 @@ class PetServiceAsyncImpl internal constructor(private val clientOptions: Client
                             it.validate()
                         }
                     }
-                    .let {
-                        PetListFakePagePageAsync.builder()
-                            .service(PetServiceAsyncImpl(clientOptions))
-                            .params(params)
-                            .response(it)
-                            .build()
-                    }
             }
         }
 
-        private val listFakePageInferredHandler: Handler<PetListFakePageInferredResponse> =
-            jsonHandler<PetListFakePageInferredResponse>(clientOptions.jsonMapper)
+        private val listFakePageInferredHandler: Handler<PetListFakePageInferredPageResponse> =
+            jsonHandler<PetListFakePageInferredPageResponse>(clientOptions.jsonMapper)
 
         override suspend fun listFakePageInferred(
             params: PetListFakePageInferredParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<PetListFakePageInferredResponse> {
+        ): HttpResponseFor<PetListFakePageInferredPageAsync> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -390,6 +392,13 @@ class PetServiceAsyncImpl internal constructor(private val clientOptions: Client
                         if (requestOptions.responseValidation!!) {
                             it.validate()
                         }
+                    }
+                    .let {
+                        PetListFakePageInferredPageAsync.builder()
+                            .service(PetServiceAsyncImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
                     }
             }
         }
@@ -413,6 +422,36 @@ class PetServiceAsyncImpl internal constructor(private val clientOptions: Client
             return errorHandler.handle(response).parseable {
                 response
                     .use { listUnpaginatedHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
+        }
+
+        private val retrievePremiumHandler: Handler<PetRetrievePremiumResponse> =
+            jsonHandler<PetRetrievePremiumResponse>(clientOptions.jsonMapper)
+
+        override suspend fun retrievePremium(
+            params: PetRetrievePremiumParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<PetRetrievePremiumResponse> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("petId", params.petId())
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("pet", params._pathParam(0), "premium")
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { retrievePremiumHandler.handle(it) }
                     .also {
                         if (requestOptions.responseValidation!!) {
                             it.validate()

@@ -2,6 +2,7 @@
 
 package com.hello_world_testingggg.api.models.store.order
 
+import com.hello_world_testingggg.api.models.Money
 import java.time.OffsetDateTime
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -17,6 +18,7 @@ internal class OrderCreateParamsTest {
             .quantity(7)
             .shipDate(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
             .status(OrderCreateParams.Status.APPROVED)
+            .total(Money.builder().amount(2500L).currency("USD").build())
             .build()
     }
 
@@ -30,6 +32,7 @@ internal class OrderCreateParamsTest {
                 .quantity(7)
                 .shipDate(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .status(OrderCreateParams.Status.APPROVED)
+                .total(Money.builder().amount(2500L).currency("USD").build())
                 .build()
 
         val body = params._body()
@@ -40,6 +43,7 @@ internal class OrderCreateParamsTest {
         assertThat(body.quantity()).isEqualTo(7)
         assertThat(body.shipDate()).isEqualTo(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
         assertThat(body.status()).isEqualTo(OrderCreateParams.Status.APPROVED)
+        assertThat(body.total()).isEqualTo(Money.builder().amount(2500L).currency("USD").build())
     }
 
     @Test

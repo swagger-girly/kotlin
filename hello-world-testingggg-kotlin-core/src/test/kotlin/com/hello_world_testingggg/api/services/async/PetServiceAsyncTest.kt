@@ -7,6 +7,7 @@ import com.hello_world_testingggg.api.models.pet.Pet
 import com.hello_world_testingggg.api.models.pet.PetFindByStatusParams
 import com.hello_world_testingggg.api.models.pet.PetFindByTagsParams
 import com.hello_world_testingggg.api.models.pet.PetListUnpaginatedParams
+import com.hello_world_testingggg.api.models.pet.PetStatus
 import com.hello_world_testingggg.api.models.pet.PetUpdateWithFormParams
 import com.hello_world_testingggg.api.models.pet.PetUploadImageParams
 import org.junit.jupiter.api.Disabled
@@ -26,8 +27,11 @@ internal class PetServiceAsyncTest {
                     .name("doggie")
                     .addPhotoUrl("string")
                     .id(10L)
-                    .category(Pet.Category.builder().id(1L).name("Dogs").build())
-                    .status(Pet.Status.AVAILABLE)
+                    .category(
+                        Pet.Category.builder().id(1L).name("Dogs").subcategories(listOf()).build()
+                    )
+                    .microchipId("string")
+                    .status(PetStatus.AVAILABLE)
                     .addTag(Pet.Tag.builder().id(0L).name("name").build())
                     .build()
             )
@@ -58,8 +62,11 @@ internal class PetServiceAsyncTest {
                     .name("doggie")
                     .addPhotoUrl("string")
                     .id(10L)
-                    .category(Pet.Category.builder().id(1L).name("Dogs").build())
-                    .status(Pet.Status.AVAILABLE)
+                    .category(
+                        Pet.Category.builder().id(1L).name("Dogs").subcategories(listOf()).build()
+                    )
+                    .microchipId("string")
+                    .status(PetStatus.AVAILABLE)
                     .addTag(Pet.Tag.builder().id(0L).name("name").build())
                     .build()
             )
@@ -121,9 +128,9 @@ internal class PetServiceAsyncTest {
         val client = HelloWorldTestinggggOkHttpClientAsync.builder().apiKey("My API Key").build()
         val petServiceAsync = client.pet()
 
-        val page = petServiceAsync.listFakePage()
+        val response = petServiceAsync.listFakePage()
 
-        page.response().validate()
+        response.validate()
     }
 
     @Disabled("Mock server tests are disabled")
@@ -132,9 +139,9 @@ internal class PetServiceAsyncTest {
         val client = HelloWorldTestinggggOkHttpClientAsync.builder().apiKey("My API Key").build()
         val petServiceAsync = client.pet()
 
-        val response = petServiceAsync.listFakePageInferred()
+        val page = petServiceAsync.listFakePageInferred()
 
-        response.validate()
+        page.response().validate()
     }
 
     @Disabled("Mock server tests are disabled")
@@ -147,6 +154,17 @@ internal class PetServiceAsyncTest {
             petServiceAsync.listUnpaginated(
                 PetListUnpaginatedParams.builder().cursor("cursor").limit(0L).build()
             )
+
+        response.validate()
+    }
+
+    @Disabled("Mock server tests are disabled")
+    @Test
+    suspend fun retrievePremium() {
+        val client = HelloWorldTestinggggOkHttpClientAsync.builder().apiKey("My API Key").build()
+        val petServiceAsync = client.pet()
+
+        val response = petServiceAsync.retrievePremium(0L)
 
         response.validate()
     }

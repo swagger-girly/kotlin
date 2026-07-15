@@ -12,15 +12,17 @@ import com.hello_world_testingggg.api.models.pet.PetCreateParams
 import com.hello_world_testingggg.api.models.pet.PetDeleteParams
 import com.hello_world_testingggg.api.models.pet.PetFindByStatusParams
 import com.hello_world_testingggg.api.models.pet.PetFindByTagsParams
+import com.hello_world_testingggg.api.models.pet.PetListFakePageInferredPageAsync
 import com.hello_world_testingggg.api.models.pet.PetListFakePageInferredParams
-import com.hello_world_testingggg.api.models.pet.PetListFakePageInferredResponse
-import com.hello_world_testingggg.api.models.pet.PetListFakePagePageAsync
 import com.hello_world_testingggg.api.models.pet.PetListFakePageParams
+import com.hello_world_testingggg.api.models.pet.PetListFakePageResponse
 import com.hello_world_testingggg.api.models.pet.PetListPageAsync
 import com.hello_world_testingggg.api.models.pet.PetListParams
 import com.hello_world_testingggg.api.models.pet.PetListUnpaginatedParams
 import com.hello_world_testingggg.api.models.pet.PetListUnpaginatedResponse
 import com.hello_world_testingggg.api.models.pet.PetRetrieveParams
+import com.hello_world_testingggg.api.models.pet.PetRetrievePremiumParams
+import com.hello_world_testingggg.api.models.pet.PetRetrievePremiumResponse
 import com.hello_world_testingggg.api.models.pet.PetUpdateParams
 import com.hello_world_testingggg.api.models.pet.PetUpdateWithFormParams
 import com.hello_world_testingggg.api.models.pet.PetUploadImageParams
@@ -131,25 +133,25 @@ interface PetServiceAsync {
     suspend fun listFakePage(
         params: PetListFakePageParams = PetListFakePageParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): PetListFakePagePageAsync
+    ): PetListFakePageResponse
 
     /** @see listFakePage */
-    suspend fun listFakePage(requestOptions: RequestOptions): PetListFakePagePageAsync =
+    suspend fun listFakePage(requestOptions: RequestOptions): PetListFakePageResponse =
         listFakePage(PetListFakePageParams.none(), requestOptions)
 
     /**
      * Returns a single page-shaped pet response whose fake pagination behavior is inferred from the
-     * Stainless config scheme.
+     * config scheme.
      */
     suspend fun listFakePageInferred(
         params: PetListFakePageInferredParams = PetListFakePageInferredParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): PetListFakePageInferredResponse
+    ): PetListFakePageInferredPageAsync
 
     /** @see listFakePageInferred */
     suspend fun listFakePageInferred(
         requestOptions: RequestOptions
-    ): PetListFakePageInferredResponse =
+    ): PetListFakePageInferredPageAsync =
         listFakePageInferred(PetListFakePageInferredParams.none(), requestOptions)
 
     /** Returns the same cursor-shaped pet list response without enabling SDK pagination helpers. */
@@ -161,6 +163,30 @@ interface PetServiceAsync {
     /** @see listUnpaginated */
     suspend fun listUnpaginated(requestOptions: RequestOptions): PetListUnpaginatedResponse =
         listUnpaginated(PetListUnpaginatedParams.none(), requestOptions)
+
+    /**
+     * Returns the premium profile for a pet, extending the base pet with pedigree and insurance
+     * details.
+     */
+    suspend fun retrievePremium(
+        petId: Long,
+        params: PetRetrievePremiumParams = PetRetrievePremiumParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): PetRetrievePremiumResponse =
+        retrievePremium(params.toBuilder().petId(petId).build(), requestOptions)
+
+    /** @see retrievePremium */
+    suspend fun retrievePremium(
+        params: PetRetrievePremiumParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): PetRetrievePremiumResponse
+
+    /** @see retrievePremium */
+    suspend fun retrievePremium(
+        petId: Long,
+        requestOptions: RequestOptions,
+    ): PetRetrievePremiumResponse =
+        retrievePremium(petId, PetRetrievePremiumParams.none(), requestOptions)
 
     /** Updates a pet in the store with form data */
     suspend fun updateWithForm(
@@ -345,13 +371,13 @@ interface PetServiceAsync {
         suspend fun listFakePage(
             params: PetListFakePageParams = PetListFakePageParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<PetListFakePagePageAsync>
+        ): HttpResponseFor<PetListFakePageResponse>
 
         /** @see listFakePage */
         @MustBeClosed
         suspend fun listFakePage(
             requestOptions: RequestOptions
-        ): HttpResponseFor<PetListFakePagePageAsync> =
+        ): HttpResponseFor<PetListFakePageResponse> =
             listFakePage(PetListFakePageParams.none(), requestOptions)
 
         /**
@@ -362,13 +388,13 @@ interface PetServiceAsync {
         suspend fun listFakePageInferred(
             params: PetListFakePageInferredParams = PetListFakePageInferredParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<PetListFakePageInferredResponse>
+        ): HttpResponseFor<PetListFakePageInferredPageAsync>
 
         /** @see listFakePageInferred */
         @MustBeClosed
         suspend fun listFakePageInferred(
             requestOptions: RequestOptions
-        ): HttpResponseFor<PetListFakePageInferredResponse> =
+        ): HttpResponseFor<PetListFakePageInferredPageAsync> =
             listFakePageInferred(PetListFakePageInferredParams.none(), requestOptions)
 
         /**
@@ -387,6 +413,33 @@ interface PetServiceAsync {
             requestOptions: RequestOptions
         ): HttpResponseFor<PetListUnpaginatedResponse> =
             listUnpaginated(PetListUnpaginatedParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `get /pet/{petId}/premium`, but is otherwise the same as
+         * [PetServiceAsync.retrievePremium].
+         */
+        @MustBeClosed
+        suspend fun retrievePremium(
+            petId: Long,
+            params: PetRetrievePremiumParams = PetRetrievePremiumParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<PetRetrievePremiumResponse> =
+            retrievePremium(params.toBuilder().petId(petId).build(), requestOptions)
+
+        /** @see retrievePremium */
+        @MustBeClosed
+        suspend fun retrievePremium(
+            params: PetRetrievePremiumParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<PetRetrievePremiumResponse>
+
+        /** @see retrievePremium */
+        @MustBeClosed
+        suspend fun retrievePremium(
+            petId: Long,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<PetRetrievePremiumResponse> =
+            retrievePremium(petId, PetRetrievePremiumParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `post /pet/{petId}`, but is otherwise the same as

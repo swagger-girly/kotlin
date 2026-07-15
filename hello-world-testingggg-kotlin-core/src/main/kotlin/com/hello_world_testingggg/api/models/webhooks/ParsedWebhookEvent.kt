@@ -41,6 +41,8 @@ private constructor(
     private val petModerationApproved: PetModerationApprovedEvent? = null,
     private val petModerationRejected: PetModerationRejectedEvent? = null,
     private val storeReportGenerated: StoreReportGeneratedWebhookEvent? = null,
+    private val adoptionsPolicyChanged: AdoptionsPolicyChangedWebhookEvent? = null,
+    private val placementEventRecorded: PlacementEventRecordedWebhookEvent? = null,
     private val _json: JsonValue? = null,
 ) {
 
@@ -56,6 +58,10 @@ private constructor(
 
     fun storeReportGenerated(): StoreReportGeneratedWebhookEvent? = storeReportGenerated
 
+    fun adoptionsPolicyChanged(): AdoptionsPolicyChangedWebhookEvent? = adoptionsPolicyChanged
+
+    fun placementEventRecorded(): PlacementEventRecordedWebhookEvent? = placementEventRecorded
+
     fun isPetCreated(): Boolean = petCreated != null
 
     fun isPetUpdated(): Boolean = petUpdated != null
@@ -67,6 +73,10 @@ private constructor(
     fun isPetModerationRejected(): Boolean = petModerationRejected != null
 
     fun isStoreReportGenerated(): Boolean = storeReportGenerated != null
+
+    fun isAdoptionsPolicyChanged(): Boolean = adoptionsPolicyChanged != null
+
+    fun isPlacementEventRecorded(): Boolean = placementEventRecorded != null
 
     fun asPetCreated(): PetCreatedWebhookEvent = petCreated.getOrThrow("petCreated")
 
@@ -83,6 +93,12 @@ private constructor(
 
     fun asStoreReportGenerated(): StoreReportGeneratedWebhookEvent =
         storeReportGenerated.getOrThrow("storeReportGenerated")
+
+    fun asAdoptionsPolicyChanged(): AdoptionsPolicyChangedWebhookEvent =
+        adoptionsPolicyChanged.getOrThrow("adoptionsPolicyChanged")
+
+    fun asPlacementEventRecorded(): PlacementEventRecordedWebhookEvent =
+        placementEventRecorded.getOrThrow("placementEventRecorded")
 
     fun _json(): JsonValue? = _json
 
@@ -120,6 +136,10 @@ private constructor(
             petModerationRejected != null ->
                 visitor.visitPetModerationRejected(petModerationRejected)
             storeReportGenerated != null -> visitor.visitStoreReportGenerated(storeReportGenerated)
+            adoptionsPolicyChanged != null ->
+                visitor.visitAdoptionsPolicyChanged(adoptionsPolicyChanged)
+            placementEventRecorded != null ->
+                visitor.visitPlacementEventRecorded(placementEventRecorded)
             else -> visitor.unknown(_json)
         }
 
@@ -169,6 +189,18 @@ private constructor(
                 ) {
                     storeReportGenerated.validate()
                 }
+
+                override fun visitAdoptionsPolicyChanged(
+                    adoptionsPolicyChanged: AdoptionsPolicyChangedWebhookEvent
+                ) {
+                    adoptionsPolicyChanged.validate()
+                }
+
+                override fun visitPlacementEventRecorded(
+                    placementEventRecorded: PlacementEventRecordedWebhookEvent
+                ) {
+                    placementEventRecorded.validate()
+                }
             }
         )
         validated = true
@@ -211,6 +243,14 @@ private constructor(
                     storeReportGenerated: StoreReportGeneratedWebhookEvent
                 ) = storeReportGenerated.validity()
 
+                override fun visitAdoptionsPolicyChanged(
+                    adoptionsPolicyChanged: AdoptionsPolicyChangedWebhookEvent
+                ) = adoptionsPolicyChanged.validity()
+
+                override fun visitPlacementEventRecorded(
+                    placementEventRecorded: PlacementEventRecordedWebhookEvent
+                ) = placementEventRecorded.validity()
+
                 override fun unknown(json: JsonValue?) = 0
             }
         )
@@ -226,7 +266,9 @@ private constructor(
             petInventoryLow == other.petInventoryLow &&
             petModerationApproved == other.petModerationApproved &&
             petModerationRejected == other.petModerationRejected &&
-            storeReportGenerated == other.storeReportGenerated
+            storeReportGenerated == other.storeReportGenerated &&
+            adoptionsPolicyChanged == other.adoptionsPolicyChanged &&
+            placementEventRecorded == other.placementEventRecorded
     }
 
     override fun hashCode(): Int =
@@ -237,6 +279,8 @@ private constructor(
             petModerationApproved,
             petModerationRejected,
             storeReportGenerated,
+            adoptionsPolicyChanged,
+            placementEventRecorded,
         )
 
     override fun toString(): String =
@@ -250,6 +294,10 @@ private constructor(
                 "ParsedWebhookEvent{petModerationRejected=$petModerationRejected}"
             storeReportGenerated != null ->
                 "ParsedWebhookEvent{storeReportGenerated=$storeReportGenerated}"
+            adoptionsPolicyChanged != null ->
+                "ParsedWebhookEvent{adoptionsPolicyChanged=$adoptionsPolicyChanged}"
+            placementEventRecorded != null ->
+                "ParsedWebhookEvent{placementEventRecorded=$placementEventRecorded}"
             _json != null -> "ParsedWebhookEvent{_unknown=$_json}"
             else -> throw IllegalStateException("Invalid ParsedWebhookEvent")
         }
@@ -273,6 +321,12 @@ private constructor(
 
         fun ofStoreReportGenerated(storeReportGenerated: StoreReportGeneratedWebhookEvent) =
             ParsedWebhookEvent(storeReportGenerated = storeReportGenerated)
+
+        fun ofAdoptionsPolicyChanged(adoptionsPolicyChanged: AdoptionsPolicyChangedWebhookEvent) =
+            ParsedWebhookEvent(adoptionsPolicyChanged = adoptionsPolicyChanged)
+
+        fun ofPlacementEventRecorded(placementEventRecorded: PlacementEventRecordedWebhookEvent) =
+            ParsedWebhookEvent(placementEventRecorded = placementEventRecorded)
     }
 
     /**
@@ -292,6 +346,14 @@ private constructor(
         fun visitPetModerationRejected(petModerationRejected: PetModerationRejectedEvent): T
 
         fun visitStoreReportGenerated(storeReportGenerated: StoreReportGeneratedWebhookEvent): T
+
+        fun visitAdoptionsPolicyChanged(
+            adoptionsPolicyChanged: AdoptionsPolicyChangedWebhookEvent
+        ): T
+
+        fun visitPlacementEventRecorded(
+            placementEventRecorded: PlacementEventRecordedWebhookEvent
+        ): T
 
         /**
          * Maps an unknown variant of [ParsedWebhookEvent] to a value of type [T].
@@ -332,6 +394,10 @@ private constructor(
                         },
                         tryDeserialize(node, jacksonTypeRef<StoreReportGeneratedWebhookEvent>())
                             ?.let { ParsedWebhookEvent(storeReportGenerated = it, _json = json) },
+                        tryDeserialize(node, jacksonTypeRef<AdoptionsPolicyChangedWebhookEvent>())
+                            ?.let { ParsedWebhookEvent(adoptionsPolicyChanged = it, _json = json) },
+                        tryDeserialize(node, jacksonTypeRef<PlacementEventRecordedWebhookEvent>())
+                            ?.let { ParsedWebhookEvent(placementEventRecorded = it, _json = json) },
                     )
                     .filterNotNull()
                     .allMaxBy { it.validity() }
@@ -365,6 +431,10 @@ private constructor(
                     generator.writeObject(value.petModerationRejected)
                 value.storeReportGenerated != null ->
                     generator.writeObject(value.storeReportGenerated)
+                value.adoptionsPolicyChanged != null ->
+                    generator.writeObject(value.adoptionsPolicyChanged)
+                value.placementEventRecorded != null ->
+                    generator.writeObject(value.placementEventRecorded)
                 value._json != null -> generator.writeObject(value._json)
                 else -> throw IllegalStateException("Invalid ParsedWebhookEvent")
             }
