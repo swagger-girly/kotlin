@@ -45,7 +45,6 @@ internal class ApplicationTest {
                 .decision(
                     Application.Decision.DecisionApproved.builder()
                         .approvedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                        .outcome(Application.Decision.DecisionApproved.Outcome.APPROVED)
                         .addCondition("string")
                         .build()
                 )
@@ -59,7 +58,6 @@ internal class ApplicationTest {
                 )
                 .latestRejection(
                     Application.LatestRejection.builder()
-                        .outcome(Application.LatestRejection.Outcome.REJECTED)
                         .reason(Application.LatestRejection.Reason.POLICY)
                         .appealDeadline(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                         .build()
@@ -69,6 +67,7 @@ internal class ApplicationTest {
                         .name("doggie")
                         .addPhotoUrl("string")
                         .id(10L)
+                        .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
                         .category(
                             Pet.Category.builder()
                                 .id(1L)
@@ -116,7 +115,6 @@ internal class ApplicationTest {
                 Application.Decision.ofApproved(
                     Application.Decision.DecisionApproved.builder()
                         .approvedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                        .outcome(Application.Decision.DecisionApproved.Outcome.APPROVED)
                         .addCondition("string")
                         .build()
                 )
@@ -134,7 +132,6 @@ internal class ApplicationTest {
         assertThat(application.latestRejection())
             .isEqualTo(
                 Application.LatestRejection.builder()
-                    .outcome(Application.LatestRejection.Outcome.REJECTED)
                     .reason(Application.LatestRejection.Reason.POLICY)
                     .appealDeadline(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                     .build()
@@ -145,6 +142,7 @@ internal class ApplicationTest {
                     .name("doggie")
                     .addPhotoUrl("string")
                     .id(10L)
+                    .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
                     .category(
                         Pet.Category.builder().id(1L).name("Dogs").subcategories(listOf()).build()
                     )
@@ -187,7 +185,6 @@ internal class ApplicationTest {
                 .decision(
                     Application.Decision.DecisionApproved.builder()
                         .approvedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                        .outcome(Application.Decision.DecisionApproved.Outcome.APPROVED)
                         .addCondition("string")
                         .build()
                 )
@@ -201,7 +198,6 @@ internal class ApplicationTest {
                 )
                 .latestRejection(
                     Application.LatestRejection.builder()
-                        .outcome(Application.LatestRejection.Outcome.REJECTED)
                         .reason(Application.LatestRejection.Reason.POLICY)
                         .appealDeadline(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                         .build()
@@ -211,6 +207,7 @@ internal class ApplicationTest {
                         .name("doggie")
                         .addPhotoUrl("string")
                         .id(10L)
+                        .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
                         .category(
                             Pet.Category.builder()
                                 .id(1L)

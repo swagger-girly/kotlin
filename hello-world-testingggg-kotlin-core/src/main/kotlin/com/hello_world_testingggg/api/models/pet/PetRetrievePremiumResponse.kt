@@ -38,6 +38,7 @@ private constructor(
     private val name: JsonField<String>,
     private val photoUrls: JsonField<List<String>>,
     private val id: JsonField<Long>,
+    private val acquisitionChannel: JsonField<Pet.AcquisitionChannel>,
     private val category: JsonField<Pet.Category>,
     private val microchipId: JsonField<Pet.MicrochipId>,
     private val status: JsonField<PetStatus>,
@@ -56,6 +57,9 @@ private constructor(
         @ExcludeMissing
         photoUrls: JsonField<List<String>> = JsonMissing.of(),
         @JsonProperty("id") @ExcludeMissing id: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("acquisitionChannel")
+        @ExcludeMissing
+        acquisitionChannel: JsonField<Pet.AcquisitionChannel> = JsonMissing.of(),
         @JsonProperty("category")
         @ExcludeMissing
         category: JsonField<Pet.Category> = JsonMissing.of(),
@@ -78,6 +82,7 @@ private constructor(
         name,
         photoUrls,
         id,
+        acquisitionChannel,
         category,
         microchipId,
         status,
@@ -94,6 +99,7 @@ private constructor(
             .name(name)
             .photoUrls(photoUrls)
             .id(id)
+            .acquisitionChannel(acquisitionChannel)
             .category(category)
             .microchipId(microchipId)
             .status(status)
@@ -117,6 +123,16 @@ private constructor(
      *   (e.g. if the server responded with an unexpected value).
      */
     fun id(): Long? = id.getNullable("id")
+
+    /**
+     * How the pet entered the store. Open enum: known channels plus forward-compatible free-form
+     * strings.
+     *
+     * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
+     *   (e.g. if the server responded with an unexpected value).
+     */
+    fun acquisitionChannel(): Pet.AcquisitionChannel? =
+        acquisitionChannel.getNullable("acquisitionChannel")
 
     /**
      * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
@@ -192,6 +208,16 @@ private constructor(
      * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<Long> = id
+
+    /**
+     * Returns the raw JSON value of [acquisitionChannel].
+     *
+     * Unlike [acquisitionChannel], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
+    @JsonProperty("acquisitionChannel")
+    @ExcludeMissing
+    fun _acquisitionChannel(): JsonField<Pet.AcquisitionChannel> = acquisitionChannel
 
     /**
      * Returns the raw JSON value of [category].
@@ -288,6 +314,7 @@ private constructor(
         private var name: JsonField<String>? = null
         private var photoUrls: JsonField<MutableList<String>>? = null
         private var id: JsonField<Long> = JsonMissing.of()
+        private var acquisitionChannel: JsonField<Pet.AcquisitionChannel> = JsonMissing.of()
         private var category: JsonField<Pet.Category> = JsonMissing.of()
         private var microchipId: JsonField<Pet.MicrochipId> = JsonMissing.of()
         private var status: JsonField<PetStatus> = JsonMissing.of()
@@ -302,6 +329,7 @@ private constructor(
             name = petRetrievePremiumResponse.name
             photoUrls = petRetrievePremiumResponse.photoUrls.map { it.toMutableList() }
             id = petRetrievePremiumResponse.id
+            acquisitionChannel = petRetrievePremiumResponse.acquisitionChannel
             category = petRetrievePremiumResponse.category
             microchipId = petRetrievePremiumResponse.microchipId
             status = petRetrievePremiumResponse.status
@@ -357,6 +385,33 @@ private constructor(
          * is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun id(id: JsonField<Long>) = apply { this.id = id }
+
+        /**
+         * How the pet entered the store. Open enum: known channels plus forward-compatible
+         * free-form strings.
+         */
+        fun acquisitionChannel(acquisitionChannel: Pet.AcquisitionChannel) =
+            acquisitionChannel(JsonField.of(acquisitionChannel))
+
+        /**
+         * Sets [Builder.acquisitionChannel] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.acquisitionChannel] with a well-typed
+         * [Pet.AcquisitionChannel] value instead. This method is primarily for setting the field to
+         * an undocumented or not yet supported value.
+         */
+        fun acquisitionChannel(acquisitionChannel: JsonField<Pet.AcquisitionChannel>) = apply {
+            this.acquisitionChannel = acquisitionChannel
+        }
+
+        /**
+         * Sets [acquisitionChannel] to an arbitrary [String].
+         *
+         * You should usually call [acquisitionChannel] with a well-typed [Pet.AcquisitionChannel]
+         * constant instead. This method is primarily for setting the field to an undocumented or
+         * not yet supported value.
+         */
+        fun acquisitionChannel(value: String) = acquisitionChannel(Pet.AcquisitionChannel.of(value))
 
         fun category(category: Pet.Category) = category(JsonField.of(category))
 
@@ -517,6 +572,7 @@ private constructor(
                 checkRequired("name", name),
                 checkRequired("photoUrls", photoUrls).map { it.toImmutable() },
                 id,
+                acquisitionChannel,
                 category,
                 microchipId,
                 status,
@@ -547,6 +603,7 @@ private constructor(
         name()
         photoUrls()
         id()
+        acquisitionChannel()
         category()?.validate()
         microchipId()?.validate()
         status()?.validate()
@@ -575,6 +632,7 @@ private constructor(
         (if (name.asKnown() == null) 0 else 1) +
             (photoUrls.asKnown()?.size ?: 0) +
             (if (id.asKnown() == null) 0 else 1) +
+            (if (acquisitionChannel.asKnown() == null) 0 else 1) +
             (category.asKnown()?.validity() ?: 0) +
             (microchipId.asKnown()?.validity() ?: 0) +
             (status.asKnown()?.validity() ?: 0) +
@@ -1724,6 +1782,7 @@ private constructor(
             name == other.name &&
             photoUrls == other.photoUrls &&
             id == other.id &&
+            acquisitionChannel == other.acquisitionChannel &&
             category == other.category &&
             microchipId == other.microchipId &&
             status == other.status &&
@@ -1740,6 +1799,7 @@ private constructor(
             name,
             photoUrls,
             id,
+            acquisitionChannel,
             category,
             microchipId,
             status,
@@ -1755,5 +1815,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "PetRetrievePremiumResponse{name=$name, photoUrls=$photoUrls, id=$id, category=$category, microchipId=$microchipId, status=$status, tags=$tags, premiumSince=$premiumSince, coverageLimit=$coverageLimit, insurance=$insurance, pedigree=$pedigree, additionalProperties=$additionalProperties}"
+        "PetRetrievePremiumResponse{name=$name, photoUrls=$photoUrls, id=$id, acquisitionChannel=$acquisitionChannel, category=$category, microchipId=$microchipId, status=$status, tags=$tags, premiumSince=$premiumSince, coverageLimit=$coverageLimit, insurance=$insurance, pedigree=$pedigree, additionalProperties=$additionalProperties}"
 }

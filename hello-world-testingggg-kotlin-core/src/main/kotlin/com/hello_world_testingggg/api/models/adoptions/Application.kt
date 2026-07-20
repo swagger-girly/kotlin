@@ -354,6 +354,10 @@ private constructor(
         fun decision(escalated: Decision.DecisionEscalated) =
             decision(Decision.ofEscalated(escalated))
 
+        /** Alias for calling [decision] with `Decision.ofWithdrawn(withdrawn)`. */
+        fun decision(withdrawn: Decision.DecisionWithdrawn) =
+            decision(Decision.ofWithdrawn(withdrawn))
+
         fun fee(fee: Money) = fee(JsonField.of(fee))
 
         /**
@@ -3010,6 +3014,7 @@ private constructor(
         private val approved: DecisionApproved? = null,
         private val rejected: DecisionRejected? = null,
         private val escalated: DecisionEscalated? = null,
+        private val withdrawn: DecisionWithdrawn? = null,
         private val _json: JsonValue? = null,
     ) {
 
@@ -3019,17 +3024,25 @@ private constructor(
 
         fun escalated(): DecisionEscalated? = escalated
 
+        /** The applicant or shelter withdrew before a decision was finalized. */
+        fun withdrawn(): DecisionWithdrawn? = withdrawn
+
         fun isApproved(): Boolean = approved != null
 
         fun isRejected(): Boolean = rejected != null
 
         fun isEscalated(): Boolean = escalated != null
 
+        fun isWithdrawn(): Boolean = withdrawn != null
+
         fun asApproved(): DecisionApproved = approved.getOrThrow("approved")
 
         fun asRejected(): DecisionRejected = rejected.getOrThrow("rejected")
 
         fun asEscalated(): DecisionEscalated = escalated.getOrThrow("escalated")
+
+        /** The applicant or shelter withdrew before a decision was finalized. */
+        fun asWithdrawn(): DecisionWithdrawn = withdrawn.getOrThrow("withdrawn")
 
         fun _json(): JsonValue? = _json
 
@@ -3062,6 +3075,7 @@ private constructor(
                 approved != null -> visitor.visitApproved(approved)
                 rejected != null -> visitor.visitRejected(rejected)
                 escalated != null -> visitor.visitEscalated(escalated)
+                withdrawn != null -> visitor.visitWithdrawn(withdrawn)
                 else -> visitor.unknown(_json)
             }
 
@@ -3094,6 +3108,10 @@ private constructor(
                     override fun visitEscalated(escalated: DecisionEscalated) {
                         escalated.validate()
                     }
+
+                    override fun visitWithdrawn(withdrawn: DecisionWithdrawn) {
+                        withdrawn.validate()
+                    }
                 }
             )
             validated = true
@@ -3122,6 +3140,8 @@ private constructor(
 
                     override fun visitEscalated(escalated: DecisionEscalated) = escalated.validity()
 
+                    override fun visitWithdrawn(withdrawn: DecisionWithdrawn) = withdrawn.validity()
+
                     override fun unknown(json: JsonValue?) = 0
                 }
             )
@@ -3134,16 +3154,18 @@ private constructor(
             return other is Decision &&
                 approved == other.approved &&
                 rejected == other.rejected &&
-                escalated == other.escalated
+                escalated == other.escalated &&
+                withdrawn == other.withdrawn
         }
 
-        override fun hashCode(): Int = Objects.hash(approved, rejected, escalated)
+        override fun hashCode(): Int = Objects.hash(approved, rejected, escalated, withdrawn)
 
         override fun toString(): String =
             when {
                 approved != null -> "Decision{approved=$approved}"
                 rejected != null -> "Decision{rejected=$rejected}"
                 escalated != null -> "Decision{escalated=$escalated}"
+                withdrawn != null -> "Decision{withdrawn=$withdrawn}"
                 _json != null -> "Decision{_unknown=$_json}"
                 else -> throw IllegalStateException("Invalid Decision")
             }
@@ -3155,6 +3177,9 @@ private constructor(
             fun ofRejected(rejected: DecisionRejected) = Decision(rejected = rejected)
 
             fun ofEscalated(escalated: DecisionEscalated) = Decision(escalated = escalated)
+
+            /** The applicant or shelter withdrew before a decision was finalized. */
+            fun ofWithdrawn(withdrawn: DecisionWithdrawn) = Decision(withdrawn = withdrawn)
         }
 
         /**
@@ -3167,6 +3192,9 @@ private constructor(
             fun visitRejected(rejected: DecisionRejected): T
 
             fun visitEscalated(escalated: DecisionEscalated): T
+
+            /** The applicant or shelter withdrew before a decision was finalized. */
+            fun visitWithdrawn(withdrawn: DecisionWithdrawn): T
 
             /**
              * Maps an unknown variant of [Decision] to a value of type [T].
@@ -3199,6 +3227,9 @@ private constructor(
                             tryDeserialize(node, jacksonTypeRef<DecisionEscalated>())?.let {
                                 Decision(escalated = it, _json = json)
                             },
+                            tryDeserialize(node, jacksonTypeRef<DecisionWithdrawn>())?.let {
+                                Decision(withdrawn = it, _json = json)
+                            },
                         )
                         .filterNotNull()
                         .allMaxBy { it.validity() }
@@ -3227,6 +3258,7 @@ private constructor(
                     value.approved != null -> generator.writeObject(value.approved)
                     value.rejected != null -> generator.writeObject(value.rejected)
                     value.escalated != null -> generator.writeObject(value.escalated)
+                    value.withdrawn != null -> generator.writeObject(value.withdrawn)
                     value._json != null -> generator.writeObject(value._json)
                     else -> throw IllegalStateException("Invalid Decision")
                 }
@@ -3237,7 +3269,7 @@ private constructor(
         @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val approvedAt: JsonField<OffsetDateTime>,
-            private val outcome: JsonField<Outcome>,
+            private val outcome: JsonValue,
             private val conditions: JsonField<List<String>>,
             private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
@@ -3247,9 +3279,7 @@ private constructor(
                 @JsonProperty("approvedAt")
                 @ExcludeMissing
                 approvedAt: JsonField<OffsetDateTime> = JsonMissing.of(),
-                @JsonProperty("outcome")
-                @ExcludeMissing
-                outcome: JsonField<Outcome> = JsonMissing.of(),
+                @JsonProperty("outcome") @ExcludeMissing outcome: JsonValue = JsonMissing.of(),
                 @JsonProperty("conditions")
                 @ExcludeMissing
                 conditions: JsonField<List<String>> = JsonMissing.of(),
@@ -3263,11 +3293,15 @@ private constructor(
             fun approvedAt(): OffsetDateTime = approvedAt.getRequired("approvedAt")
 
             /**
-             * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected
-             *   type or is unexpectedly missing or null (e.g. if the server responded with an
-             *   unexpected value).
+             * Expected to always return the following:
+             * ```kotlin
+             * JsonValue.from("approved")
+             * ```
+             *
+             * However, this method can be useful for debugging and logging (e.g. if the server
+             * responded with an unexpected value).
              */
-            fun outcome(): Outcome = outcome.getRequired("outcome")
+            @JsonProperty("outcome") @ExcludeMissing fun _outcome(): JsonValue = outcome
 
             /**
              * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected
@@ -3284,13 +3318,6 @@ private constructor(
             @JsonProperty("approvedAt")
             @ExcludeMissing
             fun _approvedAt(): JsonField<OffsetDateTime> = approvedAt
-
-            /**
-             * Returns the raw JSON value of [outcome].
-             *
-             * Unlike [outcome], this method doesn't throw if the JSON field has an unexpected type.
-             */
-            @JsonProperty("outcome") @ExcludeMissing fun _outcome(): JsonField<Outcome> = outcome
 
             /**
              * Returns the raw JSON value of [conditions].
@@ -3322,7 +3349,6 @@ private constructor(
                  * The following fields are required:
                  * ```kotlin
                  * .approvedAt()
-                 * .outcome()
                  * ```
                  */
                 fun builder() = Builder()
@@ -3332,7 +3358,7 @@ private constructor(
             class Builder internal constructor() {
 
                 private var approvedAt: JsonField<OffsetDateTime>? = null
-                private var outcome: JsonField<Outcome>? = null
+                private var outcome: JsonValue = JsonValue.from("approved")
                 private var conditions: JsonField<MutableList<String>>? = null
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -3356,16 +3382,19 @@ private constructor(
                     this.approvedAt = approvedAt
                 }
 
-                fun outcome(outcome: Outcome) = outcome(JsonField.of(outcome))
-
                 /**
-                 * Sets [Builder.outcome] to an arbitrary JSON value.
+                 * Sets the field to an arbitrary JSON value.
                  *
-                 * You should usually call [Builder.outcome] with a well-typed [Outcome] value
-                 * instead. This method is primarily for setting the field to an undocumented or not
-                 * yet supported value.
+                 * It is usually unnecessary to call this method because the field defaults to the
+                 * following:
+                 * ```kotlin
+                 * JsonValue.from("approved")
+                 * ```
+                 *
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
                  */
-                fun outcome(outcome: JsonField<Outcome>) = apply { this.outcome = outcome }
+                fun outcome(outcome: JsonValue) = apply { this.outcome = outcome }
 
                 fun conditions(conditions: List<String>) = conditions(JsonField.of(conditions))
 
@@ -3422,7 +3451,6 @@ private constructor(
                  * The following fields are required:
                  * ```kotlin
                  * .approvedAt()
-                 * .outcome()
                  * ```
                  *
                  * @throws IllegalStateException if any required field is unset.
@@ -3430,7 +3458,7 @@ private constructor(
                 fun build(): DecisionApproved =
                     DecisionApproved(
                         checkRequired("approvedAt", approvedAt),
-                        checkRequired("outcome", outcome),
+                        outcome,
                         (conditions ?: JsonMissing.of()).map { it.toImmutable() },
                         additionalProperties.toMutableMap(),
                     )
@@ -3454,7 +3482,13 @@ private constructor(
                 }
 
                 approvedAt()
-                outcome().validate()
+                _outcome().let {
+                    if (it != JsonValue.from("approved")) {
+                        throw HelloWorldTestinggggInvalidDataException(
+                            "'outcome' is invalid, received $it"
+                        )
+                    }
+                }
                 conditions()
                 validated = true
             }
@@ -3475,145 +3509,8 @@ private constructor(
              */
             internal fun validity(): Int =
                 (if (approvedAt.asKnown() == null) 0 else 1) +
-                    (outcome.asKnown()?.validity() ?: 0) +
+                    outcome.let { if (it == JsonValue.from("approved")) 1 else 0 } +
                     (conditions.asKnown()?.size ?: 0)
-
-            class Outcome @JsonCreator private constructor(private val value: JsonField<String>) :
-                Enum {
-
-                /**
-                 * Returns this class instance's raw value.
-                 *
-                 * This is usually only useful if this instance was deserialized from data that
-                 * doesn't match any known member, and you want to know that value. For example, if
-                 * the SDK is on an older version than the API, then the API may respond with new
-                 * members that the SDK is unaware of.
-                 */
-                @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-                companion object {
-
-                    val APPROVED = of("approved")
-
-                    fun of(value: String) = Outcome(JsonField.of(value))
-                }
-
-                /** An enum containing [Outcome]'s known values. */
-                enum class Known {
-                    APPROVED
-                }
-
-                /**
-                 * An enum containing [Outcome]'s known values, as well as an [_UNKNOWN] member.
-                 *
-                 * An instance of [Outcome] can contain an unknown value in a couple of cases:
-                 * - It was deserialized from data that doesn't match any known member. For example,
-                 *   if the SDK is on an older version than the API, then the API may respond with
-                 *   new members that the SDK is unaware of.
-                 * - It was constructed with an arbitrary value using the [of] method.
-                 */
-                enum class Value {
-                    APPROVED,
-                    /**
-                     * An enum member indicating that [Outcome] was instantiated with an unknown
-                     * value.
-                     */
-                    _UNKNOWN,
-                }
-
-                /**
-                 * Returns an enum member corresponding to this class instance's value, or
-                 * [Value._UNKNOWN] if the class was instantiated with an unknown value.
-                 *
-                 * Use the [known] method instead if you're certain the value is always known or if
-                 * you want to throw for the unknown case.
-                 */
-                fun value(): Value =
-                    when (this) {
-                        APPROVED -> Value.APPROVED
-                        else -> Value._UNKNOWN
-                    }
-
-                /**
-                 * Returns an enum member corresponding to this class instance's value.
-                 *
-                 * Use the [value] method instead if you're uncertain the value is always known and
-                 * don't want to throw for the unknown case.
-                 *
-                 * @throws HelloWorldTestinggggInvalidDataException if this class instance's value
-                 *   is a not a known member.
-                 */
-                fun known(): Known =
-                    when (this) {
-                        APPROVED -> Known.APPROVED
-                        else ->
-                            throw HelloWorldTestinggggInvalidDataException(
-                                "Unknown Outcome: $value"
-                            )
-                    }
-
-                /**
-                 * Returns this class instance's primitive wire representation.
-                 *
-                 * This differs from the [toString] method because that method is primarily for
-                 * debugging and generally doesn't throw.
-                 *
-                 * @throws HelloWorldTestinggggInvalidDataException if this class instance's value
-                 *   does not have the expected primitive type.
-                 */
-                fun asString(): String =
-                    _value().asString()
-                        ?: throw HelloWorldTestinggggInvalidDataException("Value is not a String")
-
-                private var validated: Boolean = false
-
-                /**
-                 * Validates that the types of all values in this object match their expected types
-                 * recursively.
-                 *
-                 * This method is _not_ forwards compatible with new types from the API for existing
-                 * fields.
-                 *
-                 * @throws HelloWorldTestinggggInvalidDataException if any value type in this object
-                 *   doesn't match its expected type.
-                 */
-                fun validate(): Outcome = apply {
-                    if (validated) {
-                        return@apply
-                    }
-
-                    known()
-                    validated = true
-                }
-
-                fun isValid(): Boolean =
-                    try {
-                        validate()
-                        true
-                    } catch (e: HelloWorldTestinggggInvalidDataException) {
-                        false
-                    }
-
-                /**
-                 * Returns a score indicating how many valid values are contained in this object
-                 * recursively.
-                 *
-                 * Used for best match union deserialization.
-                 */
-                internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
-
-                override fun equals(other: Any?): Boolean {
-                    if (this === other) {
-                        return true
-                    }
-
-                    return other is Outcome && value == other.value
-                }
-
-                override fun hashCode() = value.hashCode()
-
-                override fun toString() = value.toString()
-            }
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
@@ -3640,7 +3537,7 @@ private constructor(
         class DecisionRejected
         @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
-            private val outcome: JsonField<Outcome>,
+            private val outcome: JsonValue,
             private val reason: JsonField<Reason>,
             private val appealDeadline: JsonField<OffsetDateTime>,
             private val additionalProperties: MutableMap<String, JsonValue>,
@@ -3648,9 +3545,7 @@ private constructor(
 
             @JsonCreator
             private constructor(
-                @JsonProperty("outcome")
-                @ExcludeMissing
-                outcome: JsonField<Outcome> = JsonMissing.of(),
+                @JsonProperty("outcome") @ExcludeMissing outcome: JsonValue = JsonMissing.of(),
                 @JsonProperty("reason")
                 @ExcludeMissing
                 reason: JsonField<Reason> = JsonMissing.of(),
@@ -3660,11 +3555,15 @@ private constructor(
             ) : this(outcome, reason, appealDeadline, mutableMapOf())
 
             /**
-             * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected
-             *   type or is unexpectedly missing or null (e.g. if the server responded with an
-             *   unexpected value).
+             * Expected to always return the following:
+             * ```kotlin
+             * JsonValue.from("rejected")
+             * ```
+             *
+             * However, this method can be useful for debugging and logging (e.g. if the server
+             * responded with an unexpected value).
              */
-            fun outcome(): Outcome = outcome.getRequired("outcome")
+            @JsonProperty("outcome") @ExcludeMissing fun _outcome(): JsonValue = outcome
 
             /**
              * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected
@@ -3678,13 +3577,6 @@ private constructor(
              *   type (e.g. if the server responded with an unexpected value).
              */
             fun appealDeadline(): OffsetDateTime? = appealDeadline.getNullable("appealDeadline")
-
-            /**
-             * Returns the raw JSON value of [outcome].
-             *
-             * Unlike [outcome], this method doesn't throw if the JSON field has an unexpected type.
-             */
-            @JsonProperty("outcome") @ExcludeMissing fun _outcome(): JsonField<Outcome> = outcome
 
             /**
              * Returns the raw JSON value of [reason].
@@ -3722,7 +3614,6 @@ private constructor(
                  *
                  * The following fields are required:
                  * ```kotlin
-                 * .outcome()
                  * .reason()
                  * ```
                  */
@@ -3732,7 +3623,7 @@ private constructor(
             /** A builder for [DecisionRejected]. */
             class Builder internal constructor() {
 
-                private var outcome: JsonField<Outcome>? = null
+                private var outcome: JsonValue = JsonValue.from("rejected")
                 private var reason: JsonField<Reason>? = null
                 private var appealDeadline: JsonField<OffsetDateTime> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -3744,16 +3635,19 @@ private constructor(
                     additionalProperties = decisionRejected.additionalProperties.toMutableMap()
                 }
 
-                fun outcome(outcome: Outcome) = outcome(JsonField.of(outcome))
-
                 /**
-                 * Sets [Builder.outcome] to an arbitrary JSON value.
+                 * Sets the field to an arbitrary JSON value.
                  *
-                 * You should usually call [Builder.outcome] with a well-typed [Outcome] value
-                 * instead. This method is primarily for setting the field to an undocumented or not
-                 * yet supported value.
+                 * It is usually unnecessary to call this method because the field defaults to the
+                 * following:
+                 * ```kotlin
+                 * JsonValue.from("rejected")
+                 * ```
+                 *
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
                  */
-                fun outcome(outcome: JsonField<Outcome>) = apply { this.outcome = outcome }
+                fun outcome(outcome: JsonValue) = apply { this.outcome = outcome }
 
                 fun reason(reason: Reason) = reason(JsonField.of(reason))
 
@@ -3809,7 +3703,6 @@ private constructor(
                  *
                  * The following fields are required:
                  * ```kotlin
-                 * .outcome()
                  * .reason()
                  * ```
                  *
@@ -3817,7 +3710,7 @@ private constructor(
                  */
                 fun build(): DecisionRejected =
                     DecisionRejected(
-                        checkRequired("outcome", outcome),
+                        outcome,
                         checkRequired("reason", reason),
                         appealDeadline,
                         additionalProperties.toMutableMap(),
@@ -3841,7 +3734,13 @@ private constructor(
                     return@apply
                 }
 
-                outcome().validate()
+                _outcome().let {
+                    if (it != JsonValue.from("rejected")) {
+                        throw HelloWorldTestinggggInvalidDataException(
+                            "'outcome' is invalid, received $it"
+                        )
+                    }
+                }
                 reason().validate()
                 appealDeadline()
                 validated = true
@@ -3862,146 +3761,9 @@ private constructor(
              * Used for best match union deserialization.
              */
             internal fun validity(): Int =
-                (outcome.asKnown()?.validity() ?: 0) +
+                outcome.let { if (it == JsonValue.from("rejected")) 1 else 0 } +
                     (reason.asKnown()?.validity() ?: 0) +
                     (if (appealDeadline.asKnown() == null) 0 else 1)
-
-            class Outcome @JsonCreator private constructor(private val value: JsonField<String>) :
-                Enum {
-
-                /**
-                 * Returns this class instance's raw value.
-                 *
-                 * This is usually only useful if this instance was deserialized from data that
-                 * doesn't match any known member, and you want to know that value. For example, if
-                 * the SDK is on an older version than the API, then the API may respond with new
-                 * members that the SDK is unaware of.
-                 */
-                @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-                companion object {
-
-                    val REJECTED = of("rejected")
-
-                    fun of(value: String) = Outcome(JsonField.of(value))
-                }
-
-                /** An enum containing [Outcome]'s known values. */
-                enum class Known {
-                    REJECTED
-                }
-
-                /**
-                 * An enum containing [Outcome]'s known values, as well as an [_UNKNOWN] member.
-                 *
-                 * An instance of [Outcome] can contain an unknown value in a couple of cases:
-                 * - It was deserialized from data that doesn't match any known member. For example,
-                 *   if the SDK is on an older version than the API, then the API may respond with
-                 *   new members that the SDK is unaware of.
-                 * - It was constructed with an arbitrary value using the [of] method.
-                 */
-                enum class Value {
-                    REJECTED,
-                    /**
-                     * An enum member indicating that [Outcome] was instantiated with an unknown
-                     * value.
-                     */
-                    _UNKNOWN,
-                }
-
-                /**
-                 * Returns an enum member corresponding to this class instance's value, or
-                 * [Value._UNKNOWN] if the class was instantiated with an unknown value.
-                 *
-                 * Use the [known] method instead if you're certain the value is always known or if
-                 * you want to throw for the unknown case.
-                 */
-                fun value(): Value =
-                    when (this) {
-                        REJECTED -> Value.REJECTED
-                        else -> Value._UNKNOWN
-                    }
-
-                /**
-                 * Returns an enum member corresponding to this class instance's value.
-                 *
-                 * Use the [value] method instead if you're uncertain the value is always known and
-                 * don't want to throw for the unknown case.
-                 *
-                 * @throws HelloWorldTestinggggInvalidDataException if this class instance's value
-                 *   is a not a known member.
-                 */
-                fun known(): Known =
-                    when (this) {
-                        REJECTED -> Known.REJECTED
-                        else ->
-                            throw HelloWorldTestinggggInvalidDataException(
-                                "Unknown Outcome: $value"
-                            )
-                    }
-
-                /**
-                 * Returns this class instance's primitive wire representation.
-                 *
-                 * This differs from the [toString] method because that method is primarily for
-                 * debugging and generally doesn't throw.
-                 *
-                 * @throws HelloWorldTestinggggInvalidDataException if this class instance's value
-                 *   does not have the expected primitive type.
-                 */
-                fun asString(): String =
-                    _value().asString()
-                        ?: throw HelloWorldTestinggggInvalidDataException("Value is not a String")
-
-                private var validated: Boolean = false
-
-                /**
-                 * Validates that the types of all values in this object match their expected types
-                 * recursively.
-                 *
-                 * This method is _not_ forwards compatible with new types from the API for existing
-                 * fields.
-                 *
-                 * @throws HelloWorldTestinggggInvalidDataException if any value type in this object
-                 *   doesn't match its expected type.
-                 */
-                fun validate(): Outcome = apply {
-                    if (validated) {
-                        return@apply
-                    }
-
-                    known()
-                    validated = true
-                }
-
-                fun isValid(): Boolean =
-                    try {
-                        validate()
-                        true
-                    } catch (e: HelloWorldTestinggggInvalidDataException) {
-                        false
-                    }
-
-                /**
-                 * Returns a score indicating how many valid values are contained in this object
-                 * recursively.
-                 *
-                 * Used for best match union deserialization.
-                 */
-                internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
-
-                override fun equals(other: Any?): Boolean {
-                    if (this === other) {
-                        return true
-                    }
-
-                    return other is Outcome && value == other.value
-                }
-
-                override fun hashCode() = value.hashCode()
-
-                override fun toString() = value.toString()
-            }
 
             class Reason @JsonCreator private constructor(private val value: JsonField<String>) :
                 Enum {
@@ -4176,7 +3938,7 @@ private constructor(
         @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val escalatedTo: JsonField<EscalatedTo>,
-            private val outcome: JsonField<Outcome>,
+            private val outcome: JsonValue,
             private val reviewAfter: JsonField<OffsetDateTime>,
             private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
@@ -4186,9 +3948,7 @@ private constructor(
                 @JsonProperty("escalatedTo")
                 @ExcludeMissing
                 escalatedTo: JsonField<EscalatedTo> = JsonMissing.of(),
-                @JsonProperty("outcome")
-                @ExcludeMissing
-                outcome: JsonField<Outcome> = JsonMissing.of(),
+                @JsonProperty("outcome") @ExcludeMissing outcome: JsonValue = JsonMissing.of(),
                 @JsonProperty("reviewAfter")
                 @ExcludeMissing
                 reviewAfter: JsonField<OffsetDateTime> = JsonMissing.of(),
@@ -4202,11 +3962,15 @@ private constructor(
             fun escalatedTo(): EscalatedTo = escalatedTo.getRequired("escalatedTo")
 
             /**
-             * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected
-             *   type or is unexpectedly missing or null (e.g. if the server responded with an
-             *   unexpected value).
+             * Expected to always return the following:
+             * ```kotlin
+             * JsonValue.from("escalated")
+             * ```
+             *
+             * However, this method can be useful for debugging and logging (e.g. if the server
+             * responded with an unexpected value).
              */
-            fun outcome(): Outcome = outcome.getRequired("outcome")
+            @JsonProperty("outcome") @ExcludeMissing fun _outcome(): JsonValue = outcome
 
             /**
              * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected
@@ -4223,13 +3987,6 @@ private constructor(
             @JsonProperty("escalatedTo")
             @ExcludeMissing
             fun _escalatedTo(): JsonField<EscalatedTo> = escalatedTo
-
-            /**
-             * Returns the raw JSON value of [outcome].
-             *
-             * Unlike [outcome], this method doesn't throw if the JSON field has an unexpected type.
-             */
-            @JsonProperty("outcome") @ExcludeMissing fun _outcome(): JsonField<Outcome> = outcome
 
             /**
              * Returns the raw JSON value of [reviewAfter].
@@ -4261,7 +4018,6 @@ private constructor(
                  * The following fields are required:
                  * ```kotlin
                  * .escalatedTo()
-                 * .outcome()
                  * ```
                  */
                 fun builder() = Builder()
@@ -4271,7 +4027,7 @@ private constructor(
             class Builder internal constructor() {
 
                 private var escalatedTo: JsonField<EscalatedTo>? = null
-                private var outcome: JsonField<Outcome>? = null
+                private var outcome: JsonValue = JsonValue.from("escalated")
                 private var reviewAfter: JsonField<OffsetDateTime> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -4295,16 +4051,19 @@ private constructor(
                     this.escalatedTo = escalatedTo
                 }
 
-                fun outcome(outcome: Outcome) = outcome(JsonField.of(outcome))
-
                 /**
-                 * Sets [Builder.outcome] to an arbitrary JSON value.
+                 * Sets the field to an arbitrary JSON value.
                  *
-                 * You should usually call [Builder.outcome] with a well-typed [Outcome] value
-                 * instead. This method is primarily for setting the field to an undocumented or not
-                 * yet supported value.
+                 * It is usually unnecessary to call this method because the field defaults to the
+                 * following:
+                 * ```kotlin
+                 * JsonValue.from("escalated")
+                 * ```
+                 *
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
                  */
-                fun outcome(outcome: JsonField<Outcome>) = apply { this.outcome = outcome }
+                fun outcome(outcome: JsonValue) = apply { this.outcome = outcome }
 
                 fun reviewAfter(reviewAfter: OffsetDateTime) =
                     reviewAfter(JsonField.of(reviewAfter))
@@ -4350,7 +4109,6 @@ private constructor(
                  * The following fields are required:
                  * ```kotlin
                  * .escalatedTo()
-                 * .outcome()
                  * ```
                  *
                  * @throws IllegalStateException if any required field is unset.
@@ -4358,7 +4116,7 @@ private constructor(
                 fun build(): DecisionEscalated =
                     DecisionEscalated(
                         checkRequired("escalatedTo", escalatedTo),
-                        checkRequired("outcome", outcome),
+                        outcome,
                         reviewAfter,
                         additionalProperties.toMutableMap(),
                     )
@@ -4382,7 +4140,13 @@ private constructor(
                 }
 
                 escalatedTo().validate()
-                outcome().validate()
+                _outcome().let {
+                    if (it != JsonValue.from("escalated")) {
+                        throw HelloWorldTestinggggInvalidDataException(
+                            "'outcome' is invalid, received $it"
+                        )
+                    }
+                }
                 reviewAfter()
                 validated = true
             }
@@ -4403,7 +4167,7 @@ private constructor(
              */
             internal fun validity(): Int =
                 (escalatedTo.asKnown()?.validity() ?: 0) +
-                    (outcome.asKnown()?.validity() ?: 0) +
+                    outcome.let { if (it == JsonValue.from("escalated")) 1 else 0 } +
                     (if (reviewAfter.asKnown() == null) 0 else 1)
 
             class EscalatedTo
@@ -4809,6 +4573,263 @@ private constructor(
                     "EscalatedTo{team=$team, contact=$contact, additionalProperties=$additionalProperties}"
             }
 
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is DecisionEscalated &&
+                    escalatedTo == other.escalatedTo &&
+                    outcome == other.outcome &&
+                    reviewAfter == other.reviewAfter &&
+                    additionalProperties == other.additionalProperties
+            }
+
+            private val hashCode: Int by lazy {
+                Objects.hash(escalatedTo, outcome, reviewAfter, additionalProperties)
+            }
+
+            override fun hashCode(): Int = hashCode
+
+            override fun toString() =
+                "DecisionEscalated{escalatedTo=$escalatedTo, outcome=$outcome, reviewAfter=$reviewAfter, additionalProperties=$additionalProperties}"
+        }
+
+        /** The applicant or shelter withdrew before a decision was finalized. */
+        class DecisionWithdrawn
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+        private constructor(
+            private val outcome: JsonField<Outcome>,
+            private val withdrawnBy: JsonField<WithdrawnBy>,
+            private val withdrawnAt: JsonField<OffsetDateTime>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
+        ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("outcome")
+                @ExcludeMissing
+                outcome: JsonField<Outcome> = JsonMissing.of(),
+                @JsonProperty("withdrawnBy")
+                @ExcludeMissing
+                withdrawnBy: JsonField<WithdrawnBy> = JsonMissing.of(),
+                @JsonProperty("withdrawnAt")
+                @ExcludeMissing
+                withdrawnAt: JsonField<OffsetDateTime> = JsonMissing.of(),
+            ) : this(outcome, withdrawnBy, withdrawnAt, mutableMapOf())
+
+            /**
+             * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected
+             *   type or is unexpectedly missing or null (e.g. if the server responded with an
+             *   unexpected value).
+             */
+            fun outcome(): Outcome = outcome.getRequired("outcome")
+
+            /**
+             * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected
+             *   type or is unexpectedly missing or null (e.g. if the server responded with an
+             *   unexpected value).
+             */
+            fun withdrawnBy(): WithdrawnBy = withdrawnBy.getRequired("withdrawnBy")
+
+            /**
+             * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected
+             *   type (e.g. if the server responded with an unexpected value).
+             */
+            fun withdrawnAt(): OffsetDateTime? = withdrawnAt.getNullable("withdrawnAt")
+
+            /**
+             * Returns the raw JSON value of [outcome].
+             *
+             * Unlike [outcome], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("outcome") @ExcludeMissing fun _outcome(): JsonField<Outcome> = outcome
+
+            /**
+             * Returns the raw JSON value of [withdrawnBy].
+             *
+             * Unlike [withdrawnBy], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
+            @JsonProperty("withdrawnBy")
+            @ExcludeMissing
+            fun _withdrawnBy(): JsonField<WithdrawnBy> = withdrawnBy
+
+            /**
+             * Returns the raw JSON value of [withdrawnAt].
+             *
+             * Unlike [withdrawnAt], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
+            @JsonProperty("withdrawnAt")
+            @ExcludeMissing
+            fun _withdrawnAt(): JsonField<OffsetDateTime> = withdrawnAt
+
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
+            @JsonAnyGetter
+            @ExcludeMissing
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
+
+            fun toBuilder() = Builder().from(this)
+
+            companion object {
+
+                /**
+                 * Returns a mutable builder for constructing an instance of [DecisionWithdrawn].
+                 *
+                 * The following fields are required:
+                 * ```kotlin
+                 * .outcome()
+                 * .withdrawnBy()
+                 * ```
+                 */
+                fun builder() = Builder()
+            }
+
+            /** A builder for [DecisionWithdrawn]. */
+            class Builder internal constructor() {
+
+                private var outcome: JsonField<Outcome>? = null
+                private var withdrawnBy: JsonField<WithdrawnBy>? = null
+                private var withdrawnAt: JsonField<OffsetDateTime> = JsonMissing.of()
+                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+                internal fun from(decisionWithdrawn: DecisionWithdrawn) = apply {
+                    outcome = decisionWithdrawn.outcome
+                    withdrawnBy = decisionWithdrawn.withdrawnBy
+                    withdrawnAt = decisionWithdrawn.withdrawnAt
+                    additionalProperties = decisionWithdrawn.additionalProperties.toMutableMap()
+                }
+
+                fun outcome(outcome: Outcome) = outcome(JsonField.of(outcome))
+
+                /**
+                 * Sets [Builder.outcome] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.outcome] with a well-typed [Outcome] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun outcome(outcome: JsonField<Outcome>) = apply { this.outcome = outcome }
+
+                fun withdrawnBy(withdrawnBy: WithdrawnBy) = withdrawnBy(JsonField.of(withdrawnBy))
+
+                /**
+                 * Sets [Builder.withdrawnBy] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.withdrawnBy] with a well-typed [WithdrawnBy]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
+                 */
+                fun withdrawnBy(withdrawnBy: JsonField<WithdrawnBy>) = apply {
+                    this.withdrawnBy = withdrawnBy
+                }
+
+                fun withdrawnAt(withdrawnAt: OffsetDateTime) =
+                    withdrawnAt(JsonField.of(withdrawnAt))
+
+                /**
+                 * Sets [Builder.withdrawnAt] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.withdrawnAt] with a well-typed [OffsetDateTime]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
+                 */
+                fun withdrawnAt(withdrawnAt: JsonField<OffsetDateTime>) = apply {
+                    this.withdrawnAt = withdrawnAt
+                }
+
+                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
+
+                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                    additionalProperties.put(key, value)
+                }
+
+                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                    apply {
+                        this.additionalProperties.putAll(additionalProperties)
+                    }
+
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
+                /**
+                 * Returns an immutable instance of [DecisionWithdrawn].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 *
+                 * The following fields are required:
+                 * ```kotlin
+                 * .outcome()
+                 * .withdrawnBy()
+                 * ```
+                 *
+                 * @throws IllegalStateException if any required field is unset.
+                 */
+                fun build(): DecisionWithdrawn =
+                    DecisionWithdrawn(
+                        checkRequired("outcome", outcome),
+                        checkRequired("withdrawnBy", withdrawnBy),
+                        withdrawnAt,
+                        additionalProperties.toMutableMap(),
+                    )
+            }
+
+            private var validated: Boolean = false
+
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws HelloWorldTestinggggInvalidDataException if any value type in this object
+             *   doesn't match its expected type.
+             */
+            fun validate(): DecisionWithdrawn = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                outcome().validate()
+                withdrawnBy().validate()
+                withdrawnAt()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: HelloWorldTestinggggInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            internal fun validity(): Int =
+                (outcome.asKnown()?.validity() ?: 0) +
+                    (withdrawnBy.asKnown()?.validity() ?: 0) +
+                    (if (withdrawnAt.asKnown() == null) 0 else 1)
+
             class Outcome @JsonCreator private constructor(private val value: JsonField<String>) :
                 Enum {
 
@@ -4824,14 +4845,17 @@ private constructor(
 
                 companion object {
 
-                    val ESCALATED = of("escalated")
+                    val WITHDRAWN = of("withdrawn")
+
+                    val EXPIRED = of("expired")
 
                     fun of(value: String) = Outcome(JsonField.of(value))
                 }
 
                 /** An enum containing [Outcome]'s known values. */
                 enum class Known {
-                    ESCALATED
+                    WITHDRAWN,
+                    EXPIRED,
                 }
 
                 /**
@@ -4844,7 +4868,8 @@ private constructor(
                  * - It was constructed with an arbitrary value using the [of] method.
                  */
                 enum class Value {
-                    ESCALATED,
+                    WITHDRAWN,
+                    EXPIRED,
                     /**
                      * An enum member indicating that [Outcome] was instantiated with an unknown
                      * value.
@@ -4861,7 +4886,8 @@ private constructor(
                  */
                 fun value(): Value =
                     when (this) {
-                        ESCALATED -> Value.ESCALATED
+                        WITHDRAWN -> Value.WITHDRAWN
+                        EXPIRED -> Value.EXPIRED
                         else -> Value._UNKNOWN
                     }
 
@@ -4876,7 +4902,8 @@ private constructor(
                  */
                 fun known(): Known =
                     when (this) {
-                        ESCALATED -> Known.ESCALATED
+                        WITHDRAWN -> Known.WITHDRAWN
+                        EXPIRED -> Known.EXPIRED
                         else ->
                             throw HelloWorldTestinggggInvalidDataException(
                                 "Unknown Outcome: $value"
@@ -4946,26 +4973,176 @@ private constructor(
                 override fun toString() = value.toString()
             }
 
+            class WithdrawnBy
+            @JsonCreator
+            private constructor(private val value: JsonField<String>) : Enum {
+
+                /**
+                 * Returns this class instance's raw value.
+                 *
+                 * This is usually only useful if this instance was deserialized from data that
+                 * doesn't match any known member, and you want to know that value. For example, if
+                 * the SDK is on an older version than the API, then the API may respond with new
+                 * members that the SDK is unaware of.
+                 */
+                @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+                companion object {
+
+                    val APPLICANT = of("applicant")
+
+                    val SHELTER = of("shelter")
+
+                    val SYSTEM = of("system")
+
+                    fun of(value: String) = WithdrawnBy(JsonField.of(value))
+                }
+
+                /** An enum containing [WithdrawnBy]'s known values. */
+                enum class Known {
+                    APPLICANT,
+                    SHELTER,
+                    SYSTEM,
+                }
+
+                /**
+                 * An enum containing [WithdrawnBy]'s known values, as well as an [_UNKNOWN] member.
+                 *
+                 * An instance of [WithdrawnBy] can contain an unknown value in a couple of cases:
+                 * - It was deserialized from data that doesn't match any known member. For example,
+                 *   if the SDK is on an older version than the API, then the API may respond with
+                 *   new members that the SDK is unaware of.
+                 * - It was constructed with an arbitrary value using the [of] method.
+                 */
+                enum class Value {
+                    APPLICANT,
+                    SHELTER,
+                    SYSTEM,
+                    /**
+                     * An enum member indicating that [WithdrawnBy] was instantiated with an unknown
+                     * value.
+                     */
+                    _UNKNOWN,
+                }
+
+                /**
+                 * Returns an enum member corresponding to this class instance's value, or
+                 * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+                 *
+                 * Use the [known] method instead if you're certain the value is always known or if
+                 * you want to throw for the unknown case.
+                 */
+                fun value(): Value =
+                    when (this) {
+                        APPLICANT -> Value.APPLICANT
+                        SHELTER -> Value.SHELTER
+                        SYSTEM -> Value.SYSTEM
+                        else -> Value._UNKNOWN
+                    }
+
+                /**
+                 * Returns an enum member corresponding to this class instance's value.
+                 *
+                 * Use the [value] method instead if you're uncertain the value is always known and
+                 * don't want to throw for the unknown case.
+                 *
+                 * @throws HelloWorldTestinggggInvalidDataException if this class instance's value
+                 *   is a not a known member.
+                 */
+                fun known(): Known =
+                    when (this) {
+                        APPLICANT -> Known.APPLICANT
+                        SHELTER -> Known.SHELTER
+                        SYSTEM -> Known.SYSTEM
+                        else ->
+                            throw HelloWorldTestinggggInvalidDataException(
+                                "Unknown WithdrawnBy: $value"
+                            )
+                    }
+
+                /**
+                 * Returns this class instance's primitive wire representation.
+                 *
+                 * This differs from the [toString] method because that method is primarily for
+                 * debugging and generally doesn't throw.
+                 *
+                 * @throws HelloWorldTestinggggInvalidDataException if this class instance's value
+                 *   does not have the expected primitive type.
+                 */
+                fun asString(): String =
+                    _value().asString()
+                        ?: throw HelloWorldTestinggggInvalidDataException("Value is not a String")
+
+                private var validated: Boolean = false
+
+                /**
+                 * Validates that the types of all values in this object match their expected types
+                 * recursively.
+                 *
+                 * This method is _not_ forwards compatible with new types from the API for existing
+                 * fields.
+                 *
+                 * @throws HelloWorldTestinggggInvalidDataException if any value type in this object
+                 *   doesn't match its expected type.
+                 */
+                fun validate(): WithdrawnBy = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    known()
+                    validated = true
+                }
+
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: HelloWorldTestinggggInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return other is WithdrawnBy && value == other.value
+                }
+
+                override fun hashCode() = value.hashCode()
+
+                override fun toString() = value.toString()
+            }
+
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
                     return true
                 }
 
-                return other is DecisionEscalated &&
-                    escalatedTo == other.escalatedTo &&
+                return other is DecisionWithdrawn &&
                     outcome == other.outcome &&
-                    reviewAfter == other.reviewAfter &&
+                    withdrawnBy == other.withdrawnBy &&
+                    withdrawnAt == other.withdrawnAt &&
                     additionalProperties == other.additionalProperties
             }
 
             private val hashCode: Int by lazy {
-                Objects.hash(escalatedTo, outcome, reviewAfter, additionalProperties)
+                Objects.hash(outcome, withdrawnBy, withdrawnAt, additionalProperties)
             }
 
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "DecisionEscalated{escalatedTo=$escalatedTo, outcome=$outcome, reviewAfter=$reviewAfter, additionalProperties=$additionalProperties}"
+                "DecisionWithdrawn{outcome=$outcome, withdrawnBy=$withdrawnBy, withdrawnAt=$withdrawnAt, additionalProperties=$additionalProperties}"
         }
     }
 
@@ -5363,7 +5540,7 @@ private constructor(
     class LatestRejection
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
-        private val outcome: JsonField<Outcome>,
+        private val outcome: JsonValue,
         private val reason: JsonField<Reason>,
         private val appealDeadline: JsonField<OffsetDateTime>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -5371,7 +5548,7 @@ private constructor(
 
         @JsonCreator
         private constructor(
-            @JsonProperty("outcome") @ExcludeMissing outcome: JsonField<Outcome> = JsonMissing.of(),
+            @JsonProperty("outcome") @ExcludeMissing outcome: JsonValue = JsonMissing.of(),
             @JsonProperty("reason") @ExcludeMissing reason: JsonField<Reason> = JsonMissing.of(),
             @JsonProperty("appealDeadline")
             @ExcludeMissing
@@ -5379,11 +5556,15 @@ private constructor(
         ) : this(outcome, reason, appealDeadline, mutableMapOf())
 
         /**
-         * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
-         *   or is unexpectedly missing or null (e.g. if the server responded with an unexpected
-         *   value).
+         * Expected to always return the following:
+         * ```kotlin
+         * JsonValue.from("rejected")
+         * ```
+         *
+         * However, this method can be useful for debugging and logging (e.g. if the server
+         * responded with an unexpected value).
          */
-        fun outcome(): Outcome = outcome.getRequired("outcome")
+        @JsonProperty("outcome") @ExcludeMissing fun _outcome(): JsonValue = outcome
 
         /**
          * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
@@ -5397,13 +5578,6 @@ private constructor(
          *   (e.g. if the server responded with an unexpected value).
          */
         fun appealDeadline(): OffsetDateTime? = appealDeadline.getNullable("appealDeadline")
-
-        /**
-         * Returns the raw JSON value of [outcome].
-         *
-         * Unlike [outcome], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("outcome") @ExcludeMissing fun _outcome(): JsonField<Outcome> = outcome
 
         /**
          * Returns the raw JSON value of [reason].
@@ -5441,7 +5615,6 @@ private constructor(
              *
              * The following fields are required:
              * ```kotlin
-             * .outcome()
              * .reason()
              * ```
              */
@@ -5451,7 +5624,7 @@ private constructor(
         /** A builder for [LatestRejection]. */
         class Builder internal constructor() {
 
-            private var outcome: JsonField<Outcome>? = null
+            private var outcome: JsonValue = JsonValue.from("rejected")
             private var reason: JsonField<Reason>? = null
             private var appealDeadline: JsonField<OffsetDateTime> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -5463,16 +5636,19 @@ private constructor(
                 additionalProperties = latestRejection.additionalProperties.toMutableMap()
             }
 
-            fun outcome(outcome: Outcome) = outcome(JsonField.of(outcome))
-
             /**
-             * Sets [Builder.outcome] to an arbitrary JSON value.
+             * Sets the field to an arbitrary JSON value.
              *
-             * You should usually call [Builder.outcome] with a well-typed [Outcome] value instead.
+             * It is usually unnecessary to call this method because the field defaults to the
+             * following:
+             * ```kotlin
+             * JsonValue.from("rejected")
+             * ```
+             *
              * This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun outcome(outcome: JsonField<Outcome>) = apply { this.outcome = outcome }
+            fun outcome(outcome: JsonValue) = apply { this.outcome = outcome }
 
             fun reason(reason: Reason) = reason(JsonField.of(reason))
 
@@ -5525,7 +5701,6 @@ private constructor(
              *
              * The following fields are required:
              * ```kotlin
-             * .outcome()
              * .reason()
              * ```
              *
@@ -5533,7 +5708,7 @@ private constructor(
              */
             fun build(): LatestRejection =
                 LatestRejection(
-                    checkRequired("outcome", outcome),
+                    outcome,
                     checkRequired("reason", reason),
                     appealDeadline,
                     additionalProperties.toMutableMap(),
@@ -5556,7 +5731,13 @@ private constructor(
                 return@apply
             }
 
-            outcome().validate()
+            _outcome().let {
+                if (it != JsonValue.from("rejected")) {
+                    throw HelloWorldTestinggggInvalidDataException(
+                        "'outcome' is invalid, received $it"
+                    )
+                }
+            }
             reason().validate()
             appealDeadline()
             validated = true
@@ -5577,143 +5758,9 @@ private constructor(
          * Used for best match union deserialization.
          */
         internal fun validity(): Int =
-            (outcome.asKnown()?.validity() ?: 0) +
+            outcome.let { if (it == JsonValue.from("rejected")) 1 else 0 } +
                 (reason.asKnown()?.validity() ?: 0) +
                 (if (appealDeadline.asKnown() == null) 0 else 1)
-
-        class Outcome @JsonCreator private constructor(private val value: JsonField<String>) :
-            Enum {
-
-            /**
-             * Returns this class instance's raw value.
-             *
-             * This is usually only useful if this instance was deserialized from data that doesn't
-             * match any known member, and you want to know that value. For example, if the SDK is
-             * on an older version than the API, then the API may respond with new members that the
-             * SDK is unaware of.
-             */
-            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-            companion object {
-
-                val REJECTED = of("rejected")
-
-                fun of(value: String) = Outcome(JsonField.of(value))
-            }
-
-            /** An enum containing [Outcome]'s known values. */
-            enum class Known {
-                REJECTED
-            }
-
-            /**
-             * An enum containing [Outcome]'s known values, as well as an [_UNKNOWN] member.
-             *
-             * An instance of [Outcome] can contain an unknown value in a couple of cases:
-             * - It was deserialized from data that doesn't match any known member. For example, if
-             *   the SDK is on an older version than the API, then the API may respond with new
-             *   members that the SDK is unaware of.
-             * - It was constructed with an arbitrary value using the [of] method.
-             */
-            enum class Value {
-                REJECTED,
-                /**
-                 * An enum member indicating that [Outcome] was instantiated with an unknown value.
-                 */
-                _UNKNOWN,
-            }
-
-            /**
-             * Returns an enum member corresponding to this class instance's value, or
-             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
-             *
-             * Use the [known] method instead if you're certain the value is always known or if you
-             * want to throw for the unknown case.
-             */
-            fun value(): Value =
-                when (this) {
-                    REJECTED -> Value.REJECTED
-                    else -> Value._UNKNOWN
-                }
-
-            /**
-             * Returns an enum member corresponding to this class instance's value.
-             *
-             * Use the [value] method instead if you're uncertain the value is always known and
-             * don't want to throw for the unknown case.
-             *
-             * @throws HelloWorldTestinggggInvalidDataException if this class instance's value is a
-             *   not a known member.
-             */
-            fun known(): Known =
-                when (this) {
-                    REJECTED -> Known.REJECTED
-                    else ->
-                        throw HelloWorldTestinggggInvalidDataException("Unknown Outcome: $value")
-                }
-
-            /**
-             * Returns this class instance's primitive wire representation.
-             *
-             * This differs from the [toString] method because that method is primarily for
-             * debugging and generally doesn't throw.
-             *
-             * @throws HelloWorldTestinggggInvalidDataException if this class instance's value does
-             *   not have the expected primitive type.
-             */
-            fun asString(): String =
-                _value().asString()
-                    ?: throw HelloWorldTestinggggInvalidDataException("Value is not a String")
-
-            private var validated: Boolean = false
-
-            /**
-             * Validates that the types of all values in this object match their expected types
-             * recursively.
-             *
-             * This method is _not_ forwards compatible with new types from the API for existing
-             * fields.
-             *
-             * @throws HelloWorldTestinggggInvalidDataException if any value type in this object
-             *   doesn't match its expected type.
-             */
-            fun validate(): Outcome = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                known()
-                validated = true
-            }
-
-            fun isValid(): Boolean =
-                try {
-                    validate()
-                    true
-                } catch (e: HelloWorldTestinggggInvalidDataException) {
-                    false
-                }
-
-            /**
-             * Returns a score indicating how many valid values are contained in this object
-             * recursively.
-             *
-             * Used for best match union deserialization.
-             */
-            internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is Outcome && value == other.value
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-        }
 
         class Reason @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 

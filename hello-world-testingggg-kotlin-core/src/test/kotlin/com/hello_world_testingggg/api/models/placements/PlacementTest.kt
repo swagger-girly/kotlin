@@ -51,7 +51,6 @@ internal class PlacementTest {
                         .decision(
                             Application.Decision.DecisionApproved.builder()
                                 .approvedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                                .outcome(Application.Decision.DecisionApproved.Outcome.APPROVED)
                                 .addCondition("string")
                                 .build()
                         )
@@ -65,7 +64,6 @@ internal class PlacementTest {
                         )
                         .latestRejection(
                             Application.LatestRejection.builder()
-                                .outcome(Application.LatestRejection.Outcome.REJECTED)
                                 .reason(Application.LatestRejection.Reason.POLICY)
                                 .appealDeadline(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                                 .build()
@@ -75,6 +73,7 @@ internal class PlacementTest {
                                 .name("doggie")
                                 .addPhotoUrl("string")
                                 .id(10L)
+                                .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
                                 .category(
                                     Pet.Category.builder()
                                         .id(1L)
@@ -91,6 +90,45 @@ internal class PlacementTest {
                 )
                 .createdAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .status(Placement.Status.PENDING)
+                .addActivity(
+                    Placement.Activity.PlacementTransferEvent.builder()
+                        .id("id")
+                        .leg(
+                            TransferLeg.builder()
+                                .location(
+                                    Address.builder()
+                                        .city("Palo Alto")
+                                        .geo(
+                                            Address.Geo.builder()
+                                                .latitude(37.4443)
+                                                .longitude(-122.1598)
+                                                .build()
+                                        )
+                                        .state("CA")
+                                        .street("437 Lytton")
+                                        .zip("94301")
+                                        .build()
+                                )
+                                .contact(
+                                    TransferLeg.Contact.builder()
+                                        .name("name")
+                                        .phone("phone")
+                                        .build()
+                                )
+                                .cost(Money.builder().amount(2500L).currency("USD").build())
+                                .window(
+                                    TransferLeg.Window.builder()
+                                        .end(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                                        .start(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .occurredAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .type(Placement.Activity.PlacementTransferEvent.Type.TRANSFER)
+                        .note("note")
+                        .build()
+                )
                 .addEvent(
                     PlacementEvent.PlacementTransferEvent.builder()
                         .id("id")
@@ -320,7 +358,6 @@ internal class PlacementTest {
                     .decision(
                         Application.Decision.DecisionApproved.builder()
                             .approvedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                            .outcome(Application.Decision.DecisionApproved.Outcome.APPROVED)
                             .addCondition("string")
                             .build()
                     )
@@ -334,7 +371,6 @@ internal class PlacementTest {
                     )
                     .latestRejection(
                         Application.LatestRejection.builder()
-                            .outcome(Application.LatestRejection.Outcome.REJECTED)
                             .reason(Application.LatestRejection.Reason.POLICY)
                             .appealDeadline(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                             .build()
@@ -344,6 +380,7 @@ internal class PlacementTest {
                             .name("doggie")
                             .addPhotoUrl("string")
                             .id(10L)
+                            .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
                             .category(
                                 Pet.Category.builder()
                                     .id(1L)
@@ -361,6 +398,48 @@ internal class PlacementTest {
         assertThat(placement.createdAt())
             .isEqualTo(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
         assertThat(placement.status()).isEqualTo(Placement.Status.PENDING)
+        assertThat(placement.activity())
+            .containsExactly(
+                Placement.Activity.ofPlacementTransferEvent(
+                    Placement.Activity.PlacementTransferEvent.builder()
+                        .id("id")
+                        .leg(
+                            TransferLeg.builder()
+                                .location(
+                                    Address.builder()
+                                        .city("Palo Alto")
+                                        .geo(
+                                            Address.Geo.builder()
+                                                .latitude(37.4443)
+                                                .longitude(-122.1598)
+                                                .build()
+                                        )
+                                        .state("CA")
+                                        .street("437 Lytton")
+                                        .zip("94301")
+                                        .build()
+                                )
+                                .contact(
+                                    TransferLeg.Contact.builder()
+                                        .name("name")
+                                        .phone("phone")
+                                        .build()
+                                )
+                                .cost(Money.builder().amount(2500L).currency("USD").build())
+                                .window(
+                                    TransferLeg.Window.builder()
+                                        .end(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                                        .start(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .occurredAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .type(Placement.Activity.PlacementTransferEvent.Type.TRANSFER)
+                        .note("note")
+                        .build()
+                )
+            )
         assertThat(placement.events())
             .containsExactly(
                 PlacementEvent.ofTransfer(
@@ -589,7 +668,6 @@ internal class PlacementTest {
                         .decision(
                             Application.Decision.DecisionApproved.builder()
                                 .approvedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                                .outcome(Application.Decision.DecisionApproved.Outcome.APPROVED)
                                 .addCondition("string")
                                 .build()
                         )
@@ -603,7 +681,6 @@ internal class PlacementTest {
                         )
                         .latestRejection(
                             Application.LatestRejection.builder()
-                                .outcome(Application.LatestRejection.Outcome.REJECTED)
                                 .reason(Application.LatestRejection.Reason.POLICY)
                                 .appealDeadline(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                                 .build()
@@ -613,6 +690,7 @@ internal class PlacementTest {
                                 .name("doggie")
                                 .addPhotoUrl("string")
                                 .id(10L)
+                                .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
                                 .category(
                                     Pet.Category.builder()
                                         .id(1L)
@@ -629,6 +707,45 @@ internal class PlacementTest {
                 )
                 .createdAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .status(Placement.Status.PENDING)
+                .addActivity(
+                    Placement.Activity.PlacementTransferEvent.builder()
+                        .id("id")
+                        .leg(
+                            TransferLeg.builder()
+                                .location(
+                                    Address.builder()
+                                        .city("Palo Alto")
+                                        .geo(
+                                            Address.Geo.builder()
+                                                .latitude(37.4443)
+                                                .longitude(-122.1598)
+                                                .build()
+                                        )
+                                        .state("CA")
+                                        .street("437 Lytton")
+                                        .zip("94301")
+                                        .build()
+                                )
+                                .contact(
+                                    TransferLeg.Contact.builder()
+                                        .name("name")
+                                        .phone("phone")
+                                        .build()
+                                )
+                                .cost(Money.builder().amount(2500L).currency("USD").build())
+                                .window(
+                                    TransferLeg.Window.builder()
+                                        .end(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                                        .start(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .occurredAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .type(Placement.Activity.PlacementTransferEvent.Type.TRANSFER)
+                        .note("note")
+                        .build()
+                )
                 .addEvent(
                     PlacementEvent.PlacementTransferEvent.builder()
                         .id("id")

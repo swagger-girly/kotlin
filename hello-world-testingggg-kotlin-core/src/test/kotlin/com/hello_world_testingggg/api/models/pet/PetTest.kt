@@ -16,6 +16,7 @@ internal class PetTest {
                 .name("doggie")
                 .addPhotoUrl("string")
                 .id(10L)
+                .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
                 .category(
                     Pet.Category.builder().id(1L).name("Dogs").subcategories(listOf()).build()
                 )
@@ -27,6 +28,7 @@ internal class PetTest {
         assertThat(pet.name()).isEqualTo("doggie")
         assertThat(pet.photoUrls()).containsExactly("string")
         assertThat(pet.id()).isEqualTo(10L)
+        assertThat(pet.acquisitionChannel()).isEqualTo(Pet.AcquisitionChannel.BREEDER)
         assertThat(pet.category())
             .isEqualTo(Pet.Category.builder().id(1L).name("Dogs").subcategories(listOf()).build())
         assertThat(pet.microchipId()).isEqualTo(Pet.MicrochipId.ofString("string"))
@@ -42,6 +44,7 @@ internal class PetTest {
                 .name("doggie")
                 .addPhotoUrl("string")
                 .id(10L)
+                .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
                 .category(
                     Pet.Category.builder().id(1L).name("Dogs").subcategories(listOf()).build()
                 )

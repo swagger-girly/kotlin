@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import com.hello_world_testingggg.api.core.BaseDeserializer
 import com.hello_world_testingggg.api.core.BaseSerializer
+import com.hello_world_testingggg.api.core.Enum
 import com.hello_world_testingggg.api.core.ExcludeMissing
 import com.hello_world_testingggg.api.core.JsonField
 import com.hello_world_testingggg.api.core.JsonMissing
@@ -34,6 +35,7 @@ private constructor(
     private val name: JsonField<String>,
     private val photoUrls: JsonField<List<String>>,
     private val id: JsonField<Long>,
+    private val acquisitionChannel: JsonField<AcquisitionChannel>,
     private val category: JsonField<Category>,
     private val microchipId: JsonField<MicrochipId>,
     private val status: JsonField<PetStatus>,
@@ -48,13 +50,26 @@ private constructor(
         @ExcludeMissing
         photoUrls: JsonField<List<String>> = JsonMissing.of(),
         @JsonProperty("id") @ExcludeMissing id: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("acquisitionChannel")
+        @ExcludeMissing
+        acquisitionChannel: JsonField<AcquisitionChannel> = JsonMissing.of(),
         @JsonProperty("category") @ExcludeMissing category: JsonField<Category> = JsonMissing.of(),
         @JsonProperty("microchipId")
         @ExcludeMissing
         microchipId: JsonField<MicrochipId> = JsonMissing.of(),
         @JsonProperty("status") @ExcludeMissing status: JsonField<PetStatus> = JsonMissing.of(),
         @JsonProperty("tags") @ExcludeMissing tags: JsonField<List<Tag>> = JsonMissing.of(),
-    ) : this(name, photoUrls, id, category, microchipId, status, tags, mutableMapOf())
+    ) : this(
+        name,
+        photoUrls,
+        id,
+        acquisitionChannel,
+        category,
+        microchipId,
+        status,
+        tags,
+        mutableMapOf(),
+    )
 
     /**
      * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type or
@@ -73,6 +88,16 @@ private constructor(
      *   (e.g. if the server responded with an unexpected value).
      */
     fun id(): Long? = id.getNullable("id")
+
+    /**
+     * How the pet entered the store. Open enum: known channels plus forward-compatible free-form
+     * strings.
+     *
+     * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
+     *   (e.g. if the server responded with an unexpected value).
+     */
+    fun acquisitionChannel(): AcquisitionChannel? =
+        acquisitionChannel.getNullable("acquisitionChannel")
 
     /**
      * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
@@ -122,6 +147,16 @@ private constructor(
      * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<Long> = id
+
+    /**
+     * Returns the raw JSON value of [acquisitionChannel].
+     *
+     * Unlike [acquisitionChannel], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
+    @JsonProperty("acquisitionChannel")
+    @ExcludeMissing
+    fun _acquisitionChannel(): JsonField<AcquisitionChannel> = acquisitionChannel
 
     /**
      * Returns the raw JSON value of [category].
@@ -185,6 +220,7 @@ private constructor(
         private var name: JsonField<String>? = null
         private var photoUrls: JsonField<MutableList<String>>? = null
         private var id: JsonField<Long> = JsonMissing.of()
+        private var acquisitionChannel: JsonField<AcquisitionChannel> = JsonMissing.of()
         private var category: JsonField<Category> = JsonMissing.of()
         private var microchipId: JsonField<MicrochipId> = JsonMissing.of()
         private var status: JsonField<PetStatus> = JsonMissing.of()
@@ -195,6 +231,7 @@ private constructor(
             name = pet.name
             photoUrls = pet.photoUrls.map { it.toMutableList() }
             id = pet.id
+            acquisitionChannel = pet.acquisitionChannel
             category = pet.category
             microchipId = pet.microchipId
             status = pet.status
@@ -246,6 +283,33 @@ private constructor(
          * is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun id(id: JsonField<Long>) = apply { this.id = id }
+
+        /**
+         * How the pet entered the store. Open enum: known channels plus forward-compatible
+         * free-form strings.
+         */
+        fun acquisitionChannel(acquisitionChannel: AcquisitionChannel) =
+            acquisitionChannel(JsonField.of(acquisitionChannel))
+
+        /**
+         * Sets [Builder.acquisitionChannel] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.acquisitionChannel] with a well-typed
+         * [AcquisitionChannel] value instead. This method is primarily for setting the field to an
+         * undocumented or not yet supported value.
+         */
+        fun acquisitionChannel(acquisitionChannel: JsonField<AcquisitionChannel>) = apply {
+            this.acquisitionChannel = acquisitionChannel
+        }
+
+        /**
+         * Sets [acquisitionChannel] to an arbitrary [String].
+         *
+         * You should usually call [acquisitionChannel] with a well-typed [AcquisitionChannel]
+         * constant instead. This method is primarily for setting the field to an undocumented or
+         * not yet supported value.
+         */
+        fun acquisitionChannel(value: String) = acquisitionChannel(AcquisitionChannel.of(value))
 
         fun category(category: Category) = category(JsonField.of(category))
 
@@ -346,6 +410,7 @@ private constructor(
                 checkRequired("name", name),
                 checkRequired("photoUrls", photoUrls).map { it.toImmutable() },
                 id,
+                acquisitionChannel,
                 category,
                 microchipId,
                 status,
@@ -372,6 +437,7 @@ private constructor(
         name()
         photoUrls()
         id()
+        acquisitionChannel()
         category()?.validate()
         microchipId()?.validate()
         status()?.validate()
@@ -396,10 +462,170 @@ private constructor(
         (if (name.asKnown() == null) 0 else 1) +
             (photoUrls.asKnown()?.size ?: 0) +
             (if (id.asKnown() == null) 0 else 1) +
+            (if (acquisitionChannel.asKnown() == null) 0 else 1) +
             (category.asKnown()?.validity() ?: 0) +
             (microchipId.asKnown()?.validity() ?: 0) +
             (status.asKnown()?.validity() ?: 0) +
             (tags.asKnown()?.sumOf { it.validity().toInt() } ?: 0)
+
+    /**
+     * How the pet entered the store. Open enum: known channels plus forward-compatible free-form
+     * strings.
+     */
+    class AcquisitionChannel
+    @JsonCreator
+    private constructor(private val value: JsonField<String>) : Enum {
+
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        companion object {
+
+            val BREEDER = of("breeder")
+
+            val SHELTER = of("shelter")
+
+            val SURRENDER = of("surrender")
+
+            val TRANSFER = of("transfer")
+
+            fun of(value: String) = AcquisitionChannel(JsonField.of(value))
+        }
+
+        /** An enum containing [AcquisitionChannel]'s known values. */
+        enum class Known {
+            BREEDER,
+            SHELTER,
+            SURRENDER,
+            TRANSFER,
+        }
+
+        /**
+         * An enum containing [AcquisitionChannel]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [AcquisitionChannel] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
+        enum class Value {
+            BREEDER,
+            SHELTER,
+            SURRENDER,
+            TRANSFER,
+            /**
+             * An enum member indicating that [AcquisitionChannel] was instantiated with an unknown
+             * value.
+             */
+            _UNKNOWN,
+        }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
+        fun value(): Value =
+            when (this) {
+                BREEDER -> Value.BREEDER
+                SHELTER -> Value.SHELTER
+                SURRENDER -> Value.SURRENDER
+                TRANSFER -> Value.TRANSFER
+                else -> Value._UNKNOWN
+            }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws HelloWorldTestinggggInvalidDataException if this class instance's value is a not
+         *   a known member.
+         */
+        fun known(): Known =
+            when (this) {
+                BREEDER -> Known.BREEDER
+                SHELTER -> Known.SHELTER
+                SURRENDER -> Known.SURRENDER
+                TRANSFER -> Known.TRANSFER
+                else ->
+                    throw HelloWorldTestinggggInvalidDataException(
+                        "Unknown AcquisitionChannel: $value"
+                    )
+            }
+
+        /**
+         * Returns this class instance's primitive wire representation.
+         *
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
+         *
+         * @throws HelloWorldTestinggggInvalidDataException if this class instance's value does not
+         *   have the expected primitive type.
+         */
+        fun asString(): String =
+            _value().asString()
+                ?: throw HelloWorldTestinggggInvalidDataException("Value is not a String")
+
+        private var validated: Boolean = false
+
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws HelloWorldTestinggggInvalidDataException if any value type in this object doesn't
+         *   match its expected type.
+         */
+        fun validate(): AcquisitionChannel = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: HelloWorldTestinggggInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is AcquisitionChannel && value == other.value
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
+    }
 
     class Category
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
@@ -1030,6 +1256,7 @@ private constructor(
             name == other.name &&
             photoUrls == other.photoUrls &&
             id == other.id &&
+            acquisitionChannel == other.acquisitionChannel &&
             category == other.category &&
             microchipId == other.microchipId &&
             status == other.status &&
@@ -1038,11 +1265,21 @@ private constructor(
     }
 
     private val hashCode: Int by lazy {
-        Objects.hash(name, photoUrls, id, category, microchipId, status, tags, additionalProperties)
+        Objects.hash(
+            name,
+            photoUrls,
+            id,
+            acquisitionChannel,
+            category,
+            microchipId,
+            status,
+            tags,
+            additionalProperties,
+        )
     }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "Pet{name=$name, photoUrls=$photoUrls, id=$id, category=$category, microchipId=$microchipId, status=$status, tags=$tags, additionalProperties=$additionalProperties}"
+        "Pet{name=$name, photoUrls=$photoUrls, id=$id, acquisitionChannel=$acquisitionChannel, category=$category, microchipId=$microchipId, status=$status, tags=$tags, additionalProperties=$additionalProperties}"
 }
