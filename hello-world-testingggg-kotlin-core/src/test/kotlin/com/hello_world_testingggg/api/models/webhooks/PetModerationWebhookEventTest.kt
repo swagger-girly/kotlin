@@ -27,6 +27,7 @@ internal class PetModerationWebhookEventTest {
                         .name("doggie")
                         .addPhotoUrl("string")
                         .id(10L)
+                        .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
                         .category(
                             Pet.Category.builder()
                                 .id(1L)
@@ -59,6 +60,7 @@ internal class PetModerationWebhookEventTest {
                             .name("doggie")
                             .addPhotoUrl("string")
                             .id(10L)
+                            .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
                             .category(
                                 Pet.Category.builder()
                                     .id(1L)
@@ -92,6 +94,7 @@ internal class PetModerationWebhookEventTest {
                         .name("doggie")
                         .addPhotoUrl("string")
                         .id(10L)
+                        .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
                         .category(
                             Pet.Category.builder()
                                 .id(1L)
@@ -142,6 +145,7 @@ internal class PetModerationWebhookEventTest {
                             .name("doggie")
                             .addPhotoUrl("string")
                             .id(10L)
+                            .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
                             .category(
                                 Pet.Category.builder()
                                     .id(1L)

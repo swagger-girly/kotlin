@@ -19,7 +19,7 @@ internal class WebhookServiceAsyncTest {
         val webhookServiceAsync = client.webhooks()
 
         val payload =
-            "{\"pet\":{\"name\":\"doggie\",\"photoUrls\":[\"string\"],\"id\":10,\"category\":{\"id\":1,\"name\":\"Dogs\",\"subcategories\":[]},\"microchipId\":\"string\",\"status\":\"available\",\"tags\":[{\"id\":0,\"name\":\"name\"}]},\"type\":\"pet.created\"}"
+            "{\"pet\":{\"name\":\"doggie\",\"photoUrls\":[\"string\"],\"id\":10,\"acquisitionChannel\":\"breeder\",\"category\":{\"id\":1,\"name\":\"Dogs\",\"subcategories\":[]},\"microchipId\":\"string\",\"status\":\"available\",\"tags\":[{\"id\":0,\"name\":\"name\"}]},\"type\":\"pet.created\"}"
         val webhookSecret = "whsec_c2VjcmV0Cg=="
         val messageId = "1"
         val timestampSeconds = Instant.now().epochSecond

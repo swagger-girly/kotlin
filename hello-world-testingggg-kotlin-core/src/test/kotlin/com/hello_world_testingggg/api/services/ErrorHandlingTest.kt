@@ -76,6 +76,7 @@ internal class ErrorHandlingTest {
                         .name("doggie")
                         .addPhotoUrl("string")
                         .id(10L)
+                        .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
                         .category(
                             Pet.Category.builder()
                                 .id(1L)
@@ -112,6 +113,7 @@ internal class ErrorHandlingTest {
                         .name("doggie")
                         .addPhotoUrl("string")
                         .id(10L)
+                        .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
                         .category(
                             Pet.Category.builder()
                                 .id(1L)
@@ -148,6 +150,7 @@ internal class ErrorHandlingTest {
                         .name("doggie")
                         .addPhotoUrl("string")
                         .id(10L)
+                        .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
                         .category(
                             Pet.Category.builder()
                                 .id(1L)
@@ -184,6 +187,7 @@ internal class ErrorHandlingTest {
                         .name("doggie")
                         .addPhotoUrl("string")
                         .id(10L)
+                        .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
                         .category(
                             Pet.Category.builder()
                                 .id(1L)
@@ -220,6 +224,7 @@ internal class ErrorHandlingTest {
                         .name("doggie")
                         .addPhotoUrl("string")
                         .id(10L)
+                        .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
                         .category(
                             Pet.Category.builder()
                                 .id(1L)
@@ -256,6 +261,7 @@ internal class ErrorHandlingTest {
                         .name("doggie")
                         .addPhotoUrl("string")
                         .id(10L)
+                        .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
                         .category(
                             Pet.Category.builder()
                                 .id(1L)
@@ -292,6 +298,7 @@ internal class ErrorHandlingTest {
                         .name("doggie")
                         .addPhotoUrl("string")
                         .id(10L)
+                        .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
                         .category(
                             Pet.Category.builder()
                                 .id(1L)
@@ -328,6 +335,7 @@ internal class ErrorHandlingTest {
                         .name("doggie")
                         .addPhotoUrl("string")
                         .id(10L)
+                        .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
                         .category(
                             Pet.Category.builder()
                                 .id(1L)
@@ -364,6 +372,7 @@ internal class ErrorHandlingTest {
                         .name("doggie")
                         .addPhotoUrl("string")
                         .id(10L)
+                        .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
                         .category(
                             Pet.Category.builder()
                                 .id(1L)
@@ -400,6 +409,7 @@ internal class ErrorHandlingTest {
                         .name("doggie")
                         .addPhotoUrl("string")
                         .id(10L)
+                        .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
                         .category(
                             Pet.Category.builder()
                                 .id(1L)
@@ -436,6 +446,7 @@ internal class ErrorHandlingTest {
                         .name("doggie")
                         .addPhotoUrl("string")
                         .id(10L)
+                        .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
                         .category(
                             Pet.Category.builder()
                                 .id(1L)
@@ -472,6 +483,7 @@ internal class ErrorHandlingTest {
                         .name("doggie")
                         .addPhotoUrl("string")
                         .id(10L)
+                        .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
                         .category(
                             Pet.Category.builder()
                                 .id(1L)
@@ -508,6 +520,7 @@ internal class ErrorHandlingTest {
                         .name("doggie")
                         .addPhotoUrl("string")
                         .id(10L)
+                        .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
                         .category(
                             Pet.Category.builder()
                                 .id(1L)
@@ -544,6 +557,7 @@ internal class ErrorHandlingTest {
                         .name("doggie")
                         .addPhotoUrl("string")
                         .id(10L)
+                        .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
                         .category(
                             Pet.Category.builder()
                                 .id(1L)
@@ -580,6 +594,7 @@ internal class ErrorHandlingTest {
                         .name("doggie")
                         .addPhotoUrl("string")
                         .id(10L)
+                        .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
                         .category(
                             Pet.Category.builder()
                                 .id(1L)
@@ -616,6 +631,7 @@ internal class ErrorHandlingTest {
                         .name("doggie")
                         .addPhotoUrl("string")
                         .id(10L)
+                        .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
                         .category(
                             Pet.Category.builder()
                                 .id(1L)
@@ -650,6 +666,7 @@ internal class ErrorHandlingTest {
                         .name("doggie")
                         .addPhotoUrl("string")
                         .id(10L)
+                        .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
                         .category(
                             Pet.Category.builder()
                                 .id(1L)

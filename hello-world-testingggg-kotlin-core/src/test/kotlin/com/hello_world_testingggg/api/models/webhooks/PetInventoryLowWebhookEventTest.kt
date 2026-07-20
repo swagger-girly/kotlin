@@ -23,6 +23,7 @@ internal class PetInventoryLowWebhookEventTest {
                         .name("doggie")
                         .addPhotoUrl("string")
                         .id(10L)
+                        .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
                         .category(
                             Pet.Category.builder()
                                 .id(1L)
@@ -66,6 +67,7 @@ internal class PetInventoryLowWebhookEventTest {
                     .name("doggie")
                     .addPhotoUrl("string")
                     .id(10L)
+                    .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
                     .category(
                         Pet.Category.builder().id(1L).name("Dogs").subcategories(listOf()).build()
                     )
@@ -112,6 +114,7 @@ internal class PetInventoryLowWebhookEventTest {
                         .name("doggie")
                         .addPhotoUrl("string")
                         .id(10L)
+                        .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
                         .category(
                             Pet.Category.builder()
                                 .id(1L)

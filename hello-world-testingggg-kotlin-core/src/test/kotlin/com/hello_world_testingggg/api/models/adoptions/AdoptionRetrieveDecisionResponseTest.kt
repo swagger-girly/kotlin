@@ -20,7 +20,6 @@ internal class AdoptionRetrieveDecisionResponseTest {
         val decisionApproved =
             AdoptionRetrieveDecisionResponse.DecisionApproved.builder()
                 .approvedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                .outcome(AdoptionRetrieveDecisionResponse.DecisionApproved.Outcome.APPROVED)
                 .addCondition("string")
                 .build()
 
@@ -30,6 +29,7 @@ internal class AdoptionRetrieveDecisionResponseTest {
         assertThat(adoptionRetrieveDecisionResponse.decisionApproved()).isEqualTo(decisionApproved)
         assertThat(adoptionRetrieveDecisionResponse.decisionRejected()).isNull()
         assertThat(adoptionRetrieveDecisionResponse.decisionEscalated()).isNull()
+        assertThat(adoptionRetrieveDecisionResponse.decisionWithdrawn()).isNull()
     }
 
     @Test
@@ -39,7 +39,6 @@ internal class AdoptionRetrieveDecisionResponseTest {
             AdoptionRetrieveDecisionResponse.ofDecisionApproved(
                 AdoptionRetrieveDecisionResponse.DecisionApproved.builder()
                     .approvedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                    .outcome(AdoptionRetrieveDecisionResponse.DecisionApproved.Outcome.APPROVED)
                     .addCondition("string")
                     .build()
             )
@@ -58,7 +57,6 @@ internal class AdoptionRetrieveDecisionResponseTest {
     fun ofDecisionRejected() {
         val decisionRejected =
             AdoptionRetrieveDecisionResponse.DecisionRejected.builder()
-                .outcome(AdoptionRetrieveDecisionResponse.DecisionRejected.Outcome.REJECTED)
                 .reason(AdoptionRetrieveDecisionResponse.DecisionRejected.Reason.POLICY)
                 .appealDeadline(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .build()
@@ -69,6 +67,7 @@ internal class AdoptionRetrieveDecisionResponseTest {
         assertThat(adoptionRetrieveDecisionResponse.decisionApproved()).isNull()
         assertThat(adoptionRetrieveDecisionResponse.decisionRejected()).isEqualTo(decisionRejected)
         assertThat(adoptionRetrieveDecisionResponse.decisionEscalated()).isNull()
+        assertThat(adoptionRetrieveDecisionResponse.decisionWithdrawn()).isNull()
     }
 
     @Test
@@ -77,7 +76,6 @@ internal class AdoptionRetrieveDecisionResponseTest {
         val adoptionRetrieveDecisionResponse =
             AdoptionRetrieveDecisionResponse.ofDecisionRejected(
                 AdoptionRetrieveDecisionResponse.DecisionRejected.builder()
-                    .outcome(AdoptionRetrieveDecisionResponse.DecisionRejected.Outcome.REJECTED)
                     .reason(AdoptionRetrieveDecisionResponse.DecisionRejected.Reason.POLICY)
                     .appealDeadline(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                     .build()
@@ -109,7 +107,6 @@ internal class AdoptionRetrieveDecisionResponseTest {
                         )
                         .build()
                 )
-                .outcome(AdoptionRetrieveDecisionResponse.DecisionEscalated.Outcome.ESCALATED)
                 .reviewAfter(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .build()
 
@@ -120,6 +117,7 @@ internal class AdoptionRetrieveDecisionResponseTest {
         assertThat(adoptionRetrieveDecisionResponse.decisionRejected()).isNull()
         assertThat(adoptionRetrieveDecisionResponse.decisionEscalated())
             .isEqualTo(decisionEscalated)
+        assertThat(adoptionRetrieveDecisionResponse.decisionWithdrawn()).isNull()
     }
 
     @Test
@@ -141,8 +139,52 @@ internal class AdoptionRetrieveDecisionResponseTest {
                             )
                             .build()
                     )
-                    .outcome(AdoptionRetrieveDecisionResponse.DecisionEscalated.Outcome.ESCALATED)
                     .reviewAfter(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                    .build()
+            )
+
+        val roundtrippedAdoptionRetrieveDecisionResponse =
+            jsonMapper.readValue(
+                jsonMapper.writeValueAsString(adoptionRetrieveDecisionResponse),
+                jacksonTypeRef<AdoptionRetrieveDecisionResponse>(),
+            )
+
+        assertThat(roundtrippedAdoptionRetrieveDecisionResponse)
+            .isEqualTo(adoptionRetrieveDecisionResponse)
+    }
+
+    @Test
+    fun ofDecisionWithdrawn() {
+        val decisionWithdrawn =
+            AdoptionRetrieveDecisionResponse.DecisionWithdrawn.builder()
+                .outcome(AdoptionRetrieveDecisionResponse.DecisionWithdrawn.Outcome.WITHDRAWN)
+                .withdrawnBy(
+                    AdoptionRetrieveDecisionResponse.DecisionWithdrawn.WithdrawnBy.APPLICANT
+                )
+                .withdrawnAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                .build()
+
+        val adoptionRetrieveDecisionResponse =
+            AdoptionRetrieveDecisionResponse.ofDecisionWithdrawn(decisionWithdrawn)
+
+        assertThat(adoptionRetrieveDecisionResponse.decisionApproved()).isNull()
+        assertThat(adoptionRetrieveDecisionResponse.decisionRejected()).isNull()
+        assertThat(adoptionRetrieveDecisionResponse.decisionEscalated()).isNull()
+        assertThat(adoptionRetrieveDecisionResponse.decisionWithdrawn())
+            .isEqualTo(decisionWithdrawn)
+    }
+
+    @Test
+    fun ofDecisionWithdrawnRoundtrip() {
+        val jsonMapper = jsonMapper()
+        val adoptionRetrieveDecisionResponse =
+            AdoptionRetrieveDecisionResponse.ofDecisionWithdrawn(
+                AdoptionRetrieveDecisionResponse.DecisionWithdrawn.builder()
+                    .outcome(AdoptionRetrieveDecisionResponse.DecisionWithdrawn.Outcome.WITHDRAWN)
+                    .withdrawnBy(
+                        AdoptionRetrieveDecisionResponse.DecisionWithdrawn.WithdrawnBy.APPLICANT
+                    )
+                    .withdrawnAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                     .build()
             )
 

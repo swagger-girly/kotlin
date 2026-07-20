@@ -18,6 +18,7 @@ internal class PetRetrievePremiumResponseTest {
                 .name("doggie")
                 .addPhotoUrl("string")
                 .id(10L)
+                .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
                 .category(
                     Pet.Category.builder().id(1L).name("Dogs").subcategories(listOf()).build()
                 )
@@ -47,6 +48,8 @@ internal class PetRetrievePremiumResponseTest {
         assertThat(petRetrievePremiumResponse.name()).isEqualTo("doggie")
         assertThat(petRetrievePremiumResponse.photoUrls()).containsExactly("string")
         assertThat(petRetrievePremiumResponse.id()).isEqualTo(10L)
+        assertThat(petRetrievePremiumResponse.acquisitionChannel())
+            .isEqualTo(Pet.AcquisitionChannel.BREEDER)
         assertThat(petRetrievePremiumResponse.category())
             .isEqualTo(Pet.Category.builder().id(1L).name("Dogs").subcategories(listOf()).build())
         assertThat(petRetrievePremiumResponse.microchipId())
@@ -86,6 +89,7 @@ internal class PetRetrievePremiumResponseTest {
                 .name("doggie")
                 .addPhotoUrl("string")
                 .id(10L)
+                .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
                 .category(
                     Pet.Category.builder().id(1L).name("Dogs").subcategories(listOf()).build()
                 )
