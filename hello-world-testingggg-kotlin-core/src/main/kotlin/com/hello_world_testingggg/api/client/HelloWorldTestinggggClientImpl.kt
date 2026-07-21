@@ -23,6 +23,8 @@ import com.hello_world_testingggg.api.services.blocking.AdoptionService
 import com.hello_world_testingggg.api.services.blocking.AdoptionServiceImpl
 import com.hello_world_testingggg.api.services.blocking.FileService
 import com.hello_world_testingggg.api.services.blocking.FileServiceImpl
+import com.hello_world_testingggg.api.services.blocking.MediaService
+import com.hello_world_testingggg.api.services.blocking.MediaServiceImpl
 import com.hello_world_testingggg.api.services.blocking.PetService
 import com.hello_world_testingggg.api.services.blocking.PetServiceImpl
 import com.hello_world_testingggg.api.services.blocking.PlacementService
@@ -82,6 +84,8 @@ class HelloWorldTestinggggClientImpl(private val clientOptions: ClientOptions) :
 
     private val user: UserService by lazy { UserServiceImpl(clientOptionsWithUserAgent) }
 
+    private val media: MediaService by lazy { MediaServiceImpl(clientOptionsWithUserAgent) }
+
     override fun async(): HelloWorldTestinggggClientAsync = async
 
     override fun withRawResponse(): HelloWorldTestinggggClient.WithRawResponse = withRawResponse
@@ -115,6 +119,8 @@ class HelloWorldTestinggggClientImpl(private val clientOptions: ClientOptions) :
 
     /** Operations about user */
     override fun user(): UserService = user
+
+    override fun media(): MediaService = media
 
     override fun health(params: ClientHealthParams, requestOptions: RequestOptions): SystemHealth =
         // get /health
@@ -171,6 +177,10 @@ class HelloWorldTestinggggClientImpl(private val clientOptions: ClientOptions) :
             UserServiceImpl.WithRawResponseImpl(clientOptions)
         }
 
+        private val media: MediaService.WithRawResponse by lazy {
+            MediaServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
         override fun withOptions(
             modifier: (ClientOptions.Builder) -> Unit
         ): HelloWorldTestinggggClient.WithRawResponse =
@@ -202,6 +212,8 @@ class HelloWorldTestinggggClientImpl(private val clientOptions: ClientOptions) :
 
         /** Operations about user */
         override fun user(): UserService.WithRawResponse = user
+
+        override fun media(): MediaService.WithRawResponse = media
 
         private val healthHandler: Handler<SystemHealth> =
             jsonHandler<SystemHealth>(clientOptions.jsonMapper)

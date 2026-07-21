@@ -12,6 +12,7 @@ import com.hello_world_testingggg.api.models.ClientRetrieveRateLimitsResponse
 import com.hello_world_testingggg.api.models.SystemHealth
 import com.hello_world_testingggg.api.services.async.AdoptionServiceAsync
 import com.hello_world_testingggg.api.services.async.FileServiceAsync
+import com.hello_world_testingggg.api.services.async.MediaServiceAsync
 import com.hello_world_testingggg.api.services.async.PetServiceAsync
 import com.hello_world_testingggg.api.services.async.PlacementServiceAsync
 import com.hello_world_testingggg.api.services.async.ProfileServiceAsync
@@ -80,6 +81,8 @@ interface HelloWorldTestinggggClientAsync {
 
     /** Operations about user */
     fun user(): UserServiceAsync
+
+    fun media(): MediaServiceAsync
 
     /** Returns the current API health, including per-service statuses. */
     suspend fun health(
@@ -155,6 +158,8 @@ interface HelloWorldTestinggggClientAsync {
 
         /** Operations about user */
         fun user(): UserServiceAsync.WithRawResponse
+
+        fun media(): MediaServiceAsync.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `get /health`, but is otherwise the same as
