@@ -23,6 +23,8 @@ import com.hello_world_testingggg.api.services.async.AdoptionServiceAsync
 import com.hello_world_testingggg.api.services.async.AdoptionServiceAsyncImpl
 import com.hello_world_testingggg.api.services.async.FileServiceAsync
 import com.hello_world_testingggg.api.services.async.FileServiceAsyncImpl
+import com.hello_world_testingggg.api.services.async.MediaServiceAsync
+import com.hello_world_testingggg.api.services.async.MediaServiceAsyncImpl
 import com.hello_world_testingggg.api.services.async.PetServiceAsync
 import com.hello_world_testingggg.api.services.async.PetServiceAsyncImpl
 import com.hello_world_testingggg.api.services.async.PlacementServiceAsync
@@ -88,6 +90,10 @@ class HelloWorldTestinggggClientAsyncImpl(private val clientOptions: ClientOptio
 
     private val user: UserServiceAsync by lazy { UserServiceAsyncImpl(clientOptionsWithUserAgent) }
 
+    private val media: MediaServiceAsync by lazy {
+        MediaServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
+
     override fun sync(): HelloWorldTestinggggClient = sync
 
     override fun withRawResponse(): HelloWorldTestinggggClientAsync.WithRawResponse =
@@ -122,6 +128,8 @@ class HelloWorldTestinggggClientAsyncImpl(private val clientOptions: ClientOptio
 
     /** Operations about user */
     override fun user(): UserServiceAsync = user
+
+    override fun media(): MediaServiceAsync = media
 
     override suspend fun health(
         params: ClientHealthParams,
@@ -181,6 +189,10 @@ class HelloWorldTestinggggClientAsyncImpl(private val clientOptions: ClientOptio
             UserServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
 
+        private val media: MediaServiceAsync.WithRawResponse by lazy {
+            MediaServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
         override fun withOptions(
             modifier: (ClientOptions.Builder) -> Unit
         ): HelloWorldTestinggggClientAsync.WithRawResponse =
@@ -212,6 +224,8 @@ class HelloWorldTestinggggClientAsyncImpl(private val clientOptions: ClientOptio
 
         /** Operations about user */
         override fun user(): UserServiceAsync.WithRawResponse = user
+
+        override fun media(): MediaServiceAsync.WithRawResponse = media
 
         private val healthHandler: Handler<SystemHealth> =
             jsonHandler<SystemHealth>(clientOptions.jsonMapper)
