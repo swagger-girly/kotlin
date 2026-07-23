@@ -120,4 +120,15 @@ internal class UserServiceTest {
 
         userService.logout()
     }
+
+    @Disabled("Mock server tests are disabled")
+    @Test
+    fun verifyIdentity() {
+        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val userService = client.user()
+
+        val response = userService.verifyIdentity("username")
+
+        response.validate()
+    }
 }
