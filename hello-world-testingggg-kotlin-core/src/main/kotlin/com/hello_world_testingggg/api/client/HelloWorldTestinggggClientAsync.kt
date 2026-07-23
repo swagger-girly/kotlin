@@ -11,6 +11,7 @@ import com.hello_world_testingggg.api.models.ClientRetrieveRateLimitsParams
 import com.hello_world_testingggg.api.models.ClientRetrieveRateLimitsResponse
 import com.hello_world_testingggg.api.models.SystemHealth
 import com.hello_world_testingggg.api.services.async.AdoptionServiceAsync
+import com.hello_world_testingggg.api.services.async.AiServiceAsync
 import com.hello_world_testingggg.api.services.async.FileServiceAsync
 import com.hello_world_testingggg.api.services.async.MediaServiceAsync
 import com.hello_world_testingggg.api.services.async.PetServiceAsync
@@ -81,6 +82,8 @@ interface HelloWorldTestinggggClientAsync {
 
     /** Operations about user */
     fun user(): UserServiceAsync
+
+    fun ai(): AiServiceAsync
 
     fun media(): MediaServiceAsync
 
@@ -158,6 +161,8 @@ interface HelloWorldTestinggggClientAsync {
 
         /** Operations about user */
         fun user(): UserServiceAsync.WithRawResponse
+
+        fun ai(): AiServiceAsync.WithRawResponse
 
         fun media(): MediaServiceAsync.WithRawResponse
 

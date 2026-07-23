@@ -21,6 +21,8 @@ import com.hello_world_testingggg.api.models.ClientRetrieveRateLimitsResponse
 import com.hello_world_testingggg.api.models.SystemHealth
 import com.hello_world_testingggg.api.services.async.AdoptionServiceAsync
 import com.hello_world_testingggg.api.services.async.AdoptionServiceAsyncImpl
+import com.hello_world_testingggg.api.services.async.AiServiceAsync
+import com.hello_world_testingggg.api.services.async.AiServiceAsyncImpl
 import com.hello_world_testingggg.api.services.async.FileServiceAsync
 import com.hello_world_testingggg.api.services.async.FileServiceAsyncImpl
 import com.hello_world_testingggg.api.services.async.MediaServiceAsync
@@ -90,6 +92,8 @@ class HelloWorldTestinggggClientAsyncImpl(private val clientOptions: ClientOptio
 
     private val user: UserServiceAsync by lazy { UserServiceAsyncImpl(clientOptionsWithUserAgent) }
 
+    private val ai: AiServiceAsync by lazy { AiServiceAsyncImpl(clientOptionsWithUserAgent) }
+
     private val media: MediaServiceAsync by lazy {
         MediaServiceAsyncImpl(clientOptionsWithUserAgent)
     }
@@ -128,6 +132,8 @@ class HelloWorldTestinggggClientAsyncImpl(private val clientOptions: ClientOptio
 
     /** Operations about user */
     override fun user(): UserServiceAsync = user
+
+    override fun ai(): AiServiceAsync = ai
 
     override fun media(): MediaServiceAsync = media
 
@@ -189,6 +195,10 @@ class HelloWorldTestinggggClientAsyncImpl(private val clientOptions: ClientOptio
             UserServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
 
+        private val ai: AiServiceAsync.WithRawResponse by lazy {
+            AiServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
         private val media: MediaServiceAsync.WithRawResponse by lazy {
             MediaServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
@@ -224,6 +234,8 @@ class HelloWorldTestinggggClientAsyncImpl(private val clientOptions: ClientOptio
 
         /** Operations about user */
         override fun user(): UserServiceAsync.WithRawResponse = user
+
+        override fun ai(): AiServiceAsync.WithRawResponse = ai
 
         override fun media(): MediaServiceAsync.WithRawResponse = media
 

@@ -17,6 +17,8 @@ import com.hello_world_testingggg.api.models.user.UserLogoutParams
 import com.hello_world_testingggg.api.models.user.UserRetrieveParams
 import com.hello_world_testingggg.api.models.user.UserRetrieveResponse
 import com.hello_world_testingggg.api.models.user.UserUpdateParams
+import com.hello_world_testingggg.api.models.user.UserVerifyIdentityParams
+import com.hello_world_testingggg.api.models.user.UserVerifyIdentityResponse
 
 /** Operations about user */
 interface UserService {
@@ -124,6 +126,31 @@ interface UserService {
 
     /** @see logout */
     fun logout(requestOptions: RequestOptions) = logout(UserLogoutParams.none(), requestOptions)
+
+    /**
+     * Casing probe replicating lithic: inline oneOf response whose variant is a kebab-named
+     * component (kyb-kyc-verification) so adjacent default initialisms glue into KYBKYC in the
+     * operation-scoped variant name
+     */
+    fun verifyIdentity(
+        username: String,
+        params: UserVerifyIdentityParams = UserVerifyIdentityParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): UserVerifyIdentityResponse =
+        verifyIdentity(params.toBuilder().username(username).build(), requestOptions)
+
+    /** @see verifyIdentity */
+    fun verifyIdentity(
+        params: UserVerifyIdentityParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): UserVerifyIdentityResponse
+
+    /** @see verifyIdentity */
+    fun verifyIdentity(
+        username: String,
+        requestOptions: RequestOptions,
+    ): UserVerifyIdentityResponse =
+        verifyIdentity(username, UserVerifyIdentityParams.none(), requestOptions)
 
     /** A view of [UserService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -278,5 +305,32 @@ interface UserService {
         @MustBeClosed
         fun logout(requestOptions: RequestOptions): HttpResponse =
             logout(UserLogoutParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `post /user/{username}/verifyIdentity`, but is otherwise
+         * the same as [UserService.verifyIdentity].
+         */
+        @MustBeClosed
+        fun verifyIdentity(
+            username: String,
+            params: UserVerifyIdentityParams = UserVerifyIdentityParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<UserVerifyIdentityResponse> =
+            verifyIdentity(params.toBuilder().username(username).build(), requestOptions)
+
+        /** @see verifyIdentity */
+        @MustBeClosed
+        fun verifyIdentity(
+            params: UserVerifyIdentityParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<UserVerifyIdentityResponse>
+
+        /** @see verifyIdentity */
+        @MustBeClosed
+        fun verifyIdentity(
+            username: String,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<UserVerifyIdentityResponse> =
+            verifyIdentity(username, UserVerifyIdentityParams.none(), requestOptions)
     }
 }

@@ -11,6 +11,7 @@ import com.hello_world_testingggg.api.models.ClientRetrieveRateLimitsParams
 import com.hello_world_testingggg.api.models.ClientRetrieveRateLimitsResponse
 import com.hello_world_testingggg.api.models.SystemHealth
 import com.hello_world_testingggg.api.services.blocking.AdoptionService
+import com.hello_world_testingggg.api.services.blocking.AiService
 import com.hello_world_testingggg.api.services.blocking.FileService
 import com.hello_world_testingggg.api.services.blocking.MediaService
 import com.hello_world_testingggg.api.services.blocking.PetService
@@ -81,6 +82,8 @@ interface HelloWorldTestinggggClient {
 
     /** Operations about user */
     fun user(): UserService
+
+    fun ai(): AiService
 
     fun media(): MediaService
 
@@ -156,6 +159,8 @@ interface HelloWorldTestinggggClient {
 
         /** Operations about user */
         fun user(): UserService.WithRawResponse
+
+        fun ai(): AiService.WithRawResponse
 
         fun media(): MediaService.WithRawResponse
 
