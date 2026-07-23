@@ -11,6 +11,7 @@ import com.hello_world_testingggg.api.core.http.QueryParams
 import com.hello_world_testingggg.api.core.http.RetryingHttpClient
 import java.time.Clock
 import java.time.Duration
+import java.util.Base64
 
 /** A class representing the SDK client configuration. */
 class ClientOptions
@@ -105,6 +106,11 @@ private constructor(
     val logLevel: LogLevel,
     /** The API key for authorization in the header. */
     val apiKey: String,
+    /** Username for HTTP Basic authentication. */
+    val basicAuthUsername: String,
+    /** Password for HTTP Basic authentication. */
+    val basicAuthPassword: String,
+    /** Secret used to verify incoming webhook signatures. */
     val webhookSecret: String?,
 ) {
 
@@ -134,6 +140,8 @@ private constructor(
          * ```kotlin
          * .httpClient()
          * .apiKey()
+         * .basicAuthUsername()
+         * .basicAuthPassword()
          * ```
          */
         fun builder() = Builder()
@@ -162,6 +170,8 @@ private constructor(
         private var maxRetries: Int = 2
         private var logLevel: LogLevel = LogLevel.fromEnv()
         private var apiKey: String? = null
+        private var basicAuthUsername: String? = null
+        private var basicAuthPassword: String? = null
         private var webhookSecret: String? = null
 
         internal fun from(clientOptions: ClientOptions) = apply {
@@ -178,6 +188,8 @@ private constructor(
             maxRetries = clientOptions.maxRetries
             logLevel = clientOptions.logLevel
             apiKey = clientOptions.apiKey
+            basicAuthUsername = clientOptions.basicAuthUsername
+            basicAuthPassword = clientOptions.basicAuthPassword
             webhookSecret = clientOptions.webhookSecret
         }
 
@@ -298,6 +310,17 @@ private constructor(
         /** The API key for authorization in the header. */
         fun apiKey(apiKey: String) = apply { this.apiKey = apiKey }
 
+        /** Username for HTTP Basic authentication. */
+        fun basicAuthUsername(basicAuthUsername: String) = apply {
+            this.basicAuthUsername = basicAuthUsername
+        }
+
+        /** Password for HTTP Basic authentication. */
+        fun basicAuthPassword(basicAuthPassword: String) = apply {
+            this.basicAuthPassword = basicAuthPassword
+        }
+
+        /** Secret used to verify incoming webhook signatures. */
         fun webhookSecret(webhookSecret: String?) = apply { this.webhookSecret = webhookSecret }
 
         fun headers(headers: Headers) = apply {
@@ -387,11 +410,13 @@ private constructor(
          *
          * See this table for the available options:
          *
-         * |Setter         |System property                             |Environment variable             |Required|Default value|
-         * |---------------|--------------------------------------------|---------------------------------|--------|-------------|
-         * |`apiKey`       |`helloworldtestingggg.apiKey`               |`API_KEY`                        |true    |-            |
-         * |`webhookSecret`|`helloworldtestingggg.petstoreWebhookSecret`|`PETSTORE_WEBHOOK_SECRET`        |false   |-            |
-         * |`baseUrl`      |`helloworldtestingggg.baseUrl`              |`HELLO_WORLD_TESTINGGGG_BASE_URL`|true    |`"/api/v3"`  |
+         * |Setter             |System property                             |Environment variable             |Required|Default value|
+         * |-------------------|--------------------------------------------|---------------------------------|--------|-------------|
+         * |`apiKey`           |`helloworldtestingggg.apiKey`               |`API_KEY`                        |true    |-            |
+         * |`basicAuthUsername`|`helloworldtestingggg.basicAuthUsername`    |`BASIC_AUTH_USERNAME`            |true    |-            |
+         * |`basicAuthPassword`|`helloworldtestingggg.basicAuthPassword`    |`BASIC_AUTH_PASSWORD`            |true    |-            |
+         * |`webhookSecret`    |`helloworldtestingggg.petstoreWebhookSecret`|`PETSTORE_WEBHOOK_SECRET`        |false   |-            |
+         * |`baseUrl`          |`helloworldtestingggg.baseUrl`              |`HELLO_WORLD_TESTINGGGG_BASE_URL`|true    |`"/api/v3"`  |
          *
          * System properties take precedence over environment variables.
          */
@@ -403,6 +428,12 @@ private constructor(
             (System.getProperty("helloworldtestingggg.apiKey") ?: System.getenv("API_KEY"))?.let {
                 apiKey(it)
             }
+            (System.getProperty("helloworldtestingggg.basicAuthUsername")
+                    ?: System.getenv("BASIC_AUTH_USERNAME"))
+                ?.let { basicAuthUsername(it) }
+            (System.getProperty("helloworldtestingggg.basicAuthPassword")
+                    ?: System.getenv("BASIC_AUTH_PASSWORD"))
+                ?.let { basicAuthPassword(it) }
             (System.getProperty("helloworldtestingggg.petstoreWebhookSecret")
                     ?: System.getenv("PETSTORE_WEBHOOK_SECRET"))
                 ?.let { webhookSecret(it) }
@@ -425,6 +456,8 @@ private constructor(
          * ```kotlin
          * .httpClient()
          * .apiKey()
+         * .basicAuthUsername()
+         * .basicAuthPassword()
          * ```
          *
          * @throws IllegalStateException if any required field is unset.
@@ -433,6 +466,8 @@ private constructor(
             val httpClient = checkRequired("httpClient", httpClient)
             val sleeper = sleeper ?: PhantomReachableSleeper(DefaultSleeper())
             val apiKey = checkRequired("apiKey", apiKey)
+            val basicAuthUsername = checkRequired("basicAuthUsername", basicAuthUsername)
+            val basicAuthPassword = checkRequired("basicAuthPassword", basicAuthPassword)
 
             val headers = Headers.builder()
             val queryParams = QueryParams.builder()
@@ -450,6 +485,16 @@ private constructor(
             apiKey.let {
                 if (!it.isEmpty()) {
                     headers.replace("api_key", it)
+                }
+            }
+            basicAuthUsername.let { username ->
+                basicAuthPassword.let { password ->
+                    if (!username.isEmpty() && !password.isEmpty()) {
+                        headers.replace(
+                            "Authorization",
+                            "Basic ${Base64.getEncoder().encodeToString("$username:$password".toByteArray())}",
+                        )
+                    }
                 }
             }
 
@@ -479,6 +524,8 @@ private constructor(
                 maxRetries,
                 logLevel,
                 apiKey,
+                basicAuthUsername,
+                basicAuthPassword,
                 webhookSecret,
             )
         }

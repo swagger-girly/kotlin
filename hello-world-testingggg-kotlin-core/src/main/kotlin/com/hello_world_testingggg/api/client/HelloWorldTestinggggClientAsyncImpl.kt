@@ -27,6 +27,8 @@ import com.hello_world_testingggg.api.services.async.FileServiceAsync
 import com.hello_world_testingggg.api.services.async.FileServiceAsyncImpl
 import com.hello_world_testingggg.api.services.async.MediaServiceAsync
 import com.hello_world_testingggg.api.services.async.MediaServiceAsyncImpl
+import com.hello_world_testingggg.api.services.async.NotificationServiceAsync
+import com.hello_world_testingggg.api.services.async.NotificationServiceAsyncImpl
 import com.hello_world_testingggg.api.services.async.PetServiceAsync
 import com.hello_world_testingggg.api.services.async.PetServiceAsyncImpl
 import com.hello_world_testingggg.api.services.async.PlacementServiceAsync
@@ -86,6 +88,10 @@ class HelloWorldTestinggggClientAsyncImpl(private val clientOptions: ClientOptio
         WebhookServiceAsyncImpl(clientOptionsWithUserAgent)
     }
 
+    private val notifications: NotificationServiceAsync by lazy {
+        NotificationServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
+
     private val store: StoreServiceAsync by lazy {
         StoreServiceAsyncImpl(clientOptionsWithUserAgent)
     }
@@ -126,6 +132,8 @@ class HelloWorldTestinggggClientAsyncImpl(private val clientOptions: ClientOptio
     override fun veterinary(): VeterinaryServiceAsync = veterinary
 
     override fun webhooks(): WebhookServiceAsync = webhooks
+
+    override fun notifications(): NotificationServiceAsync = notifications
 
     /** Access to Petstore orders */
     override fun store(): StoreServiceAsync = store
@@ -187,6 +195,10 @@ class HelloWorldTestinggggClientAsyncImpl(private val clientOptions: ClientOptio
             WebhookServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
 
+        private val notifications: NotificationServiceAsync.WithRawResponse by lazy {
+            NotificationServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
         private val store: StoreServiceAsync.WithRawResponse by lazy {
             StoreServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
@@ -228,6 +240,8 @@ class HelloWorldTestinggggClientAsyncImpl(private val clientOptions: ClientOptio
         override fun veterinary(): VeterinaryServiceAsync.WithRawResponse = veterinary
 
         override fun webhooks(): WebhookServiceAsync.WithRawResponse = webhooks
+
+        override fun notifications(): NotificationServiceAsync.WithRawResponse = notifications
 
         /** Access to Petstore orders */
         override fun store(): StoreServiceAsync.WithRawResponse = store

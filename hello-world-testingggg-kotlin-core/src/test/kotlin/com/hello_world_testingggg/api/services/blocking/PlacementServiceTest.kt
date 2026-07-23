@@ -18,7 +18,12 @@ internal class PlacementServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun create() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val placementService = client.placements()
 
         val placement =
@@ -177,7 +182,12 @@ internal class PlacementServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun retrieve() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val placementService = client.placements()
 
         val placement = placementService.retrieve("placementId")
@@ -188,7 +198,12 @@ internal class PlacementServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun list() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val placementService = client.placements()
 
         val page = placementService.list()
@@ -199,7 +214,12 @@ internal class PlacementServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun recordEvent() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val placementService = client.placements()
 
         val placement =

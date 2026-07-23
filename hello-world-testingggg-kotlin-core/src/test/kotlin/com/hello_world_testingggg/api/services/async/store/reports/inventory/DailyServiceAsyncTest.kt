@@ -13,7 +13,12 @@ internal class DailyServiceAsyncTest {
     @Disabled("Mock server tests are disabled")
     @Test
     suspend fun retrieve() {
-        val client = HelloWorldTestinggggOkHttpClientAsync.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClientAsync.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val dailyServiceAsync = client.store().reports().inventory().daily()
 
         val dailyInventory =

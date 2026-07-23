@@ -11,7 +11,12 @@ internal class InventoryServiceAsyncTest {
     @Disabled("Mock server tests are disabled")
     @Test
     suspend fun list() {
-        val client = HelloWorldTestinggggOkHttpClientAsync.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClientAsync.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val inventoryServiceAsync = client.store().reports().inventory()
 
         val inventoryResponse = inventoryServiceAsync.list("reportId")

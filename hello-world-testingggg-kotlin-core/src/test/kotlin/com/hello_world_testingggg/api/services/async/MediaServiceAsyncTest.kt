@@ -11,7 +11,12 @@ internal class MediaServiceAsyncTest {
     @Disabled("Mock server tests are disabled")
     @Test
     suspend fun binaryAndJson() {
-        val client = HelloWorldTestinggggOkHttpClientAsync.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClientAsync.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val mediaServiceAsync = client.media()
 
         val response = mediaServiceAsync.binaryAndJson()
@@ -22,7 +27,12 @@ internal class MediaServiceAsyncTest {
     @Disabled("Mock server tests are disabled")
     @Test
     suspend fun jsonAndXml() {
-        val client = HelloWorldTestinggggOkHttpClientAsync.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClientAsync.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val mediaServiceAsync = client.media()
 
         val response = mediaServiceAsync.jsonAndXml()
@@ -33,7 +43,12 @@ internal class MediaServiceAsyncTest {
     @Disabled("Mock server tests are disabled")
     @Test
     suspend fun jsonFirst() {
-        val client = HelloWorldTestinggggOkHttpClientAsync.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClientAsync.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val mediaServiceAsync = client.media()
 
         val response = mediaServiceAsync.jsonFirst()
@@ -44,7 +59,12 @@ internal class MediaServiceAsyncTest {
     @Disabled("Mock server tests are disabled")
     @Test
     suspend fun schemaOnJson() {
-        val client = HelloWorldTestinggggOkHttpClientAsync.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClientAsync.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val mediaServiceAsync = client.media()
 
         val response = mediaServiceAsync.schemaOnJson()
@@ -55,7 +75,12 @@ internal class MediaServiceAsyncTest {
     @Disabled("Mock server tests are disabled")
     @Test
     suspend fun schemaOnText() {
-        val client = HelloWorldTestinggggOkHttpClientAsync.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClientAsync.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val mediaServiceAsync = client.media()
 
         mediaServiceAsync.schemaOnText()
@@ -64,7 +89,12 @@ internal class MediaServiceAsyncTest {
     @Disabled("Mock server tests are disabled")
     @Test
     suspend fun textFirst() {
-        val client = HelloWorldTestinggggOkHttpClientAsync.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClientAsync.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val mediaServiceAsync = client.media()
 
         val response = mediaServiceAsync.textFirst()
@@ -75,7 +105,12 @@ internal class MediaServiceAsyncTest {
     @Disabled("Mock server tests are disabled")
     @Test
     suspend fun textOnly() {
-        val client = HelloWorldTestinggggOkHttpClientAsync.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClientAsync.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val mediaServiceAsync = client.media()
 
         mediaServiceAsync.textOnly()
@@ -84,7 +119,12 @@ internal class MediaServiceAsyncTest {
     @Disabled("Mock server tests are disabled")
     @Test
     suspend fun vendorJson() {
-        val client = HelloWorldTestinggggOkHttpClientAsync.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClientAsync.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val mediaServiceAsync = client.media()
 
         val response = mediaServiceAsync.vendorJson()

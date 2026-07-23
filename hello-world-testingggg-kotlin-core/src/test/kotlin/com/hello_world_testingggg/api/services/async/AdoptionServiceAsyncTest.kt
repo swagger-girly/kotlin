@@ -13,7 +13,12 @@ internal class AdoptionServiceAsyncTest {
     @Disabled("Mock server tests are disabled")
     @Test
     suspend fun create() {
-        val client = HelloWorldTestinggggOkHttpClientAsync.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClientAsync.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val adoptionServiceAsync = client.adoptions()
 
         val application =
@@ -42,7 +47,12 @@ internal class AdoptionServiceAsyncTest {
     @Disabled("Mock server tests are disabled")
     @Test
     suspend fun retrieve() {
-        val client = HelloWorldTestinggggOkHttpClientAsync.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClientAsync.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val adoptionServiceAsync = client.adoptions()
 
         val application = adoptionServiceAsync.retrieve("applicationId")
@@ -53,7 +63,12 @@ internal class AdoptionServiceAsyncTest {
     @Disabled("Mock server tests are disabled")
     @Test
     suspend fun retrieveDecision() {
-        val client = HelloWorldTestinggggOkHttpClientAsync.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClientAsync.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val adoptionServiceAsync = client.adoptions()
 
         val response = adoptionServiceAsync.retrieveDecision("applicationId")

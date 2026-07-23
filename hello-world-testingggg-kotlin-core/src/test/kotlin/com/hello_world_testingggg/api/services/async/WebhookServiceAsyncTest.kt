@@ -15,7 +15,12 @@ internal class WebhookServiceAsyncTest {
 
     @Test
     suspend fun parsed() {
-        val client = HelloWorldTestinggggOkHttpClientAsync.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClientAsync.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val webhookServiceAsync = client.webhooks()
 
         val payload =

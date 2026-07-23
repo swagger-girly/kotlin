@@ -33,6 +33,8 @@ internal class ServiceParamsTest {
             HelloWorldTestinggggOkHttpClient.builder()
                 .baseUrl(wmRuntimeInfo.httpBaseUrl)
                 .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
                 .build()
     }
 

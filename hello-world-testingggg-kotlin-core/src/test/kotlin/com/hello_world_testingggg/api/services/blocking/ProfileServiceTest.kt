@@ -16,7 +16,12 @@ internal class ProfileServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun create() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val profileService = client.profiles()
 
         val profile =
@@ -59,7 +64,12 @@ internal class ProfileServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun retrieve() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val profileService = client.profiles()
 
         val profile = profileService.retrieve("profileId")
@@ -70,7 +80,12 @@ internal class ProfileServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun update() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val profileService = client.profiles()
 
         val profile =
@@ -111,7 +126,12 @@ internal class ProfileServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun legacySearch() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val profileService = client.profiles()
 
         val profiles =

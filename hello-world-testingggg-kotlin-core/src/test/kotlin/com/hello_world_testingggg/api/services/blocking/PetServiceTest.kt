@@ -3,10 +3,12 @@
 package com.hello_world_testingggg.api.services.blocking
 
 import com.hello_world_testingggg.api.client.okhttp.HelloWorldTestinggggOkHttpClient
+import com.hello_world_testingggg.api.core.JsonValue
 import com.hello_world_testingggg.api.models.pet.Pet
 import com.hello_world_testingggg.api.models.pet.PetFindByStatusParams
 import com.hello_world_testingggg.api.models.pet.PetFindByTagsParams
 import com.hello_world_testingggg.api.models.pet.PetListUnpaginatedParams
+import com.hello_world_testingggg.api.models.pet.PetSearchParams
 import com.hello_world_testingggg.api.models.pet.PetStatus
 import com.hello_world_testingggg.api.models.pet.PetUpdateWithFormParams
 import com.hello_world_testingggg.api.models.pet.PetUploadImageParams
@@ -19,7 +21,12 @@ internal class PetServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun create() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val petService = client.pet()
 
         val pet =
@@ -44,7 +51,12 @@ internal class PetServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun retrieve() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val petService = client.pet()
 
         val pet = petService.retrieve(0L)
@@ -55,7 +67,12 @@ internal class PetServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun update() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val petService = client.pet()
 
         val pet =
@@ -80,7 +97,12 @@ internal class PetServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun list() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val petService = client.pet()
 
         val page = petService.list()
@@ -91,7 +113,12 @@ internal class PetServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun delete() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val petService = client.pet()
 
         petService.delete(0L)
@@ -100,7 +127,12 @@ internal class PetServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun findByStatus() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val petService = client.pet()
 
         val pets =
@@ -116,7 +148,12 @@ internal class PetServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun findByTags() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val petService = client.pet()
 
         val pets = petService.findByTags(PetFindByTagsParams.builder().addTag("string").build())
@@ -127,7 +164,12 @@ internal class PetServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun listFakePage() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val petService = client.pet()
 
         val response = petService.listFakePage()
@@ -138,7 +180,12 @@ internal class PetServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun listFakePageInferred() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val petService = client.pet()
 
         val page = petService.listFakePageInferred()
@@ -149,7 +196,12 @@ internal class PetServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun listUnpaginated() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val petService = client.pet()
 
         val response =
@@ -163,7 +215,12 @@ internal class PetServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun retrievePremium() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val petService = client.pet()
 
         val response = petService.retrievePremium(0L)
@@ -173,8 +230,42 @@ internal class PetServiceTest {
 
     @Disabled("Mock server tests are disabled")
     @Test
+    fun search() {
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
+        val petService = client.pet()
+
+        val pets =
+            petService.search(
+                PetSearchParams.builder()
+                    .filters(PetSearchParams.Filters.builder().color("color").size(0).build())
+                    .maxResults(0)
+                    .rawFilter(JsonValue.from(mapOf<String, Any>()))
+                    .addTagFilter(
+                        PetSearchParams.TagFilter.builder()
+                            .key("key")
+                            .match(PetSearchParams.TagFilter.Match.EXACT)
+                            .build()
+                    )
+                    .build()
+            )
+
+        pets.forEach { it.validate() }
+    }
+
+    @Disabled("Mock server tests are disabled")
+    @Test
     fun updateWithForm() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val petService = client.pet()
 
         petService.updateWithForm(
@@ -185,7 +276,12 @@ internal class PetServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun uploadImage() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val petService = client.pet()
 
         val response =
@@ -203,7 +299,12 @@ internal class PetServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun watchStatusStreaming() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val petService = client.pet()
 
         val petStreamResponse =
