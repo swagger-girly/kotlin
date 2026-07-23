@@ -39,6 +39,7 @@ import com.hello_world_testingggg.api.models.pet.PetListUnpaginatedResponse
 import com.hello_world_testingggg.api.models.pet.PetRetrieveParams
 import com.hello_world_testingggg.api.models.pet.PetRetrievePremiumParams
 import com.hello_world_testingggg.api.models.pet.PetRetrievePremiumResponse
+import com.hello_world_testingggg.api.models.pet.PetSearchParams
 import com.hello_world_testingggg.api.models.pet.PetUpdateParams
 import com.hello_world_testingggg.api.models.pet.PetUpdateWithFormParams
 import com.hello_world_testingggg.api.models.pet.PetUploadImageParams
@@ -119,6 +120,10 @@ class PetServiceImpl internal constructor(private val clientOptions: ClientOptio
     ): PetRetrievePremiumResponse =
         // get /pet/{petId}/premium
         withRawResponse().retrievePremium(params, requestOptions).parse()
+
+    override fun search(params: PetSearchParams, requestOptions: RequestOptions): List<Pet> =
+        // get /pet/search
+        withRawResponse().search(params, requestOptions).parse()
 
     override fun updateWithForm(params: PetUpdateWithFormParams, requestOptions: RequestOptions) {
         // post /pet/{petId}
@@ -455,6 +460,33 @@ class PetServiceImpl internal constructor(private val clientOptions: ClientOptio
                     .also {
                         if (requestOptions.responseValidation!!) {
                             it.validate()
+                        }
+                    }
+            }
+        }
+
+        private val searchHandler: Handler<List<Pet>> =
+            jsonHandler<List<Pet>>(clientOptions.jsonMapper)
+
+        override fun search(
+            params: PetSearchParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<List<Pet>> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("pet", "search")
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { searchHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.forEach { it.validate() }
                         }
                     }
             }

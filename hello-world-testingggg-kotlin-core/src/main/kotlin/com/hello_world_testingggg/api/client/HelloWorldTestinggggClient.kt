@@ -14,6 +14,7 @@ import com.hello_world_testingggg.api.services.blocking.AdoptionService
 import com.hello_world_testingggg.api.services.blocking.AiService
 import com.hello_world_testingggg.api.services.blocking.FileService
 import com.hello_world_testingggg.api.services.blocking.MediaService
+import com.hello_world_testingggg.api.services.blocking.NotificationService
 import com.hello_world_testingggg.api.services.blocking.PetService
 import com.hello_world_testingggg.api.services.blocking.PlacementService
 import com.hello_world_testingggg.api.services.blocking.ProfileService
@@ -76,6 +77,8 @@ interface HelloWorldTestinggggClient {
     fun veterinary(): VeterinaryService
 
     fun webhooks(): WebhookService
+
+    fun notifications(): NotificationService
 
     /** Access to Petstore orders */
     fun store(): StoreService
@@ -153,6 +156,8 @@ interface HelloWorldTestinggggClient {
         fun veterinary(): VeterinaryService.WithRawResponse
 
         fun webhooks(): WebhookService.WithRawResponse
+
+        fun notifications(): NotificationService.WithRawResponse
 
         /** Access to Petstore orders */
         fun store(): StoreService.WithRawResponse

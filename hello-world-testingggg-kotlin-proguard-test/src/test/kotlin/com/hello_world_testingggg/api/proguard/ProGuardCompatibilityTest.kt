@@ -48,7 +48,12 @@ internal class ProGuardCompatibilityTest {
 
     @Test
     fun client() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
 
         assertThat(client).isNotNull()
         assertThat(client.pet()).isNotNull()
@@ -58,6 +63,7 @@ internal class ProGuardCompatibilityTest {
         assertThat(client.placements()).isNotNull()
         assertThat(client.veterinary()).isNotNull()
         assertThat(client.webhooks()).isNotNull()
+        assertThat(client.notifications()).isNotNull()
         assertThat(client.store()).isNotNull()
         assertThat(client.user()).isNotNull()
         assertThat(client.ai()).isNotNull()

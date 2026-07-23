@@ -13,7 +13,12 @@ internal class AdoptionServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun create() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val adoptionService = client.adoptions()
 
         val application =
@@ -42,7 +47,12 @@ internal class AdoptionServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun retrieve() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val adoptionService = client.adoptions()
 
         val application = adoptionService.retrieve("applicationId")
@@ -53,7 +63,12 @@ internal class AdoptionServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun retrieveDecision() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val adoptionService = client.adoptions()
 
         val response = adoptionService.retrieveDecision("applicationId")

@@ -11,7 +11,12 @@ internal class StoreServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun listInventory() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val storeService = client.store()
 
         val response = storeService.listInventory()

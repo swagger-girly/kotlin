@@ -27,6 +27,8 @@ import com.hello_world_testingggg.api.services.blocking.FileService
 import com.hello_world_testingggg.api.services.blocking.FileServiceImpl
 import com.hello_world_testingggg.api.services.blocking.MediaService
 import com.hello_world_testingggg.api.services.blocking.MediaServiceImpl
+import com.hello_world_testingggg.api.services.blocking.NotificationService
+import com.hello_world_testingggg.api.services.blocking.NotificationServiceImpl
 import com.hello_world_testingggg.api.services.blocking.PetService
 import com.hello_world_testingggg.api.services.blocking.PetServiceImpl
 import com.hello_world_testingggg.api.services.blocking.PlacementService
@@ -82,6 +84,10 @@ class HelloWorldTestinggggClientImpl(private val clientOptions: ClientOptions) :
 
     private val webhooks: WebhookService by lazy { WebhookServiceImpl(clientOptionsWithUserAgent) }
 
+    private val notifications: NotificationService by lazy {
+        NotificationServiceImpl(clientOptionsWithUserAgent)
+    }
+
     private val store: StoreService by lazy { StoreServiceImpl(clientOptionsWithUserAgent) }
 
     private val user: UserService by lazy { UserServiceImpl(clientOptionsWithUserAgent) }
@@ -117,6 +123,8 @@ class HelloWorldTestinggggClientImpl(private val clientOptions: ClientOptions) :
     override fun veterinary(): VeterinaryService = veterinary
 
     override fun webhooks(): WebhookService = webhooks
+
+    override fun notifications(): NotificationService = notifications
 
     /** Access to Petstore orders */
     override fun store(): StoreService = store
@@ -175,6 +183,10 @@ class HelloWorldTestinggggClientImpl(private val clientOptions: ClientOptions) :
             WebhookServiceImpl.WithRawResponseImpl(clientOptions)
         }
 
+        private val notifications: NotificationService.WithRawResponse by lazy {
+            NotificationServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
         private val store: StoreService.WithRawResponse by lazy {
             StoreServiceImpl.WithRawResponseImpl(clientOptions)
         }
@@ -216,6 +228,8 @@ class HelloWorldTestinggggClientImpl(private val clientOptions: ClientOptions) :
         override fun veterinary(): VeterinaryService.WithRawResponse = veterinary
 
         override fun webhooks(): WebhookService.WithRawResponse = webhooks
+
+        override fun notifications(): NotificationService.WithRawResponse = notifications
 
         /** Access to Petstore orders */
         override fun store(): StoreService.WithRawResponse = store

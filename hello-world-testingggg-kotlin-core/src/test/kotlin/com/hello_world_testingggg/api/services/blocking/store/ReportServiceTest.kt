@@ -12,7 +12,12 @@ internal class ReportServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun retrieve() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val reportService = client.store().reports()
 
         val report = reportService.retrieve("reportId")
@@ -23,7 +28,12 @@ internal class ReportServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun list() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val reportService = client.store().reports()
 
         val page = reportService.list()
@@ -34,7 +44,12 @@ internal class ReportServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun embed() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val reportService = client.store().reports()
 
         reportService.embed("reportId")
@@ -43,7 +58,12 @@ internal class ReportServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun pause() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val reportService = client.store().reports()
 
         reportService.pause(

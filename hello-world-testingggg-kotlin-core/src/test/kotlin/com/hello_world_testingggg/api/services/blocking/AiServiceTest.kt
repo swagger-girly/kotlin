@@ -13,7 +13,12 @@ internal class AiServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun aiQuery() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val aiService = client.ai()
 
         val response =

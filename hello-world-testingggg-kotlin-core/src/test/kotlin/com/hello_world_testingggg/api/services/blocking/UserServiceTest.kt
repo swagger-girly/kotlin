@@ -15,7 +15,12 @@ internal class UserServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun create() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val userService = client.user()
 
         val user =
@@ -38,7 +43,12 @@ internal class UserServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun retrieve() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val userService = client.user()
 
         val user = userService.retrieve("username")
@@ -49,7 +59,12 @@ internal class UserServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun update() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val userService = client.user()
 
         userService.update(
@@ -70,7 +85,12 @@ internal class UserServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun delete() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val userService = client.user()
 
         userService.delete("username")
@@ -79,7 +99,12 @@ internal class UserServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun createWithList() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val userService = client.user()
 
         val response =
@@ -104,7 +129,12 @@ internal class UserServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun login() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val userService = client.user()
 
         userService.login(
@@ -115,7 +145,12 @@ internal class UserServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun logout() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val userService = client.user()
 
         userService.logout()
@@ -124,7 +159,12 @@ internal class UserServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun verifyIdentity() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val userService = client.user()
 
         val response = userService.verifyIdentity("username")

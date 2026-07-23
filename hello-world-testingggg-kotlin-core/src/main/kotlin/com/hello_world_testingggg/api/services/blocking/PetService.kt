@@ -24,6 +24,7 @@ import com.hello_world_testingggg.api.models.pet.PetListUnpaginatedResponse
 import com.hello_world_testingggg.api.models.pet.PetRetrieveParams
 import com.hello_world_testingggg.api.models.pet.PetRetrievePremiumParams
 import com.hello_world_testingggg.api.models.pet.PetRetrievePremiumResponse
+import com.hello_world_testingggg.api.models.pet.PetSearchParams
 import com.hello_world_testingggg.api.models.pet.PetUpdateParams
 import com.hello_world_testingggg.api.models.pet.PetUpdateWithFormParams
 import com.hello_world_testingggg.api.models.pet.PetUploadImageParams
@@ -175,6 +176,22 @@ interface PetService {
     /** @see retrievePremium */
     fun retrievePremium(petId: Long, requestOptions: RequestOptions): PetRetrievePremiumResponse =
         retrievePremium(petId, PetRetrievePremiumParams.none(), requestOptions)
+
+    /**
+     * Typed query-parameter probe matrix: an object-schema query param mints a typed params model,
+     * an array-of-object query param mints a singularized element type, an empty object
+     * (additionalProperties:false) stays a bare object, and a scalar stays scalar. Isolates the
+     * emitter query-parameter type-resolution branches so object/array-of-object/empty-object
+     * params are each exercised.
+     */
+    fun search(
+        params: PetSearchParams = PetSearchParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): List<Pet>
+
+    /** @see search */
+    fun search(requestOptions: RequestOptions): List<Pet> =
+        search(PetSearchParams.none(), requestOptions)
 
     /** Updates a pet in the store with form data */
     fun updateWithForm(
@@ -450,6 +467,21 @@ interface PetService {
             requestOptions: RequestOptions,
         ): HttpResponseFor<PetRetrievePremiumResponse> =
             retrievePremium(petId, PetRetrievePremiumParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `get /pet/search`, but is otherwise the same as
+         * [PetService.search].
+         */
+        @MustBeClosed
+        fun search(
+            params: PetSearchParams = PetSearchParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<List<Pet>>
+
+        /** @see search */
+        @MustBeClosed
+        fun search(requestOptions: RequestOptions): HttpResponseFor<List<Pet>> =
+            search(PetSearchParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `post /pet/{petId}`, but is otherwise the same as

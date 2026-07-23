@@ -23,6 +23,8 @@ internal class ClientOptionsTest {
                 .httpClient(httpClient)
                 .putHeader("User-Agent", "My User Agent")
                 .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
                 .build()
 
         assertThat(clientOptions.headers.values("User-Agent")).containsExactly("My User Agent")
@@ -31,7 +33,12 @@ internal class ClientOptionsTest {
     @Test
     fun toBuilder_apiKeyCanBeUpdated() {
         var clientOptions =
-            ClientOptions.builder().httpClient(httpClient).apiKey("My API Key").build()
+            ClientOptions.builder()
+                .httpClient(httpClient)
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
 
         clientOptions = clientOptions.toBuilder().apiKey("another My API Key").build()
 
@@ -41,7 +48,12 @@ internal class ClientOptionsTest {
     @Test
     fun toBuilder_whenOriginalClientOptionsGarbageCollected_doesNotCloseOriginalClient() {
         var clientOptions =
-            ClientOptions.builder().httpClient(httpClient).apiKey("My API Key").build()
+            ClientOptions.builder()
+                .httpClient(httpClient)
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         verify(httpClient, never()).close()
 
         // Overwrite the `clientOptions` variable so that the original `ClientOptions` is GC'd.

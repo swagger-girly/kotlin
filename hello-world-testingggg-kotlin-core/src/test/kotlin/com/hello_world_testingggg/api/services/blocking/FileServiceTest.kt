@@ -26,7 +26,12 @@ internal class FileServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun update() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val fileService = client.files()
 
         val file =
@@ -49,7 +54,12 @@ internal class FileServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun list() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val fileService = client.files()
 
         val fileslist = fileService.list()
@@ -60,7 +70,12 @@ internal class FileServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun delete() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val fileService = client.files()
 
         fileService.delete("path")
@@ -69,7 +84,12 @@ internal class FileServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun createArchive() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val fileService = client.files()
 
         val archive =
@@ -95,6 +115,8 @@ internal class FileServiceTest {
             HelloWorldTestinggggOkHttpClient.builder()
                 .baseUrl(wmRuntimeInfo.httpBaseUrl)
                 .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
                 .build()
         val fileService = client.files()
         stubFor(get(anyUrl()).willReturn(ok().withBody("abc")))
@@ -107,7 +129,12 @@ internal class FileServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun upload() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val fileService = client.files()
 
         val file =
@@ -132,7 +159,12 @@ internal class FileServiceTest {
     @Disabled("Mock server tests are disabled")
     @Test
     fun uploadDirect() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
         val fileService = client.files()
 
         val file =
