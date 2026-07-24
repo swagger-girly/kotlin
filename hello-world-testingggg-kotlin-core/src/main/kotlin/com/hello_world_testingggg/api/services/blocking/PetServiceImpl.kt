@@ -31,6 +31,8 @@ import com.hello_world_testingggg.api.models.pet.PetListFakePageInferredPageResp
 import com.hello_world_testingggg.api.models.pet.PetListFakePageInferredParams
 import com.hello_world_testingggg.api.models.pet.PetListFakePageParams
 import com.hello_world_testingggg.api.models.pet.PetListFakePageResponse
+import com.hello_world_testingggg.api.models.pet.PetListLeaderboardParams
+import com.hello_world_testingggg.api.models.pet.PetListLeaderboardResponse
 import com.hello_world_testingggg.api.models.pet.PetListPage
 import com.hello_world_testingggg.api.models.pet.PetListPageResponse
 import com.hello_world_testingggg.api.models.pet.PetListParams
@@ -106,6 +108,13 @@ class PetServiceImpl internal constructor(private val clientOptions: ClientOptio
     ): PetListFakePageInferredPage =
         // get /pet/fake-page-inferred
         withRawResponse().listFakePageInferred(params, requestOptions).parse()
+
+    override fun listLeaderboard(
+        params: PetListLeaderboardParams,
+        requestOptions: RequestOptions,
+    ): List<PetListLeaderboardResponse> =
+        // get /pet/leaderboard
+        withRawResponse().listLeaderboard(params, requestOptions).parse()
 
     override fun listUnpaginated(
         params: PetListUnpaginatedParams,
@@ -404,6 +413,33 @@ class PetServiceImpl internal constructor(private val clientOptions: ClientOptio
                             .params(params)
                             .response(it)
                             .build()
+                    }
+            }
+        }
+
+        private val listLeaderboardHandler: Handler<List<PetListLeaderboardResponse>> =
+            jsonHandler<List<PetListLeaderboardResponse>>(clientOptions.jsonMapper)
+
+        override fun listLeaderboard(
+            params: PetListLeaderboardParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<List<PetListLeaderboardResponse>> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("pet", "leaderboard")
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { listLeaderboardHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.forEach { it.validate() }
+                        }
                     }
             }
         }

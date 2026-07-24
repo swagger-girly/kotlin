@@ -16,6 +16,8 @@ import com.hello_world_testingggg.api.models.pet.PetListFakePageInferredPageAsyn
 import com.hello_world_testingggg.api.models.pet.PetListFakePageInferredParams
 import com.hello_world_testingggg.api.models.pet.PetListFakePageParams
 import com.hello_world_testingggg.api.models.pet.PetListFakePageResponse
+import com.hello_world_testingggg.api.models.pet.PetListLeaderboardParams
+import com.hello_world_testingggg.api.models.pet.PetListLeaderboardResponse
 import com.hello_world_testingggg.api.models.pet.PetListPageAsync
 import com.hello_world_testingggg.api.models.pet.PetListParams
 import com.hello_world_testingggg.api.models.pet.PetListUnpaginatedParams
@@ -154,6 +156,19 @@ interface PetServiceAsync {
         requestOptions: RequestOptions
     ): PetListFakePageInferredPageAsync =
         listFakePageInferred(PetListFakePageInferredParams.none(), requestOptions)
+
+    /**
+     * Returns a bare top-level array of inline objects so generators must mint a distinct element
+     * type instead of reusing the response alias name.
+     */
+    suspend fun listLeaderboard(
+        params: PetListLeaderboardParams = PetListLeaderboardParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): List<PetListLeaderboardResponse>
+
+    /** @see listLeaderboard */
+    suspend fun listLeaderboard(requestOptions: RequestOptions): List<PetListLeaderboardResponse> =
+        listLeaderboard(PetListLeaderboardParams.none(), requestOptions)
 
     /** Returns the same cursor-shaped pet list response without enabling SDK pagination helpers. */
     suspend fun listUnpaginated(
@@ -413,6 +428,23 @@ interface PetServiceAsync {
             requestOptions: RequestOptions
         ): HttpResponseFor<PetListFakePageInferredPageAsync> =
             listFakePageInferred(PetListFakePageInferredParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `get /pet/leaderboard`, but is otherwise the same as
+         * [PetServiceAsync.listLeaderboard].
+         */
+        @MustBeClosed
+        suspend fun listLeaderboard(
+            params: PetListLeaderboardParams = PetListLeaderboardParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<List<PetListLeaderboardResponse>>
+
+        /** @see listLeaderboard */
+        @MustBeClosed
+        suspend fun listLeaderboard(
+            requestOptions: RequestOptions
+        ): HttpResponseFor<List<PetListLeaderboardResponse>> =
+            listLeaderboard(PetListLeaderboardParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `get /pet/unpaginated`, but is otherwise the same as

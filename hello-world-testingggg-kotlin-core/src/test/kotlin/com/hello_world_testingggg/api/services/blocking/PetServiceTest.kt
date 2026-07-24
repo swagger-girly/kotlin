@@ -195,6 +195,22 @@ internal class PetServiceTest {
 
     @Disabled("Mock server tests are disabled")
     @Test
+    fun listLeaderboard() {
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
+        val petService = client.pet()
+
+        val response = petService.listLeaderboard()
+
+        response.forEach { it.validate() }
+    }
+
+    @Disabled("Mock server tests are disabled")
+    @Test
     fun listUnpaginated() {
         val client =
             HelloWorldTestinggggOkHttpClient.builder()

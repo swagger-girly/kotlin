@@ -195,6 +195,22 @@ internal class PetServiceAsyncTest {
 
     @Disabled("Mock server tests are disabled")
     @Test
+    suspend fun listLeaderboard() {
+        val client =
+            HelloWorldTestinggggOkHttpClientAsync.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
+        val petServiceAsync = client.pet()
+
+        val response = petServiceAsync.listLeaderboard()
+
+        response.forEach { it.validate() }
+    }
+
+    @Disabled("Mock server tests are disabled")
+    @Test
     suspend fun listUnpaginated() {
         val client =
             HelloWorldTestinggggOkHttpClientAsync.builder()
