@@ -23,4 +23,20 @@ internal class StoreServiceTest {
 
         response.validate()
     }
+
+    @Disabled("Mock server tests are disabled")
+    @Test
+    fun retrieveActivity() {
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
+        val storeService = client.store()
+
+        val response = storeService.retrieveActivity("activityId")
+
+        response.validate()
+    }
 }
