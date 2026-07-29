@@ -12,7 +12,9 @@ import com.hello_world_testingggg.api.core.JsonField
 import com.hello_world_testingggg.api.core.JsonMissing
 import com.hello_world_testingggg.api.core.JsonValue
 import com.hello_world_testingggg.api.errors.HelloWorldTestinggggInvalidDataException
+import com.hello_world_testingggg.api.models.Address
 import com.hello_world_testingggg.api.models.Money
+import com.hello_world_testingggg.api.models.pet.Pet
 import java.time.OffsetDateTime
 import java.util.Collections
 import java.util.Objects
@@ -24,6 +26,14 @@ private constructor(
     private val complete: JsonField<Boolean>,
     private val petId: JsonField<Long>,
     private val quantity: JsonField<Int>,
+    private val relatedAddress: JsonField<Address>,
+    private val relatedCategory: JsonValue,
+    private val relatedCustomer: JsonValue,
+    private val relatedMoney: JsonField<Money>,
+    private val relatedPet: JsonField<Pet>,
+    private val relatedShelter: JsonValue,
+    private val relatedTag: JsonValue,
+    private val relatedUser: JsonValue,
     private val shipDate: JsonField<OffsetDateTime>,
     private val status: JsonField<Status>,
     private val total: JsonField<Money>,
@@ -36,12 +46,47 @@ private constructor(
         @JsonProperty("complete") @ExcludeMissing complete: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("petId") @ExcludeMissing petId: JsonField<Long> = JsonMissing.of(),
         @JsonProperty("quantity") @ExcludeMissing quantity: JsonField<Int> = JsonMissing.of(),
+        @JsonProperty("relatedAddress")
+        @ExcludeMissing
+        relatedAddress: JsonField<Address> = JsonMissing.of(),
+        @JsonProperty("relatedCategory")
+        @ExcludeMissing
+        relatedCategory: JsonValue = JsonMissing.of(),
+        @JsonProperty("relatedCustomer")
+        @ExcludeMissing
+        relatedCustomer: JsonValue = JsonMissing.of(),
+        @JsonProperty("relatedMoney")
+        @ExcludeMissing
+        relatedMoney: JsonField<Money> = JsonMissing.of(),
+        @JsonProperty("relatedPet") @ExcludeMissing relatedPet: JsonField<Pet> = JsonMissing.of(),
+        @JsonProperty("relatedShelter")
+        @ExcludeMissing
+        relatedShelter: JsonValue = JsonMissing.of(),
+        @JsonProperty("relatedTag") @ExcludeMissing relatedTag: JsonValue = JsonMissing.of(),
+        @JsonProperty("relatedUser") @ExcludeMissing relatedUser: JsonValue = JsonMissing.of(),
         @JsonProperty("shipDate")
         @ExcludeMissing
         shipDate: JsonField<OffsetDateTime> = JsonMissing.of(),
         @JsonProperty("status") @ExcludeMissing status: JsonField<Status> = JsonMissing.of(),
         @JsonProperty("total") @ExcludeMissing total: JsonField<Money> = JsonMissing.of(),
-    ) : this(id, complete, petId, quantity, shipDate, status, total, mutableMapOf())
+    ) : this(
+        id,
+        complete,
+        petId,
+        quantity,
+        relatedAddress,
+        relatedCategory,
+        relatedCustomer,
+        relatedMoney,
+        relatedPet,
+        relatedShelter,
+        relatedTag,
+        relatedUser,
+        shipDate,
+        status,
+        total,
+        mutableMapOf(),
+    )
 
     /**
      * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
@@ -66,6 +111,70 @@ private constructor(
      *   (e.g. if the server responded with an unexpected value).
      */
     fun quantity(): Int? = quantity.getNullable("quantity")
+
+    /**
+     * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
+     *   (e.g. if the server responded with an unexpected value).
+     */
+    fun relatedAddress(): Address? = relatedAddress.getNullable("relatedAddress")
+
+    /**
+     * This arbitrary value can be deserialized into a custom type using the `convert` method:
+     * ```kotlin
+     * val myObject: MyClass = orderCreateResponse.relatedCategory().convert(MyClass::class.java)
+     * ```
+     */
+    @JsonProperty("relatedCategory")
+    @ExcludeMissing
+    fun _relatedCategory(): JsonValue = relatedCategory
+
+    /**
+     * This arbitrary value can be deserialized into a custom type using the `convert` method:
+     * ```kotlin
+     * val myObject: MyClass = orderCreateResponse.relatedCustomer().convert(MyClass::class.java)
+     * ```
+     */
+    @JsonProperty("relatedCustomer")
+    @ExcludeMissing
+    fun _relatedCustomer(): JsonValue = relatedCustomer
+
+    /**
+     * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
+     *   (e.g. if the server responded with an unexpected value).
+     */
+    fun relatedMoney(): Money? = relatedMoney.getNullable("relatedMoney")
+
+    /**
+     * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
+     *   (e.g. if the server responded with an unexpected value).
+     */
+    fun relatedPet(): Pet? = relatedPet.getNullable("relatedPet")
+
+    /**
+     * This arbitrary value can be deserialized into a custom type using the `convert` method:
+     * ```kotlin
+     * val myObject: MyClass = orderCreateResponse.relatedShelter().convert(MyClass::class.java)
+     * ```
+     */
+    @JsonProperty("relatedShelter")
+    @ExcludeMissing
+    fun _relatedShelter(): JsonValue = relatedShelter
+
+    /**
+     * This arbitrary value can be deserialized into a custom type using the `convert` method:
+     * ```kotlin
+     * val myObject: MyClass = orderCreateResponse.relatedTag().convert(MyClass::class.java)
+     * ```
+     */
+    @JsonProperty("relatedTag") @ExcludeMissing fun _relatedTag(): JsonValue = relatedTag
+
+    /**
+     * This arbitrary value can be deserialized into a custom type using the `convert` method:
+     * ```kotlin
+     * val myObject: MyClass = orderCreateResponse.relatedUser().convert(MyClass::class.java)
+     * ```
+     */
+    @JsonProperty("relatedUser") @ExcludeMissing fun _relatedUser(): JsonValue = relatedUser
 
     /**
      * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
@@ -116,6 +225,31 @@ private constructor(
     @JsonProperty("quantity") @ExcludeMissing fun _quantity(): JsonField<Int> = quantity
 
     /**
+     * Returns the raw JSON value of [relatedAddress].
+     *
+     * Unlike [relatedAddress], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("relatedAddress")
+    @ExcludeMissing
+    fun _relatedAddress(): JsonField<Address> = relatedAddress
+
+    /**
+     * Returns the raw JSON value of [relatedMoney].
+     *
+     * Unlike [relatedMoney], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("relatedMoney")
+    @ExcludeMissing
+    fun _relatedMoney(): JsonField<Money> = relatedMoney
+
+    /**
+     * Returns the raw JSON value of [relatedPet].
+     *
+     * Unlike [relatedPet], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("relatedPet") @ExcludeMissing fun _relatedPet(): JsonField<Pet> = relatedPet
+
+    /**
      * Returns the raw JSON value of [shipDate].
      *
      * Unlike [shipDate], this method doesn't throw if the JSON field has an unexpected type.
@@ -161,6 +295,14 @@ private constructor(
         private var complete: JsonField<Boolean> = JsonMissing.of()
         private var petId: JsonField<Long> = JsonMissing.of()
         private var quantity: JsonField<Int> = JsonMissing.of()
+        private var relatedAddress: JsonField<Address> = JsonMissing.of()
+        private var relatedCategory: JsonValue = JsonMissing.of()
+        private var relatedCustomer: JsonValue = JsonMissing.of()
+        private var relatedMoney: JsonField<Money> = JsonMissing.of()
+        private var relatedPet: JsonField<Pet> = JsonMissing.of()
+        private var relatedShelter: JsonValue = JsonMissing.of()
+        private var relatedTag: JsonValue = JsonMissing.of()
+        private var relatedUser: JsonValue = JsonMissing.of()
         private var shipDate: JsonField<OffsetDateTime> = JsonMissing.of()
         private var status: JsonField<Status> = JsonMissing.of()
         private var total: JsonField<Money> = JsonMissing.of()
@@ -171,6 +313,14 @@ private constructor(
             complete = orderCreateResponse.complete
             petId = orderCreateResponse.petId
             quantity = orderCreateResponse.quantity
+            relatedAddress = orderCreateResponse.relatedAddress
+            relatedCategory = orderCreateResponse.relatedCategory
+            relatedCustomer = orderCreateResponse.relatedCustomer
+            relatedMoney = orderCreateResponse.relatedMoney
+            relatedPet = orderCreateResponse.relatedPet
+            relatedShelter = orderCreateResponse.relatedShelter
+            relatedTag = orderCreateResponse.relatedTag
+            relatedUser = orderCreateResponse.relatedUser
             shipDate = orderCreateResponse.shipDate
             status = orderCreateResponse.status
             total = orderCreateResponse.total
@@ -217,6 +367,58 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun quantity(quantity: JsonField<Int>) = apply { this.quantity = quantity }
+
+        fun relatedAddress(relatedAddress: Address) = relatedAddress(JsonField.of(relatedAddress))
+
+        /**
+         * Sets [Builder.relatedAddress] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.relatedAddress] with a well-typed [Address] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun relatedAddress(relatedAddress: JsonField<Address>) = apply {
+            this.relatedAddress = relatedAddress
+        }
+
+        fun relatedCategory(relatedCategory: JsonValue) = apply {
+            this.relatedCategory = relatedCategory
+        }
+
+        fun relatedCustomer(relatedCustomer: JsonValue) = apply {
+            this.relatedCustomer = relatedCustomer
+        }
+
+        fun relatedMoney(relatedMoney: Money) = relatedMoney(JsonField.of(relatedMoney))
+
+        /**
+         * Sets [Builder.relatedMoney] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.relatedMoney] with a well-typed [Money] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun relatedMoney(relatedMoney: JsonField<Money>) = apply {
+            this.relatedMoney = relatedMoney
+        }
+
+        fun relatedPet(relatedPet: Pet) = relatedPet(JsonField.of(relatedPet))
+
+        /**
+         * Sets [Builder.relatedPet] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.relatedPet] with a well-typed [Pet] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun relatedPet(relatedPet: JsonField<Pet>) = apply { this.relatedPet = relatedPet }
+
+        fun relatedShelter(relatedShelter: JsonValue) = apply {
+            this.relatedShelter = relatedShelter
+        }
+
+        fun relatedTag(relatedTag: JsonValue) = apply { this.relatedTag = relatedTag }
+
+        fun relatedUser(relatedUser: JsonValue) = apply { this.relatedUser = relatedUser }
 
         fun shipDate(shipDate: OffsetDateTime) = shipDate(JsonField.of(shipDate))
 
@@ -280,6 +482,14 @@ private constructor(
                 complete,
                 petId,
                 quantity,
+                relatedAddress,
+                relatedCategory,
+                relatedCustomer,
+                relatedMoney,
+                relatedPet,
+                relatedShelter,
+                relatedTag,
+                relatedUser,
                 shipDate,
                 status,
                 total,
@@ -306,6 +516,9 @@ private constructor(
         complete()
         petId()
         quantity()
+        relatedAddress()?.validate()
+        relatedMoney()?.validate()
+        relatedPet()?.validate()
         shipDate()
         status()?.validate()
         total()?.validate()
@@ -330,6 +543,9 @@ private constructor(
             (if (complete.asKnown() == null) 0 else 1) +
             (if (petId.asKnown() == null) 0 else 1) +
             (if (quantity.asKnown() == null) 0 else 1) +
+            (relatedAddress.asKnown()?.validity() ?: 0) +
+            (relatedMoney.asKnown()?.validity() ?: 0) +
+            (relatedPet.asKnown()?.validity() ?: 0) +
             (if (shipDate.asKnown() == null) 0 else 1) +
             (status.asKnown()?.validity() ?: 0) +
             (total.asKnown()?.validity() ?: 0)
@@ -486,6 +702,14 @@ private constructor(
             complete == other.complete &&
             petId == other.petId &&
             quantity == other.quantity &&
+            relatedAddress == other.relatedAddress &&
+            relatedCategory == other.relatedCategory &&
+            relatedCustomer == other.relatedCustomer &&
+            relatedMoney == other.relatedMoney &&
+            relatedPet == other.relatedPet &&
+            relatedShelter == other.relatedShelter &&
+            relatedTag == other.relatedTag &&
+            relatedUser == other.relatedUser &&
             shipDate == other.shipDate &&
             status == other.status &&
             total == other.total &&
@@ -493,11 +717,28 @@ private constructor(
     }
 
     private val hashCode: Int by lazy {
-        Objects.hash(id, complete, petId, quantity, shipDate, status, total, additionalProperties)
+        Objects.hash(
+            id,
+            complete,
+            petId,
+            quantity,
+            relatedAddress,
+            relatedCategory,
+            relatedCustomer,
+            relatedMoney,
+            relatedPet,
+            relatedShelter,
+            relatedTag,
+            relatedUser,
+            shipDate,
+            status,
+            total,
+            additionalProperties,
+        )
     }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "OrderCreateResponse{id=$id, complete=$complete, petId=$petId, quantity=$quantity, shipDate=$shipDate, status=$status, total=$total, additionalProperties=$additionalProperties}"
+        "OrderCreateResponse{id=$id, complete=$complete, petId=$petId, quantity=$quantity, relatedAddress=$relatedAddress, relatedCategory=$relatedCategory, relatedCustomer=$relatedCustomer, relatedMoney=$relatedMoney, relatedPet=$relatedPet, relatedShelter=$relatedShelter, relatedTag=$relatedTag, relatedUser=$relatedUser, shipDate=$shipDate, status=$status, total=$total, additionalProperties=$additionalProperties}"
 }

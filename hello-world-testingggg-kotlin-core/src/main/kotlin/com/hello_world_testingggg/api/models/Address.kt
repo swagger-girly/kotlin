@@ -12,6 +12,7 @@ import com.hello_world_testingggg.api.core.JsonMissing
 import com.hello_world_testingggg.api.core.JsonValue
 import com.hello_world_testingggg.api.core.checkRequired
 import com.hello_world_testingggg.api.errors.HelloWorldTestinggggInvalidDataException
+import com.hello_world_testingggg.api.models.pet.Pet
 import java.util.Collections
 import java.util.Objects
 
@@ -20,6 +21,14 @@ class Address
 private constructor(
     private val city: JsonField<String>,
     private val geo: JsonField<Geo>,
+    private val relatedCategory: JsonValue,
+    private val relatedCustomer: JsonValue,
+    private val relatedMoney: JsonField<Money>,
+    private val relatedOrder: JsonValue,
+    private val relatedPet: JsonField<Pet>,
+    private val relatedShelter: JsonValue,
+    private val relatedTag: JsonValue,
+    private val relatedUser: JsonValue,
     private val state: JsonField<String>,
     private val street: JsonField<String>,
     private val zip: JsonField<String>,
@@ -30,10 +39,41 @@ private constructor(
     private constructor(
         @JsonProperty("city") @ExcludeMissing city: JsonField<String> = JsonMissing.of(),
         @JsonProperty("geo") @ExcludeMissing geo: JsonField<Geo> = JsonMissing.of(),
+        @JsonProperty("relatedCategory")
+        @ExcludeMissing
+        relatedCategory: JsonValue = JsonMissing.of(),
+        @JsonProperty("relatedCustomer")
+        @ExcludeMissing
+        relatedCustomer: JsonValue = JsonMissing.of(),
+        @JsonProperty("relatedMoney")
+        @ExcludeMissing
+        relatedMoney: JsonField<Money> = JsonMissing.of(),
+        @JsonProperty("relatedOrder") @ExcludeMissing relatedOrder: JsonValue = JsonMissing.of(),
+        @JsonProperty("relatedPet") @ExcludeMissing relatedPet: JsonField<Pet> = JsonMissing.of(),
+        @JsonProperty("relatedShelter")
+        @ExcludeMissing
+        relatedShelter: JsonValue = JsonMissing.of(),
+        @JsonProperty("relatedTag") @ExcludeMissing relatedTag: JsonValue = JsonMissing.of(),
+        @JsonProperty("relatedUser") @ExcludeMissing relatedUser: JsonValue = JsonMissing.of(),
         @JsonProperty("state") @ExcludeMissing state: JsonField<String> = JsonMissing.of(),
         @JsonProperty("street") @ExcludeMissing street: JsonField<String> = JsonMissing.of(),
         @JsonProperty("zip") @ExcludeMissing zip: JsonField<String> = JsonMissing.of(),
-    ) : this(city, geo, state, street, zip, mutableMapOf())
+    ) : this(
+        city,
+        geo,
+        relatedCategory,
+        relatedCustomer,
+        relatedMoney,
+        relatedOrder,
+        relatedPet,
+        relatedShelter,
+        relatedTag,
+        relatedUser,
+        state,
+        street,
+        zip,
+        mutableMapOf(),
+    )
 
     /**
      * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
@@ -46,6 +86,72 @@ private constructor(
      *   (e.g. if the server responded with an unexpected value).
      */
     fun geo(): Geo? = geo.getNullable("geo")
+
+    /**
+     * This arbitrary value can be deserialized into a custom type using the `convert` method:
+     * ```kotlin
+     * val myObject: MyClass = address.relatedCategory().convert(MyClass::class.java)
+     * ```
+     */
+    @JsonProperty("relatedCategory")
+    @ExcludeMissing
+    fun _relatedCategory(): JsonValue = relatedCategory
+
+    /**
+     * This arbitrary value can be deserialized into a custom type using the `convert` method:
+     * ```kotlin
+     * val myObject: MyClass = address.relatedCustomer().convert(MyClass::class.java)
+     * ```
+     */
+    @JsonProperty("relatedCustomer")
+    @ExcludeMissing
+    fun _relatedCustomer(): JsonValue = relatedCustomer
+
+    /**
+     * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
+     *   (e.g. if the server responded with an unexpected value).
+     */
+    fun relatedMoney(): Money? = relatedMoney.getNullable("relatedMoney")
+
+    /**
+     * This arbitrary value can be deserialized into a custom type using the `convert` method:
+     * ```kotlin
+     * val myObject: MyClass = address.relatedOrder().convert(MyClass::class.java)
+     * ```
+     */
+    @JsonProperty("relatedOrder") @ExcludeMissing fun _relatedOrder(): JsonValue = relatedOrder
+
+    /**
+     * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
+     *   (e.g. if the server responded with an unexpected value).
+     */
+    fun relatedPet(): Pet? = relatedPet.getNullable("relatedPet")
+
+    /**
+     * This arbitrary value can be deserialized into a custom type using the `convert` method:
+     * ```kotlin
+     * val myObject: MyClass = address.relatedShelter().convert(MyClass::class.java)
+     * ```
+     */
+    @JsonProperty("relatedShelter")
+    @ExcludeMissing
+    fun _relatedShelter(): JsonValue = relatedShelter
+
+    /**
+     * This arbitrary value can be deserialized into a custom type using the `convert` method:
+     * ```kotlin
+     * val myObject: MyClass = address.relatedTag().convert(MyClass::class.java)
+     * ```
+     */
+    @JsonProperty("relatedTag") @ExcludeMissing fun _relatedTag(): JsonValue = relatedTag
+
+    /**
+     * This arbitrary value can be deserialized into a custom type using the `convert` method:
+     * ```kotlin
+     * val myObject: MyClass = address.relatedUser().convert(MyClass::class.java)
+     * ```
+     */
+    @JsonProperty("relatedUser") @ExcludeMissing fun _relatedUser(): JsonValue = relatedUser
 
     /**
      * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
@@ -78,6 +184,22 @@ private constructor(
      * Unlike [geo], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("geo") @ExcludeMissing fun _geo(): JsonField<Geo> = geo
+
+    /**
+     * Returns the raw JSON value of [relatedMoney].
+     *
+     * Unlike [relatedMoney], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("relatedMoney")
+    @ExcludeMissing
+    fun _relatedMoney(): JsonField<Money> = relatedMoney
+
+    /**
+     * Returns the raw JSON value of [relatedPet].
+     *
+     * Unlike [relatedPet], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("relatedPet") @ExcludeMissing fun _relatedPet(): JsonField<Pet> = relatedPet
 
     /**
      * Returns the raw JSON value of [state].
@@ -123,6 +245,14 @@ private constructor(
 
         private var city: JsonField<String> = JsonMissing.of()
         private var geo: JsonField<Geo> = JsonMissing.of()
+        private var relatedCategory: JsonValue = JsonMissing.of()
+        private var relatedCustomer: JsonValue = JsonMissing.of()
+        private var relatedMoney: JsonField<Money> = JsonMissing.of()
+        private var relatedOrder: JsonValue = JsonMissing.of()
+        private var relatedPet: JsonField<Pet> = JsonMissing.of()
+        private var relatedShelter: JsonValue = JsonMissing.of()
+        private var relatedTag: JsonValue = JsonMissing.of()
+        private var relatedUser: JsonValue = JsonMissing.of()
         private var state: JsonField<String> = JsonMissing.of()
         private var street: JsonField<String> = JsonMissing.of()
         private var zip: JsonField<String> = JsonMissing.of()
@@ -131,6 +261,14 @@ private constructor(
         internal fun from(address: Address) = apply {
             city = address.city
             geo = address.geo
+            relatedCategory = address.relatedCategory
+            relatedCustomer = address.relatedCustomer
+            relatedMoney = address.relatedMoney
+            relatedOrder = address.relatedOrder
+            relatedPet = address.relatedPet
+            relatedShelter = address.relatedShelter
+            relatedTag = address.relatedTag
+            relatedUser = address.relatedUser
             state = address.state
             street = address.street
             zip = address.zip
@@ -156,6 +294,47 @@ private constructor(
          * is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun geo(geo: JsonField<Geo>) = apply { this.geo = geo }
+
+        fun relatedCategory(relatedCategory: JsonValue) = apply {
+            this.relatedCategory = relatedCategory
+        }
+
+        fun relatedCustomer(relatedCustomer: JsonValue) = apply {
+            this.relatedCustomer = relatedCustomer
+        }
+
+        fun relatedMoney(relatedMoney: Money) = relatedMoney(JsonField.of(relatedMoney))
+
+        /**
+         * Sets [Builder.relatedMoney] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.relatedMoney] with a well-typed [Money] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun relatedMoney(relatedMoney: JsonField<Money>) = apply {
+            this.relatedMoney = relatedMoney
+        }
+
+        fun relatedOrder(relatedOrder: JsonValue) = apply { this.relatedOrder = relatedOrder }
+
+        fun relatedPet(relatedPet: Pet) = relatedPet(JsonField.of(relatedPet))
+
+        /**
+         * Sets [Builder.relatedPet] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.relatedPet] with a well-typed [Pet] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun relatedPet(relatedPet: JsonField<Pet>) = apply { this.relatedPet = relatedPet }
+
+        fun relatedShelter(relatedShelter: JsonValue) = apply {
+            this.relatedShelter = relatedShelter
+        }
+
+        fun relatedTag(relatedTag: JsonValue) = apply { this.relatedTag = relatedTag }
+
+        fun relatedUser(relatedUser: JsonValue) = apply { this.relatedUser = relatedUser }
 
         fun state(state: String) = state(JsonField.of(state))
 
@@ -212,7 +391,22 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          */
         fun build(): Address =
-            Address(city, geo, state, street, zip, additionalProperties.toMutableMap())
+            Address(
+                city,
+                geo,
+                relatedCategory,
+                relatedCustomer,
+                relatedMoney,
+                relatedOrder,
+                relatedPet,
+                relatedShelter,
+                relatedTag,
+                relatedUser,
+                state,
+                street,
+                zip,
+                additionalProperties.toMutableMap(),
+            )
     }
 
     private var validated: Boolean = false
@@ -232,6 +426,8 @@ private constructor(
 
         city()
         geo()?.validate()
+        relatedMoney()?.validate()
+        relatedPet()?.validate()
         state()
         street()
         zip()
@@ -254,6 +450,8 @@ private constructor(
     internal fun validity(): Int =
         (if (city.asKnown() == null) 0 else 1) +
             (geo.asKnown()?.validity() ?: 0) +
+            (relatedMoney.asKnown()?.validity() ?: 0) +
+            (relatedPet.asKnown()?.validity() ?: 0) +
             (if (state.asKnown() == null) 0 else 1) +
             (if (street.asKnown() == null) 0 else 1) +
             (if (zip.asKnown() == null) 0 else 1)
@@ -472,6 +670,14 @@ private constructor(
         return other is Address &&
             city == other.city &&
             geo == other.geo &&
+            relatedCategory == other.relatedCategory &&
+            relatedCustomer == other.relatedCustomer &&
+            relatedMoney == other.relatedMoney &&
+            relatedOrder == other.relatedOrder &&
+            relatedPet == other.relatedPet &&
+            relatedShelter == other.relatedShelter &&
+            relatedTag == other.relatedTag &&
+            relatedUser == other.relatedUser &&
             state == other.state &&
             street == other.street &&
             zip == other.zip &&
@@ -479,11 +685,26 @@ private constructor(
     }
 
     private val hashCode: Int by lazy {
-        Objects.hash(city, geo, state, street, zip, additionalProperties)
+        Objects.hash(
+            city,
+            geo,
+            relatedCategory,
+            relatedCustomer,
+            relatedMoney,
+            relatedOrder,
+            relatedPet,
+            relatedShelter,
+            relatedTag,
+            relatedUser,
+            state,
+            street,
+            zip,
+            additionalProperties,
+        )
     }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "Address{city=$city, geo=$geo, state=$state, street=$street, zip=$zip, additionalProperties=$additionalProperties}"
+        "Address{city=$city, geo=$geo, relatedCategory=$relatedCategory, relatedCustomer=$relatedCustomer, relatedMoney=$relatedMoney, relatedOrder=$relatedOrder, relatedPet=$relatedPet, relatedShelter=$relatedShelter, relatedTag=$relatedTag, relatedUser=$relatedUser, state=$state, street=$street, zip=$zip, additionalProperties=$additionalProperties}"
 }

@@ -26,6 +26,8 @@ import com.hello_world_testingggg.api.core.http.Headers
 import com.hello_world_testingggg.api.core.http.QueryParams
 import com.hello_world_testingggg.api.errors.HelloWorldTestinggggInvalidDataException
 import com.hello_world_testingggg.api.models.Address
+import com.hello_world_testingggg.api.models.Money
+import com.hello_world_testingggg.api.models.pet.Pet
 import java.util.Collections
 import java.util.Objects
 
@@ -1004,6 +1006,14 @@ private constructor(
                 private val address: JsonField<Address>,
                 private val contact: JsonField<Contact>,
                 private val location: JsonField<Location>,
+                private val relatedAddress: JsonField<Address>,
+                private val relatedCategory: JsonValue,
+                private val relatedCustomer: JsonValue,
+                private val relatedMoney: JsonField<Money>,
+                private val relatedOrder: JsonValue,
+                private val relatedPet: JsonField<Pet>,
+                private val relatedTag: JsonValue,
+                private val relatedUser: JsonValue,
                 private val additionalProperties: MutableMap<String, JsonValue>,
             ) {
 
@@ -1021,7 +1031,45 @@ private constructor(
                     @JsonProperty("location")
                     @ExcludeMissing
                     location: JsonField<Location> = JsonMissing.of(),
-                ) : this(name, address, contact, location, mutableMapOf())
+                    @JsonProperty("relatedAddress")
+                    @ExcludeMissing
+                    relatedAddress: JsonField<Address> = JsonMissing.of(),
+                    @JsonProperty("relatedCategory")
+                    @ExcludeMissing
+                    relatedCategory: JsonValue = JsonMissing.of(),
+                    @JsonProperty("relatedCustomer")
+                    @ExcludeMissing
+                    relatedCustomer: JsonValue = JsonMissing.of(),
+                    @JsonProperty("relatedMoney")
+                    @ExcludeMissing
+                    relatedMoney: JsonField<Money> = JsonMissing.of(),
+                    @JsonProperty("relatedOrder")
+                    @ExcludeMissing
+                    relatedOrder: JsonValue = JsonMissing.of(),
+                    @JsonProperty("relatedPet")
+                    @ExcludeMissing
+                    relatedPet: JsonField<Pet> = JsonMissing.of(),
+                    @JsonProperty("relatedTag")
+                    @ExcludeMissing
+                    relatedTag: JsonValue = JsonMissing.of(),
+                    @JsonProperty("relatedUser")
+                    @ExcludeMissing
+                    relatedUser: JsonValue = JsonMissing.of(),
+                ) : this(
+                    name,
+                    address,
+                    contact,
+                    location,
+                    relatedAddress,
+                    relatedCategory,
+                    relatedCustomer,
+                    relatedMoney,
+                    relatedOrder,
+                    relatedPet,
+                    relatedTag,
+                    relatedUser,
+                    mutableMapOf(),
+                )
 
                 /**
                  * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an
@@ -1047,6 +1095,79 @@ private constructor(
                  *   unexpected type (e.g. if the server responded with an unexpected value).
                  */
                 fun location(): Location? = location.getNullable("location")
+
+                /**
+                 * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an
+                 *   unexpected type (e.g. if the server responded with an unexpected value).
+                 */
+                fun relatedAddress(): Address? = relatedAddress.getNullable("relatedAddress")
+
+                /**
+                 * This arbitrary value can be deserialized into a custom type using the `convert`
+                 * method:
+                 * ```kotlin
+                 * val myObject: MyClass = shelter.relatedCategory().convert(MyClass::class.java)
+                 * ```
+                 */
+                @JsonProperty("relatedCategory")
+                @ExcludeMissing
+                fun _relatedCategory(): JsonValue = relatedCategory
+
+                /**
+                 * This arbitrary value can be deserialized into a custom type using the `convert`
+                 * method:
+                 * ```kotlin
+                 * val myObject: MyClass = shelter.relatedCustomer().convert(MyClass::class.java)
+                 * ```
+                 */
+                @JsonProperty("relatedCustomer")
+                @ExcludeMissing
+                fun _relatedCustomer(): JsonValue = relatedCustomer
+
+                /**
+                 * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an
+                 *   unexpected type (e.g. if the server responded with an unexpected value).
+                 */
+                fun relatedMoney(): Money? = relatedMoney.getNullable("relatedMoney")
+
+                /**
+                 * This arbitrary value can be deserialized into a custom type using the `convert`
+                 * method:
+                 * ```kotlin
+                 * val myObject: MyClass = shelter.relatedOrder().convert(MyClass::class.java)
+                 * ```
+                 */
+                @JsonProperty("relatedOrder")
+                @ExcludeMissing
+                fun _relatedOrder(): JsonValue = relatedOrder
+
+                /**
+                 * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an
+                 *   unexpected type (e.g. if the server responded with an unexpected value).
+                 */
+                fun relatedPet(): Pet? = relatedPet.getNullable("relatedPet")
+
+                /**
+                 * This arbitrary value can be deserialized into a custom type using the `convert`
+                 * method:
+                 * ```kotlin
+                 * val myObject: MyClass = shelter.relatedTag().convert(MyClass::class.java)
+                 * ```
+                 */
+                @JsonProperty("relatedTag")
+                @ExcludeMissing
+                fun _relatedTag(): JsonValue = relatedTag
+
+                /**
+                 * This arbitrary value can be deserialized into a custom type using the `convert`
+                 * method:
+                 * ```kotlin
+                 * val myObject: MyClass = shelter.relatedUser().convert(MyClass::class.java)
+                 * ```
+                 */
+                @JsonProperty("relatedUser")
+                @ExcludeMissing
+                fun _relatedUser(): JsonValue = relatedUser
 
                 /**
                  * Returns the raw JSON value of [name].
@@ -1086,6 +1207,36 @@ private constructor(
                 @ExcludeMissing
                 fun _location(): JsonField<Location> = location
 
+                /**
+                 * Returns the raw JSON value of [relatedAddress].
+                 *
+                 * Unlike [relatedAddress], this method doesn't throw if the JSON field has an
+                 * unexpected type.
+                 */
+                @JsonProperty("relatedAddress")
+                @ExcludeMissing
+                fun _relatedAddress(): JsonField<Address> = relatedAddress
+
+                /**
+                 * Returns the raw JSON value of [relatedMoney].
+                 *
+                 * Unlike [relatedMoney], this method doesn't throw if the JSON field has an
+                 * unexpected type.
+                 */
+                @JsonProperty("relatedMoney")
+                @ExcludeMissing
+                fun _relatedMoney(): JsonField<Money> = relatedMoney
+
+                /**
+                 * Returns the raw JSON value of [relatedPet].
+                 *
+                 * Unlike [relatedPet], this method doesn't throw if the JSON field has an
+                 * unexpected type.
+                 */
+                @JsonProperty("relatedPet")
+                @ExcludeMissing
+                fun _relatedPet(): JsonField<Pet> = relatedPet
+
                 @JsonAnySetter
                 private fun putAdditionalProperty(key: String, value: JsonValue) {
                     additionalProperties.put(key, value)
@@ -1118,6 +1269,14 @@ private constructor(
                     private var address: JsonField<Address> = JsonMissing.of()
                     private var contact: JsonField<Contact> = JsonMissing.of()
                     private var location: JsonField<Location> = JsonMissing.of()
+                    private var relatedAddress: JsonField<Address> = JsonMissing.of()
+                    private var relatedCategory: JsonValue = JsonMissing.of()
+                    private var relatedCustomer: JsonValue = JsonMissing.of()
+                    private var relatedMoney: JsonField<Money> = JsonMissing.of()
+                    private var relatedOrder: JsonValue = JsonMissing.of()
+                    private var relatedPet: JsonField<Pet> = JsonMissing.of()
+                    private var relatedTag: JsonValue = JsonMissing.of()
+                    private var relatedUser: JsonValue = JsonMissing.of()
                     private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                     internal fun from(shelter: Shelter) = apply {
@@ -1125,6 +1284,14 @@ private constructor(
                         address = shelter.address
                         contact = shelter.contact
                         location = shelter.location
+                        relatedAddress = shelter.relatedAddress
+                        relatedCategory = shelter.relatedCategory
+                        relatedCustomer = shelter.relatedCustomer
+                        relatedMoney = shelter.relatedMoney
+                        relatedOrder = shelter.relatedOrder
+                        relatedPet = shelter.relatedPet
+                        relatedTag = shelter.relatedTag
+                        relatedUser = shelter.relatedUser
                         additionalProperties = shelter.additionalProperties.toMutableMap()
                     }
 
@@ -1172,6 +1339,64 @@ private constructor(
                      */
                     fun location(location: JsonField<Location>) = apply { this.location = location }
 
+                    fun relatedAddress(relatedAddress: Address) =
+                        relatedAddress(JsonField.of(relatedAddress))
+
+                    /**
+                     * Sets [Builder.relatedAddress] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.relatedAddress] with a well-typed [Address]
+                     * value instead. This method is primarily for setting the field to an
+                     * undocumented or not yet supported value.
+                     */
+                    fun relatedAddress(relatedAddress: JsonField<Address>) = apply {
+                        this.relatedAddress = relatedAddress
+                    }
+
+                    fun relatedCategory(relatedCategory: JsonValue) = apply {
+                        this.relatedCategory = relatedCategory
+                    }
+
+                    fun relatedCustomer(relatedCustomer: JsonValue) = apply {
+                        this.relatedCustomer = relatedCustomer
+                    }
+
+                    fun relatedMoney(relatedMoney: Money) = relatedMoney(JsonField.of(relatedMoney))
+
+                    /**
+                     * Sets [Builder.relatedMoney] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.relatedMoney] with a well-typed [Money]
+                     * value instead. This method is primarily for setting the field to an
+                     * undocumented or not yet supported value.
+                     */
+                    fun relatedMoney(relatedMoney: JsonField<Money>) = apply {
+                        this.relatedMoney = relatedMoney
+                    }
+
+                    fun relatedOrder(relatedOrder: JsonValue) = apply {
+                        this.relatedOrder = relatedOrder
+                    }
+
+                    fun relatedPet(relatedPet: Pet) = relatedPet(JsonField.of(relatedPet))
+
+                    /**
+                     * Sets [Builder.relatedPet] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.relatedPet] with a well-typed [Pet] value
+                     * instead. This method is primarily for setting the field to an undocumented or
+                     * not yet supported value.
+                     */
+                    fun relatedPet(relatedPet: JsonField<Pet>) = apply {
+                        this.relatedPet = relatedPet
+                    }
+
+                    fun relatedTag(relatedTag: JsonValue) = apply { this.relatedTag = relatedTag }
+
+                    fun relatedUser(relatedUser: JsonValue) = apply {
+                        this.relatedUser = relatedUser
+                    }
+
                     fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                         this.additionalProperties.clear()
                         putAllAdditionalProperties(additionalProperties)
@@ -1212,6 +1437,14 @@ private constructor(
                             address,
                             contact,
                             location,
+                            relatedAddress,
+                            relatedCategory,
+                            relatedCustomer,
+                            relatedMoney,
+                            relatedOrder,
+                            relatedPet,
+                            relatedTag,
+                            relatedUser,
                             additionalProperties.toMutableMap(),
                         )
                 }
@@ -1237,6 +1470,9 @@ private constructor(
                     address()?.validate()
                     contact()?.validate()
                     location()?.validate()
+                    relatedAddress()?.validate()
+                    relatedMoney()?.validate()
+                    relatedPet()?.validate()
                     validated = true
                 }
 
@@ -1258,7 +1494,10 @@ private constructor(
                     (if (name.asKnown() == null) 0 else 1) +
                         (address.asKnown()?.validity() ?: 0) +
                         (contact.asKnown()?.validity() ?: 0) +
-                        (location.asKnown()?.validity() ?: 0)
+                        (location.asKnown()?.validity() ?: 0) +
+                        (relatedAddress.asKnown()?.validity() ?: 0) +
+                        (relatedMoney.asKnown()?.validity() ?: 0) +
+                        (relatedPet.asKnown()?.validity() ?: 0)
 
                 class Contact
                 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
@@ -2527,17 +2766,39 @@ private constructor(
                         address == other.address &&
                         contact == other.contact &&
                         location == other.location &&
+                        relatedAddress == other.relatedAddress &&
+                        relatedCategory == other.relatedCategory &&
+                        relatedCustomer == other.relatedCustomer &&
+                        relatedMoney == other.relatedMoney &&
+                        relatedOrder == other.relatedOrder &&
+                        relatedPet == other.relatedPet &&
+                        relatedTag == other.relatedTag &&
+                        relatedUser == other.relatedUser &&
                         additionalProperties == other.additionalProperties
                 }
 
                 private val hashCode: Int by lazy {
-                    Objects.hash(name, address, contact, location, additionalProperties)
+                    Objects.hash(
+                        name,
+                        address,
+                        contact,
+                        location,
+                        relatedAddress,
+                        relatedCategory,
+                        relatedCustomer,
+                        relatedMoney,
+                        relatedOrder,
+                        relatedPet,
+                        relatedTag,
+                        relatedUser,
+                        additionalProperties,
+                    )
                 }
 
                 override fun hashCode(): Int = hashCode
 
                 override fun toString() =
-                    "Shelter{name=$name, address=$address, contact=$contact, location=$location, additionalProperties=$additionalProperties}"
+                    "Shelter{name=$name, address=$address, contact=$contact, location=$location, relatedAddress=$relatedAddress, relatedCategory=$relatedCategory, relatedCustomer=$relatedCustomer, relatedMoney=$relatedMoney, relatedOrder=$relatedOrder, relatedPet=$relatedPet, relatedTag=$relatedTag, relatedUser=$relatedUser, additionalProperties=$additionalProperties}"
             }
 
             override fun equals(other: Any?): Boolean {
