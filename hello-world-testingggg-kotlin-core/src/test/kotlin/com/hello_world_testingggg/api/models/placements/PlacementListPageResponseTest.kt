@@ -3,6 +3,7 @@
 package com.hello_world_testingggg.api.models.placements
 
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import com.hello_world_testingggg.api.core.JsonValue
 import com.hello_world_testingggg.api.core.jsonMapper
 import com.hello_world_testingggg.api.models.Address
 import com.hello_world_testingggg.api.models.Money
@@ -39,6 +40,122 @@ internal class PlacementListPageResponseTest {
                                                         .longitude(-122.1598)
                                                         .build()
                                                 )
+                                                .relatedCategory(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedCustomer(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedMoney(
+                                                    Money.builder()
+                                                        .amount(2500L)
+                                                        .currency("USD")
+                                                        .relatedCategory(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .relatedCustomer(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .relatedOrder(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .relatedPet(
+                                                            Pet.builder()
+                                                                .name("doggie")
+                                                                .addPhotoUrl("string")
+                                                                .id(10L)
+                                                                .acquisitionChannel(
+                                                                    Pet.AcquisitionChannel.BREEDER
+                                                                )
+                                                                .category(
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    )
+                                                                )
+                                                                .microchipId("string")
+                                                                .relatedCategory(
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    )
+                                                                )
+                                                                .relatedCustomer(
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    )
+                                                                )
+                                                                .relatedOrder(
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    )
+                                                                )
+                                                                .relatedShelter(
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    )
+                                                                )
+                                                                .relatedUser(
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    )
+                                                                )
+                                                                .status(PetStatus.AVAILABLE)
+                                                                .addTag(
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    )
+                                                                )
+                                                                .build()
+                                                        )
+                                                        .relatedShelter(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .relatedTag(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .relatedUser(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .build()
+                                                )
+                                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedPet(
+                                                    Pet.builder()
+                                                        .name("doggie")
+                                                        .addPhotoUrl("string")
+                                                        .id(10L)
+                                                        .acquisitionChannel(
+                                                            Pet.AcquisitionChannel.BREEDER
+                                                        )
+                                                        .category(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .microchipId("string")
+                                                        .relatedCategory(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .relatedCustomer(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .relatedOrder(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .relatedShelter(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .relatedUser(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .status(PetStatus.AVAILABLE)
+                                                        .addTag(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .build()
+                                                )
+                                                .relatedShelter(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
                                                 .state("CA")
                                                 .street("437 Lytton")
                                                 .zip("94301")
@@ -58,7 +175,18 @@ internal class PlacementListPageResponseTest {
                                         .addCondition("string")
                                         .build()
                                 )
-                                .fee(Money.builder().amount(2500L).currency("USD").build())
+                                .fee(
+                                    Money.builder()
+                                        .amount(2500L)
+                                        .currency("USD")
+                                        .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                        .build()
+                                )
                                 .addHistory(
                                     Application.History.builder()
                                         .changedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
@@ -80,16 +208,15 @@ internal class PlacementListPageResponseTest {
                                         .addPhotoUrl("string")
                                         .id(10L)
                                         .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
-                                        .category(
-                                            Pet.Category.builder()
-                                                .id(1L)
-                                                .name("Dogs")
-                                                .subcategories(listOf())
-                                                .build()
-                                        )
+                                        .category(JsonValue.from(mapOf<String, Any>()))
                                         .microchipId("string")
+                                        .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedUser(JsonValue.from(mapOf<String, Any>()))
                                         .status(PetStatus.AVAILABLE)
-                                        .addTag(Pet.Tag.builder().id(0L).name("name").build())
+                                        .addTag(JsonValue.from(mapOf<String, Any>()))
                                         .build()
                                 )
                                 .build()
@@ -110,6 +237,18 @@ internal class PlacementListPageResponseTest {
                                                         .longitude(-122.1598)
                                                         .build()
                                                 )
+                                                .relatedCategory(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedCustomer(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedShelter(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
                                                 .state("CA")
                                                 .street("437 Lytton")
                                                 .zip("94301")
@@ -121,7 +260,24 @@ internal class PlacementListPageResponseTest {
                                                 .phone("phone")
                                                 .build()
                                         )
-                                        .cost(Money.builder().amount(2500L).currency("USD").build())
+                                        .cost(
+                                            Money.builder()
+                                                .amount(2500L)
+                                                .currency("USD")
+                                                .relatedCategory(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedCustomer(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedShelter(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                                .build()
+                                        )
                                         .window(
                                             TransferLeg.Window.builder()
                                                 .end(
@@ -153,6 +309,18 @@ internal class PlacementListPageResponseTest {
                                                         .longitude(-122.1598)
                                                         .build()
                                                 )
+                                                .relatedCategory(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedCustomer(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedShelter(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
                                                 .state("CA")
                                                 .street("437 Lytton")
                                                 .zip("94301")
@@ -164,7 +332,24 @@ internal class PlacementListPageResponseTest {
                                                 .phone("phone")
                                                 .build()
                                         )
-                                        .cost(Money.builder().amount(2500L).currency("USD").build())
+                                        .cost(
+                                            Money.builder()
+                                                .amount(2500L)
+                                                .currency("USD")
+                                                .relatedCategory(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedCustomer(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedShelter(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                                .build()
+                                        )
                                         .window(
                                             TransferLeg.Window.builder()
                                                 .end(
@@ -196,6 +381,18 @@ internal class PlacementListPageResponseTest {
                                                         .longitude(-122.1598)
                                                         .build()
                                                 )
+                                                .relatedCategory(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedCustomer(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedShelter(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
                                                 .state("CA")
                                                 .street("437 Lytton")
                                                 .zip("94301")
@@ -207,7 +404,24 @@ internal class PlacementListPageResponseTest {
                                                 .phone("phone")
                                                 .build()
                                         )
-                                        .cost(Money.builder().amount(2500L).currency("USD").build())
+                                        .cost(
+                                            Money.builder()
+                                                .amount(2500L)
+                                                .currency("USD")
+                                                .relatedCategory(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedCustomer(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedShelter(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                                .build()
+                                        )
                                         .window(
                                             TransferLeg.Window.builder()
                                                 .end(
@@ -263,6 +477,18 @@ internal class PlacementListPageResponseTest {
                                                         .longitude(-122.1598)
                                                         .build()
                                                 )
+                                                .relatedCategory(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedCustomer(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedShelter(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
                                                 .state("CA")
                                                 .street("437 Lytton")
                                                 .zip("94301")
@@ -274,7 +500,24 @@ internal class PlacementListPageResponseTest {
                                                 .phone("phone")
                                                 .build()
                                         )
-                                        .cost(Money.builder().amount(2500L).currency("USD").build())
+                                        .cost(
+                                            Money.builder()
+                                                .amount(2500L)
+                                                .currency("USD")
+                                                .relatedCategory(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedCustomer(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedShelter(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                                .build()
+                                        )
                                         .window(
                                             TransferLeg.Window.builder()
                                                 .end(
@@ -383,6 +626,98 @@ internal class PlacementListPageResponseTest {
                                                     .longitude(-122.1598)
                                                     .build()
                                             )
+                                            .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedMoney(
+                                                Money.builder()
+                                                    .amount(2500L)
+                                                    .currency("USD")
+                                                    .relatedCategory(
+                                                        JsonValue.from(mapOf<String, Any>())
+                                                    )
+                                                    .relatedCustomer(
+                                                        JsonValue.from(mapOf<String, Any>())
+                                                    )
+                                                    .relatedOrder(
+                                                        JsonValue.from(mapOf<String, Any>())
+                                                    )
+                                                    .relatedPet(
+                                                        Pet.builder()
+                                                            .name("doggie")
+                                                            .addPhotoUrl("string")
+                                                            .id(10L)
+                                                            .acquisitionChannel(
+                                                                Pet.AcquisitionChannel.BREEDER
+                                                            )
+                                                            .category(
+                                                                JsonValue.from(mapOf<String, Any>())
+                                                            )
+                                                            .microchipId("string")
+                                                            .relatedCategory(
+                                                                JsonValue.from(mapOf<String, Any>())
+                                                            )
+                                                            .relatedCustomer(
+                                                                JsonValue.from(mapOf<String, Any>())
+                                                            )
+                                                            .relatedOrder(
+                                                                JsonValue.from(mapOf<String, Any>())
+                                                            )
+                                                            .relatedShelter(
+                                                                JsonValue.from(mapOf<String, Any>())
+                                                            )
+                                                            .relatedUser(
+                                                                JsonValue.from(mapOf<String, Any>())
+                                                            )
+                                                            .status(PetStatus.AVAILABLE)
+                                                            .addTag(
+                                                                JsonValue.from(mapOf<String, Any>())
+                                                            )
+                                                            .build()
+                                                    )
+                                                    .relatedShelter(
+                                                        JsonValue.from(mapOf<String, Any>())
+                                                    )
+                                                    .relatedTag(
+                                                        JsonValue.from(mapOf<String, Any>())
+                                                    )
+                                                    .relatedUser(
+                                                        JsonValue.from(mapOf<String, Any>())
+                                                    )
+                                                    .build()
+                                            )
+                                            .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedPet(
+                                                Pet.builder()
+                                                    .name("doggie")
+                                                    .addPhotoUrl("string")
+                                                    .id(10L)
+                                                    .acquisitionChannel(
+                                                        Pet.AcquisitionChannel.BREEDER
+                                                    )
+                                                    .category(JsonValue.from(mapOf<String, Any>()))
+                                                    .microchipId("string")
+                                                    .relatedCategory(
+                                                        JsonValue.from(mapOf<String, Any>())
+                                                    )
+                                                    .relatedCustomer(
+                                                        JsonValue.from(mapOf<String, Any>())
+                                                    )
+                                                    .relatedOrder(
+                                                        JsonValue.from(mapOf<String, Any>())
+                                                    )
+                                                    .relatedShelter(
+                                                        JsonValue.from(mapOf<String, Any>())
+                                                    )
+                                                    .relatedUser(
+                                                        JsonValue.from(mapOf<String, Any>())
+                                                    )
+                                                    .status(PetStatus.AVAILABLE)
+                                                    .addTag(JsonValue.from(mapOf<String, Any>()))
+                                                    .build()
+                                            )
+                                            .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedUser(JsonValue.from(mapOf<String, Any>()))
                                             .state("CA")
                                             .street("437 Lytton")
                                             .zip("94301")
@@ -400,7 +735,18 @@ internal class PlacementListPageResponseTest {
                                     .addCondition("string")
                                     .build()
                             )
-                            .fee(Money.builder().amount(2500L).currency("USD").build())
+                            .fee(
+                                Money.builder()
+                                    .amount(2500L)
+                                    .currency("USD")
+                                    .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                    .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                    .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                    .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                    .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                    .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                    .build()
+                            )
                             .addHistory(
                                 Application.History.builder()
                                     .changedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
@@ -422,16 +768,15 @@ internal class PlacementListPageResponseTest {
                                     .addPhotoUrl("string")
                                     .id(10L)
                                     .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
-                                    .category(
-                                        Pet.Category.builder()
-                                            .id(1L)
-                                            .name("Dogs")
-                                            .subcategories(listOf())
-                                            .build()
-                                    )
+                                    .category(JsonValue.from(mapOf<String, Any>()))
                                     .microchipId("string")
+                                    .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                    .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                    .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                    .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                    .relatedUser(JsonValue.from(mapOf<String, Any>()))
                                     .status(PetStatus.AVAILABLE)
-                                    .addTag(Pet.Tag.builder().id(0L).name("name").build())
+                                    .addTag(JsonValue.from(mapOf<String, Any>()))
                                     .build()
                             )
                             .build()
@@ -452,6 +797,12 @@ internal class PlacementListPageResponseTest {
                                                     .longitude(-122.1598)
                                                     .build()
                                             )
+                                            .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedUser(JsonValue.from(mapOf<String, Any>()))
                                             .state("CA")
                                             .street("437 Lytton")
                                             .zip("94301")
@@ -463,7 +814,18 @@ internal class PlacementListPageResponseTest {
                                             .phone("phone")
                                             .build()
                                     )
-                                    .cost(Money.builder().amount(2500L).currency("USD").build())
+                                    .cost(
+                                        Money.builder()
+                                            .amount(2500L)
+                                            .currency("USD")
+                                            .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                            .build()
+                                    )
                                     .window(
                                         TransferLeg.Window.builder()
                                             .end(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
@@ -491,6 +853,12 @@ internal class PlacementListPageResponseTest {
                                                     .longitude(-122.1598)
                                                     .build()
                                             )
+                                            .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedUser(JsonValue.from(mapOf<String, Any>()))
                                             .state("CA")
                                             .street("437 Lytton")
                                             .zip("94301")
@@ -502,7 +870,18 @@ internal class PlacementListPageResponseTest {
                                             .phone("phone")
                                             .build()
                                     )
-                                    .cost(Money.builder().amount(2500L).currency("USD").build())
+                                    .cost(
+                                        Money.builder()
+                                            .amount(2500L)
+                                            .currency("USD")
+                                            .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                            .build()
+                                    )
                                     .window(
                                         TransferLeg.Window.builder()
                                             .end(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
@@ -530,6 +909,12 @@ internal class PlacementListPageResponseTest {
                                                     .longitude(-122.1598)
                                                     .build()
                                             )
+                                            .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedUser(JsonValue.from(mapOf<String, Any>()))
                                             .state("CA")
                                             .street("437 Lytton")
                                             .zip("94301")
@@ -541,7 +926,18 @@ internal class PlacementListPageResponseTest {
                                             .phone("phone")
                                             .build()
                                     )
-                                    .cost(Money.builder().amount(2500L).currency("USD").build())
+                                    .cost(
+                                        Money.builder()
+                                            .amount(2500L)
+                                            .currency("USD")
+                                            .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                            .build()
+                                    )
                                     .window(
                                         TransferLeg.Window.builder()
                                             .end(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
@@ -592,6 +988,12 @@ internal class PlacementListPageResponseTest {
                                                     .longitude(-122.1598)
                                                     .build()
                                             )
+                                            .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedUser(JsonValue.from(mapOf<String, Any>()))
                                             .state("CA")
                                             .street("437 Lytton")
                                             .zip("94301")
@@ -603,7 +1005,18 @@ internal class PlacementListPageResponseTest {
                                             .phone("phone")
                                             .build()
                                     )
-                                    .cost(Money.builder().amount(2500L).currency("USD").build())
+                                    .cost(
+                                        Money.builder()
+                                            .amount(2500L)
+                                            .currency("USD")
+                                            .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                            .build()
+                                    )
                                     .window(
                                         TransferLeg.Window.builder()
                                             .end(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
@@ -708,6 +1121,122 @@ internal class PlacementListPageResponseTest {
                                                         .longitude(-122.1598)
                                                         .build()
                                                 )
+                                                .relatedCategory(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedCustomer(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedMoney(
+                                                    Money.builder()
+                                                        .amount(2500L)
+                                                        .currency("USD")
+                                                        .relatedCategory(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .relatedCustomer(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .relatedOrder(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .relatedPet(
+                                                            Pet.builder()
+                                                                .name("doggie")
+                                                                .addPhotoUrl("string")
+                                                                .id(10L)
+                                                                .acquisitionChannel(
+                                                                    Pet.AcquisitionChannel.BREEDER
+                                                                )
+                                                                .category(
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    )
+                                                                )
+                                                                .microchipId("string")
+                                                                .relatedCategory(
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    )
+                                                                )
+                                                                .relatedCustomer(
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    )
+                                                                )
+                                                                .relatedOrder(
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    )
+                                                                )
+                                                                .relatedShelter(
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    )
+                                                                )
+                                                                .relatedUser(
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    )
+                                                                )
+                                                                .status(PetStatus.AVAILABLE)
+                                                                .addTag(
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    )
+                                                                )
+                                                                .build()
+                                                        )
+                                                        .relatedShelter(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .relatedTag(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .relatedUser(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .build()
+                                                )
+                                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedPet(
+                                                    Pet.builder()
+                                                        .name("doggie")
+                                                        .addPhotoUrl("string")
+                                                        .id(10L)
+                                                        .acquisitionChannel(
+                                                            Pet.AcquisitionChannel.BREEDER
+                                                        )
+                                                        .category(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .microchipId("string")
+                                                        .relatedCategory(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .relatedCustomer(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .relatedOrder(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .relatedShelter(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .relatedUser(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .status(PetStatus.AVAILABLE)
+                                                        .addTag(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .build()
+                                                )
+                                                .relatedShelter(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
                                                 .state("CA")
                                                 .street("437 Lytton")
                                                 .zip("94301")
@@ -727,7 +1256,18 @@ internal class PlacementListPageResponseTest {
                                         .addCondition("string")
                                         .build()
                                 )
-                                .fee(Money.builder().amount(2500L).currency("USD").build())
+                                .fee(
+                                    Money.builder()
+                                        .amount(2500L)
+                                        .currency("USD")
+                                        .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                        .build()
+                                )
                                 .addHistory(
                                     Application.History.builder()
                                         .changedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
@@ -749,16 +1289,15 @@ internal class PlacementListPageResponseTest {
                                         .addPhotoUrl("string")
                                         .id(10L)
                                         .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
-                                        .category(
-                                            Pet.Category.builder()
-                                                .id(1L)
-                                                .name("Dogs")
-                                                .subcategories(listOf())
-                                                .build()
-                                        )
+                                        .category(JsonValue.from(mapOf<String, Any>()))
                                         .microchipId("string")
+                                        .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedUser(JsonValue.from(mapOf<String, Any>()))
                                         .status(PetStatus.AVAILABLE)
-                                        .addTag(Pet.Tag.builder().id(0L).name("name").build())
+                                        .addTag(JsonValue.from(mapOf<String, Any>()))
                                         .build()
                                 )
                                 .build()
@@ -779,6 +1318,18 @@ internal class PlacementListPageResponseTest {
                                                         .longitude(-122.1598)
                                                         .build()
                                                 )
+                                                .relatedCategory(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedCustomer(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedShelter(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
                                                 .state("CA")
                                                 .street("437 Lytton")
                                                 .zip("94301")
@@ -790,7 +1341,24 @@ internal class PlacementListPageResponseTest {
                                                 .phone("phone")
                                                 .build()
                                         )
-                                        .cost(Money.builder().amount(2500L).currency("USD").build())
+                                        .cost(
+                                            Money.builder()
+                                                .amount(2500L)
+                                                .currency("USD")
+                                                .relatedCategory(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedCustomer(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedShelter(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                                .build()
+                                        )
                                         .window(
                                             TransferLeg.Window.builder()
                                                 .end(
@@ -822,6 +1390,18 @@ internal class PlacementListPageResponseTest {
                                                         .longitude(-122.1598)
                                                         .build()
                                                 )
+                                                .relatedCategory(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedCustomer(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedShelter(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
                                                 .state("CA")
                                                 .street("437 Lytton")
                                                 .zip("94301")
@@ -833,7 +1413,24 @@ internal class PlacementListPageResponseTest {
                                                 .phone("phone")
                                                 .build()
                                         )
-                                        .cost(Money.builder().amount(2500L).currency("USD").build())
+                                        .cost(
+                                            Money.builder()
+                                                .amount(2500L)
+                                                .currency("USD")
+                                                .relatedCategory(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedCustomer(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedShelter(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                                .build()
+                                        )
                                         .window(
                                             TransferLeg.Window.builder()
                                                 .end(
@@ -865,6 +1462,18 @@ internal class PlacementListPageResponseTest {
                                                         .longitude(-122.1598)
                                                         .build()
                                                 )
+                                                .relatedCategory(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedCustomer(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedShelter(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
                                                 .state("CA")
                                                 .street("437 Lytton")
                                                 .zip("94301")
@@ -876,7 +1485,24 @@ internal class PlacementListPageResponseTest {
                                                 .phone("phone")
                                                 .build()
                                         )
-                                        .cost(Money.builder().amount(2500L).currency("USD").build())
+                                        .cost(
+                                            Money.builder()
+                                                .amount(2500L)
+                                                .currency("USD")
+                                                .relatedCategory(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedCustomer(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedShelter(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                                .build()
+                                        )
                                         .window(
                                             TransferLeg.Window.builder()
                                                 .end(
@@ -932,6 +1558,18 @@ internal class PlacementListPageResponseTest {
                                                         .longitude(-122.1598)
                                                         .build()
                                                 )
+                                                .relatedCategory(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedCustomer(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedShelter(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
                                                 .state("CA")
                                                 .street("437 Lytton")
                                                 .zip("94301")
@@ -943,7 +1581,24 @@ internal class PlacementListPageResponseTest {
                                                 .phone("phone")
                                                 .build()
                                         )
-                                        .cost(Money.builder().amount(2500L).currency("USD").build())
+                                        .cost(
+                                            Money.builder()
+                                                .amount(2500L)
+                                                .currency("USD")
+                                                .relatedCategory(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedCustomer(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedShelter(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                                .build()
+                                        )
                                         .window(
                                             TransferLeg.Window.builder()
                                                 .end(

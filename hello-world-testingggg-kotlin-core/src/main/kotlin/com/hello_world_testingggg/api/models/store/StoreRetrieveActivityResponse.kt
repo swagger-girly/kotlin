@@ -26,6 +26,7 @@ import com.hello_world_testingggg.api.core.getOrThrow
 import com.hello_world_testingggg.api.core.toImmutable
 import com.hello_world_testingggg.api.errors.HelloWorldTestinggggInvalidDataException
 import com.hello_world_testingggg.api.models.Address
+import com.hello_world_testingggg.api.models.Money
 import com.hello_world_testingggg.api.models.pet.Pet
 import com.hello_world_testingggg.api.models.pet.PetStatus
 import java.time.OffsetDateTime
@@ -371,10 +372,18 @@ private constructor(
         private val photoUrls: JsonField<List<String>>,
         private val id: JsonField<Long>,
         private val acquisitionChannel: JsonField<Pet.AcquisitionChannel>,
-        private val category: JsonField<Pet.Category>,
+        private val category: JsonValue,
         private val microchipId: JsonField<Pet.MicrochipId>,
+        private val relatedAddress: JsonField<Address>,
+        private val relatedCategory: JsonValue,
+        private val relatedCustomer: JsonValue,
+        private val relatedMoney: JsonField<Money>,
+        private val relatedOrder: JsonValue,
+        private val relatedPet: JsonField<Pet>,
+        private val relatedShelter: JsonValue,
+        private val relatedUser: JsonValue,
         private val status: JsonField<PetStatus>,
-        private val tags: JsonField<List<Pet.Tag>>,
+        private val tags: JsonField<List<JsonValue>>,
         private val activityId: JsonField<String>,
         private val family: JsonField<Family>,
         private val recordedAt: JsonField<OffsetDateTime>,
@@ -391,14 +400,36 @@ private constructor(
             @JsonProperty("acquisitionChannel")
             @ExcludeMissing
             acquisitionChannel: JsonField<Pet.AcquisitionChannel> = JsonMissing.of(),
-            @JsonProperty("category")
-            @ExcludeMissing
-            category: JsonField<Pet.Category> = JsonMissing.of(),
+            @JsonProperty("category") @ExcludeMissing category: JsonValue = JsonMissing.of(),
             @JsonProperty("microchipId")
             @ExcludeMissing
             microchipId: JsonField<Pet.MicrochipId> = JsonMissing.of(),
+            @JsonProperty("relatedAddress")
+            @ExcludeMissing
+            relatedAddress: JsonField<Address> = JsonMissing.of(),
+            @JsonProperty("relatedCategory")
+            @ExcludeMissing
+            relatedCategory: JsonValue = JsonMissing.of(),
+            @JsonProperty("relatedCustomer")
+            @ExcludeMissing
+            relatedCustomer: JsonValue = JsonMissing.of(),
+            @JsonProperty("relatedMoney")
+            @ExcludeMissing
+            relatedMoney: JsonField<Money> = JsonMissing.of(),
+            @JsonProperty("relatedOrder")
+            @ExcludeMissing
+            relatedOrder: JsonValue = JsonMissing.of(),
+            @JsonProperty("relatedPet")
+            @ExcludeMissing
+            relatedPet: JsonField<Pet> = JsonMissing.of(),
+            @JsonProperty("relatedShelter")
+            @ExcludeMissing
+            relatedShelter: JsonValue = JsonMissing.of(),
+            @JsonProperty("relatedUser") @ExcludeMissing relatedUser: JsonValue = JsonMissing.of(),
             @JsonProperty("status") @ExcludeMissing status: JsonField<PetStatus> = JsonMissing.of(),
-            @JsonProperty("tags") @ExcludeMissing tags: JsonField<List<Pet.Tag>> = JsonMissing.of(),
+            @JsonProperty("tags")
+            @ExcludeMissing
+            tags: JsonField<List<JsonValue>> = JsonMissing.of(),
             @JsonProperty("activityId")
             @ExcludeMissing
             activityId: JsonField<String> = JsonMissing.of(),
@@ -413,6 +444,14 @@ private constructor(
             acquisitionChannel,
             category,
             microchipId,
+            relatedAddress,
+            relatedCategory,
+            relatedCustomer,
+            relatedMoney,
+            relatedOrder,
+            relatedPet,
+            relatedShelter,
+            relatedUser,
             status,
             tags,
             activityId,
@@ -429,6 +468,14 @@ private constructor(
                 .acquisitionChannel(acquisitionChannel)
                 .category(category)
                 .microchipId(microchipId)
+                .relatedAddress(relatedAddress)
+                .relatedCategory(relatedCategory)
+                .relatedCustomer(relatedCustomer)
+                .relatedMoney(relatedMoney)
+                .relatedOrder(relatedOrder)
+                .relatedPet(relatedPet)
+                .relatedShelter(relatedShelter)
+                .relatedUser(relatedUser)
                 .status(status)
                 .tags(tags)
                 .build()
@@ -464,10 +511,12 @@ private constructor(
             acquisitionChannel.getNullable("acquisitionChannel")
 
         /**
-         * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
-         *   (e.g. if the server responded with an unexpected value).
+         * This arbitrary value can be deserialized into a custom type using the `convert` method:
+         * ```kotlin
+         * val myObject: MyClass = listed.category().convert(MyClass::class.java)
+         * ```
          */
-        fun category(): Pet.Category? = category.getNullable("category")
+        @JsonProperty("category") @ExcludeMissing fun _category(): JsonValue = category
 
         /**
          * Microchip identifier; legacy chips used numeric identifiers.
@@ -476,6 +525,70 @@ private constructor(
          *   (e.g. if the server responded with an unexpected value).
          */
         fun microchipId(): Pet.MicrochipId? = microchipId.getNullable("microchipId")
+
+        /**
+         * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
+         *   (e.g. if the server responded with an unexpected value).
+         */
+        fun relatedAddress(): Address? = relatedAddress.getNullable("relatedAddress")
+
+        /**
+         * This arbitrary value can be deserialized into a custom type using the `convert` method:
+         * ```kotlin
+         * val myObject: MyClass = listed.relatedCategory().convert(MyClass::class.java)
+         * ```
+         */
+        @JsonProperty("relatedCategory")
+        @ExcludeMissing
+        fun _relatedCategory(): JsonValue = relatedCategory
+
+        /**
+         * This arbitrary value can be deserialized into a custom type using the `convert` method:
+         * ```kotlin
+         * val myObject: MyClass = listed.relatedCustomer().convert(MyClass::class.java)
+         * ```
+         */
+        @JsonProperty("relatedCustomer")
+        @ExcludeMissing
+        fun _relatedCustomer(): JsonValue = relatedCustomer
+
+        /**
+         * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
+         *   (e.g. if the server responded with an unexpected value).
+         */
+        fun relatedMoney(): Money? = relatedMoney.getNullable("relatedMoney")
+
+        /**
+         * This arbitrary value can be deserialized into a custom type using the `convert` method:
+         * ```kotlin
+         * val myObject: MyClass = listed.relatedOrder().convert(MyClass::class.java)
+         * ```
+         */
+        @JsonProperty("relatedOrder") @ExcludeMissing fun _relatedOrder(): JsonValue = relatedOrder
+
+        /**
+         * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
+         *   (e.g. if the server responded with an unexpected value).
+         */
+        fun relatedPet(): Pet? = relatedPet.getNullable("relatedPet")
+
+        /**
+         * This arbitrary value can be deserialized into a custom type using the `convert` method:
+         * ```kotlin
+         * val myObject: MyClass = listed.relatedShelter().convert(MyClass::class.java)
+         * ```
+         */
+        @JsonProperty("relatedShelter")
+        @ExcludeMissing
+        fun _relatedShelter(): JsonValue = relatedShelter
+
+        /**
+         * This arbitrary value can be deserialized into a custom type using the `convert` method:
+         * ```kotlin
+         * val myObject: MyClass = listed.relatedUser().convert(MyClass::class.java)
+         * ```
+         */
+        @JsonProperty("relatedUser") @ExcludeMissing fun _relatedUser(): JsonValue = relatedUser
 
         /**
          * pet status in the store
@@ -489,7 +602,7 @@ private constructor(
          * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
          *   (e.g. if the server responded with an unexpected value).
          */
-        fun tags(): List<Pet.Tag>? = tags.getNullable("tags")
+        fun tags(): List<JsonValue>? = tags.getNullable("tags")
 
         /**
          * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
@@ -546,15 +659,6 @@ private constructor(
         fun _acquisitionChannel(): JsonField<Pet.AcquisitionChannel> = acquisitionChannel
 
         /**
-         * Returns the raw JSON value of [category].
-         *
-         * Unlike [category], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("category")
-        @ExcludeMissing
-        fun _category(): JsonField<Pet.Category> = category
-
-        /**
          * Returns the raw JSON value of [microchipId].
          *
          * Unlike [microchipId], this method doesn't throw if the JSON field has an unexpected type.
@@ -562,6 +666,33 @@ private constructor(
         @JsonProperty("microchipId")
         @ExcludeMissing
         fun _microchipId(): JsonField<Pet.MicrochipId> = microchipId
+
+        /**
+         * Returns the raw JSON value of [relatedAddress].
+         *
+         * Unlike [relatedAddress], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("relatedAddress")
+        @ExcludeMissing
+        fun _relatedAddress(): JsonField<Address> = relatedAddress
+
+        /**
+         * Returns the raw JSON value of [relatedMoney].
+         *
+         * Unlike [relatedMoney], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("relatedMoney")
+        @ExcludeMissing
+        fun _relatedMoney(): JsonField<Money> = relatedMoney
+
+        /**
+         * Returns the raw JSON value of [relatedPet].
+         *
+         * Unlike [relatedPet], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("relatedPet") @ExcludeMissing fun _relatedPet(): JsonField<Pet> = relatedPet
 
         /**
          * Returns the raw JSON value of [status].
@@ -575,7 +706,7 @@ private constructor(
          *
          * Unlike [tags], this method doesn't throw if the JSON field has an unexpected type.
          */
-        @JsonProperty("tags") @ExcludeMissing fun _tags(): JsonField<List<Pet.Tag>> = tags
+        @JsonProperty("tags") @ExcludeMissing fun _tags(): JsonField<List<JsonValue>> = tags
 
         /**
          * Returns the raw JSON value of [activityId].
@@ -638,10 +769,18 @@ private constructor(
             private var photoUrls: JsonField<MutableList<String>>? = null
             private var id: JsonField<Long> = JsonMissing.of()
             private var acquisitionChannel: JsonField<Pet.AcquisitionChannel> = JsonMissing.of()
-            private var category: JsonField<Pet.Category> = JsonMissing.of()
+            private var category: JsonValue = JsonMissing.of()
             private var microchipId: JsonField<Pet.MicrochipId> = JsonMissing.of()
+            private var relatedAddress: JsonField<Address> = JsonMissing.of()
+            private var relatedCategory: JsonValue = JsonMissing.of()
+            private var relatedCustomer: JsonValue = JsonMissing.of()
+            private var relatedMoney: JsonField<Money> = JsonMissing.of()
+            private var relatedOrder: JsonValue = JsonMissing.of()
+            private var relatedPet: JsonField<Pet> = JsonMissing.of()
+            private var relatedShelter: JsonValue = JsonMissing.of()
+            private var relatedUser: JsonValue = JsonMissing.of()
             private var status: JsonField<PetStatus> = JsonMissing.of()
-            private var tags: JsonField<MutableList<Pet.Tag>>? = null
+            private var tags: JsonField<MutableList<JsonValue>>? = null
             private var activityId: JsonField<String>? = null
             private var family: JsonField<Family>? = null
             private var recordedAt: JsonField<OffsetDateTime>? = null
@@ -654,6 +793,14 @@ private constructor(
                 acquisitionChannel = listed.acquisitionChannel
                 category = listed.category
                 microchipId = listed.microchipId
+                relatedAddress = listed.relatedAddress
+                relatedCategory = listed.relatedCategory
+                relatedCustomer = listed.relatedCustomer
+                relatedMoney = listed.relatedMoney
+                relatedOrder = listed.relatedOrder
+                relatedPet = listed.relatedPet
+                relatedShelter = listed.relatedShelter
+                relatedUser = listed.relatedUser
                 status = listed.status
                 tags = listed.tags.map { it.toMutableList() }
                 activityId = listed.activityId
@@ -737,16 +884,7 @@ private constructor(
             fun acquisitionChannel(value: String) =
                 acquisitionChannel(Pet.AcquisitionChannel.of(value))
 
-            fun category(category: Pet.Category) = category(JsonField.of(category))
-
-            /**
-             * Sets [Builder.category] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.category] with a well-typed [Pet.Category] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun category(category: JsonField<Pet.Category>) = apply { this.category = category }
+            fun category(category: JsonValue) = apply { this.category = category }
 
             /** Microchip identifier; legacy chips used numeric identifiers. */
             fun microchipId(microchipId: Pet.MicrochipId) = microchipId(JsonField.of(microchipId))
@@ -768,6 +906,60 @@ private constructor(
             /** Alias for calling [microchipId] with `Pet.MicrochipId.ofLong(long)`. */
             fun microchipId(long: Long) = microchipId(Pet.MicrochipId.ofLong(long))
 
+            fun relatedAddress(relatedAddress: Address) =
+                relatedAddress(JsonField.of(relatedAddress))
+
+            /**
+             * Sets [Builder.relatedAddress] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.relatedAddress] with a well-typed [Address] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun relatedAddress(relatedAddress: JsonField<Address>) = apply {
+                this.relatedAddress = relatedAddress
+            }
+
+            fun relatedCategory(relatedCategory: JsonValue) = apply {
+                this.relatedCategory = relatedCategory
+            }
+
+            fun relatedCustomer(relatedCustomer: JsonValue) = apply {
+                this.relatedCustomer = relatedCustomer
+            }
+
+            fun relatedMoney(relatedMoney: Money) = relatedMoney(JsonField.of(relatedMoney))
+
+            /**
+             * Sets [Builder.relatedMoney] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.relatedMoney] with a well-typed [Money] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun relatedMoney(relatedMoney: JsonField<Money>) = apply {
+                this.relatedMoney = relatedMoney
+            }
+
+            fun relatedOrder(relatedOrder: JsonValue) = apply { this.relatedOrder = relatedOrder }
+
+            fun relatedPet(relatedPet: Pet) = relatedPet(JsonField.of(relatedPet))
+
+            /**
+             * Sets [Builder.relatedPet] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.relatedPet] with a well-typed [Pet] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun relatedPet(relatedPet: JsonField<Pet>) = apply { this.relatedPet = relatedPet }
+
+            fun relatedShelter(relatedShelter: JsonValue) = apply {
+                this.relatedShelter = relatedShelter
+            }
+
+            fun relatedUser(relatedUser: JsonValue) = apply { this.relatedUser = relatedUser }
+
             /** pet status in the store */
             fun status(status: PetStatus) = status(JsonField.of(status))
 
@@ -780,25 +972,25 @@ private constructor(
              */
             fun status(status: JsonField<PetStatus>) = apply { this.status = status }
 
-            fun tags(tags: List<Pet.Tag>) = tags(JsonField.of(tags))
+            fun tags(tags: List<JsonValue>) = tags(JsonField.of(tags))
 
             /**
              * Sets [Builder.tags] to an arbitrary JSON value.
              *
-             * You should usually call [Builder.tags] with a well-typed `List<Pet.Tag>` value
+             * You should usually call [Builder.tags] with a well-typed `List<JsonValue>` value
              * instead. This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun tags(tags: JsonField<List<Pet.Tag>>) = apply {
+            fun tags(tags: JsonField<List<JsonValue>>) = apply {
                 this.tags = tags.map { it.toMutableList() }
             }
 
             /**
-             * Adds a single [Pet.Tag] to [tags].
+             * Adds a single [JsonValue] to [tags].
              *
              * @throws IllegalStateException if the field was previously set to a non-list.
              */
-            fun addTag(tag: Pet.Tag) = apply {
+            fun addTag(tag: JsonValue) = apply {
                 tags =
                     (tags ?: JsonField.of(mutableListOf())).also { checkKnown("tags", it).add(tag) }
             }
@@ -881,6 +1073,14 @@ private constructor(
                     acquisitionChannel,
                     category,
                     microchipId,
+                    relatedAddress,
+                    relatedCategory,
+                    relatedCustomer,
+                    relatedMoney,
+                    relatedOrder,
+                    relatedPet,
+                    relatedShelter,
+                    relatedUser,
                     status,
                     (tags ?: JsonMissing.of()).map { it.toImmutable() },
                     checkRequired("activityId", activityId),
@@ -910,10 +1110,12 @@ private constructor(
             photoUrls()
             id()
             acquisitionChannel()
-            category()?.validate()
             microchipId()?.validate()
+            relatedAddress()?.validate()
+            relatedMoney()?.validate()
+            relatedPet()?.validate()
             status()?.validate()
-            tags()?.forEach { it.validate() }
+            tags()
             activityId()
             family().validate()
             recordedAt()
@@ -939,10 +1141,12 @@ private constructor(
                 (photoUrls.asKnown()?.size ?: 0) +
                 (if (id.asKnown() == null) 0 else 1) +
                 (if (acquisitionChannel.asKnown() == null) 0 else 1) +
-                (category.asKnown()?.validity() ?: 0) +
                 (microchipId.asKnown()?.validity() ?: 0) +
+                (relatedAddress.asKnown()?.validity() ?: 0) +
+                (relatedMoney.asKnown()?.validity() ?: 0) +
+                (relatedPet.asKnown()?.validity() ?: 0) +
                 (status.asKnown()?.validity() ?: 0) +
-                (tags.asKnown()?.sumOf { it.validity().toInt() } ?: 0) +
+                (tags.asKnown()?.size ?: 0) +
                 (if (activityId.asKnown() == null) 0 else 1) +
                 (family.asKnown()?.validity() ?: 0) +
                 (if (recordedAt.asKnown() == null) 0 else 1)
@@ -1241,6 +1445,14 @@ private constructor(
                 acquisitionChannel == other.acquisitionChannel &&
                 category == other.category &&
                 microchipId == other.microchipId &&
+                relatedAddress == other.relatedAddress &&
+                relatedCategory == other.relatedCategory &&
+                relatedCustomer == other.relatedCustomer &&
+                relatedMoney == other.relatedMoney &&
+                relatedOrder == other.relatedOrder &&
+                relatedPet == other.relatedPet &&
+                relatedShelter == other.relatedShelter &&
+                relatedUser == other.relatedUser &&
                 status == other.status &&
                 tags == other.tags &&
                 activityId == other.activityId &&
@@ -1257,6 +1469,14 @@ private constructor(
                 acquisitionChannel,
                 category,
                 microchipId,
+                relatedAddress,
+                relatedCategory,
+                relatedCustomer,
+                relatedMoney,
+                relatedOrder,
+                relatedPet,
+                relatedShelter,
+                relatedUser,
                 status,
                 tags,
                 activityId,
@@ -1269,7 +1489,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Listed{name=$name, photoUrls=$photoUrls, id=$id, acquisitionChannel=$acquisitionChannel, category=$category, microchipId=$microchipId, status=$status, tags=$tags, activityId=$activityId, family=$family, recordedAt=$recordedAt, additionalProperties=$additionalProperties}"
+            "Listed{name=$name, photoUrls=$photoUrls, id=$id, acquisitionChannel=$acquisitionChannel, category=$category, microchipId=$microchipId, relatedAddress=$relatedAddress, relatedCategory=$relatedCategory, relatedCustomer=$relatedCustomer, relatedMoney=$relatedMoney, relatedOrder=$relatedOrder, relatedPet=$relatedPet, relatedShelter=$relatedShelter, relatedUser=$relatedUser, status=$status, tags=$tags, activityId=$activityId, family=$family, recordedAt=$recordedAt, additionalProperties=$additionalProperties}"
     }
 
     /**
@@ -1283,10 +1503,18 @@ private constructor(
         private val photoUrls: JsonField<List<String>>,
         private val id: JsonField<Long>,
         private val acquisitionChannel: JsonField<Pet.AcquisitionChannel>,
-        private val category: JsonField<Pet.Category>,
+        private val category: JsonValue,
         private val microchipId: JsonField<Pet.MicrochipId>,
+        private val relatedAddress: JsonField<Address>,
+        private val relatedCategory: JsonValue,
+        private val relatedCustomer: JsonValue,
+        private val relatedMoney: JsonField<Money>,
+        private val relatedOrder: JsonValue,
+        private val relatedPet: JsonField<Pet>,
+        private val relatedShelter: JsonValue,
+        private val relatedUser: JsonValue,
         private val status: JsonField<PetStatus>,
-        private val tags: JsonField<List<Pet.Tag>>,
+        private val tags: JsonField<List<JsonValue>>,
         private val activityId: JsonField<String>,
         private val family: JsonField<Family>,
         private val recordedAt: JsonField<OffsetDateTime>,
@@ -1303,14 +1531,36 @@ private constructor(
             @JsonProperty("acquisitionChannel")
             @ExcludeMissing
             acquisitionChannel: JsonField<Pet.AcquisitionChannel> = JsonMissing.of(),
-            @JsonProperty("category")
-            @ExcludeMissing
-            category: JsonField<Pet.Category> = JsonMissing.of(),
+            @JsonProperty("category") @ExcludeMissing category: JsonValue = JsonMissing.of(),
             @JsonProperty("microchipId")
             @ExcludeMissing
             microchipId: JsonField<Pet.MicrochipId> = JsonMissing.of(),
+            @JsonProperty("relatedAddress")
+            @ExcludeMissing
+            relatedAddress: JsonField<Address> = JsonMissing.of(),
+            @JsonProperty("relatedCategory")
+            @ExcludeMissing
+            relatedCategory: JsonValue = JsonMissing.of(),
+            @JsonProperty("relatedCustomer")
+            @ExcludeMissing
+            relatedCustomer: JsonValue = JsonMissing.of(),
+            @JsonProperty("relatedMoney")
+            @ExcludeMissing
+            relatedMoney: JsonField<Money> = JsonMissing.of(),
+            @JsonProperty("relatedOrder")
+            @ExcludeMissing
+            relatedOrder: JsonValue = JsonMissing.of(),
+            @JsonProperty("relatedPet")
+            @ExcludeMissing
+            relatedPet: JsonField<Pet> = JsonMissing.of(),
+            @JsonProperty("relatedShelter")
+            @ExcludeMissing
+            relatedShelter: JsonValue = JsonMissing.of(),
+            @JsonProperty("relatedUser") @ExcludeMissing relatedUser: JsonValue = JsonMissing.of(),
             @JsonProperty("status") @ExcludeMissing status: JsonField<PetStatus> = JsonMissing.of(),
-            @JsonProperty("tags") @ExcludeMissing tags: JsonField<List<Pet.Tag>> = JsonMissing.of(),
+            @JsonProperty("tags")
+            @ExcludeMissing
+            tags: JsonField<List<JsonValue>> = JsonMissing.of(),
             @JsonProperty("activityId")
             @ExcludeMissing
             activityId: JsonField<String> = JsonMissing.of(),
@@ -1325,6 +1575,14 @@ private constructor(
             acquisitionChannel,
             category,
             microchipId,
+            relatedAddress,
+            relatedCategory,
+            relatedCustomer,
+            relatedMoney,
+            relatedOrder,
+            relatedPet,
+            relatedShelter,
+            relatedUser,
             status,
             tags,
             activityId,
@@ -1341,6 +1599,14 @@ private constructor(
                 .acquisitionChannel(acquisitionChannel)
                 .category(category)
                 .microchipId(microchipId)
+                .relatedAddress(relatedAddress)
+                .relatedCategory(relatedCategory)
+                .relatedCustomer(relatedCustomer)
+                .relatedMoney(relatedMoney)
+                .relatedOrder(relatedOrder)
+                .relatedPet(relatedPet)
+                .relatedShelter(relatedShelter)
+                .relatedUser(relatedUser)
                 .status(status)
                 .tags(tags)
                 .build()
@@ -1376,10 +1642,12 @@ private constructor(
             acquisitionChannel.getNullable("acquisitionChannel")
 
         /**
-         * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
-         *   (e.g. if the server responded with an unexpected value).
+         * This arbitrary value can be deserialized into a custom type using the `convert` method:
+         * ```kotlin
+         * val myObject: MyClass = sold.category().convert(MyClass::class.java)
+         * ```
          */
-        fun category(): Pet.Category? = category.getNullable("category")
+        @JsonProperty("category") @ExcludeMissing fun _category(): JsonValue = category
 
         /**
          * Microchip identifier; legacy chips used numeric identifiers.
@@ -1388,6 +1656,70 @@ private constructor(
          *   (e.g. if the server responded with an unexpected value).
          */
         fun microchipId(): Pet.MicrochipId? = microchipId.getNullable("microchipId")
+
+        /**
+         * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
+         *   (e.g. if the server responded with an unexpected value).
+         */
+        fun relatedAddress(): Address? = relatedAddress.getNullable("relatedAddress")
+
+        /**
+         * This arbitrary value can be deserialized into a custom type using the `convert` method:
+         * ```kotlin
+         * val myObject: MyClass = sold.relatedCategory().convert(MyClass::class.java)
+         * ```
+         */
+        @JsonProperty("relatedCategory")
+        @ExcludeMissing
+        fun _relatedCategory(): JsonValue = relatedCategory
+
+        /**
+         * This arbitrary value can be deserialized into a custom type using the `convert` method:
+         * ```kotlin
+         * val myObject: MyClass = sold.relatedCustomer().convert(MyClass::class.java)
+         * ```
+         */
+        @JsonProperty("relatedCustomer")
+        @ExcludeMissing
+        fun _relatedCustomer(): JsonValue = relatedCustomer
+
+        /**
+         * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
+         *   (e.g. if the server responded with an unexpected value).
+         */
+        fun relatedMoney(): Money? = relatedMoney.getNullable("relatedMoney")
+
+        /**
+         * This arbitrary value can be deserialized into a custom type using the `convert` method:
+         * ```kotlin
+         * val myObject: MyClass = sold.relatedOrder().convert(MyClass::class.java)
+         * ```
+         */
+        @JsonProperty("relatedOrder") @ExcludeMissing fun _relatedOrder(): JsonValue = relatedOrder
+
+        /**
+         * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
+         *   (e.g. if the server responded with an unexpected value).
+         */
+        fun relatedPet(): Pet? = relatedPet.getNullable("relatedPet")
+
+        /**
+         * This arbitrary value can be deserialized into a custom type using the `convert` method:
+         * ```kotlin
+         * val myObject: MyClass = sold.relatedShelter().convert(MyClass::class.java)
+         * ```
+         */
+        @JsonProperty("relatedShelter")
+        @ExcludeMissing
+        fun _relatedShelter(): JsonValue = relatedShelter
+
+        /**
+         * This arbitrary value can be deserialized into a custom type using the `convert` method:
+         * ```kotlin
+         * val myObject: MyClass = sold.relatedUser().convert(MyClass::class.java)
+         * ```
+         */
+        @JsonProperty("relatedUser") @ExcludeMissing fun _relatedUser(): JsonValue = relatedUser
 
         /**
          * pet status in the store
@@ -1401,7 +1733,7 @@ private constructor(
          * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
          *   (e.g. if the server responded with an unexpected value).
          */
-        fun tags(): List<Pet.Tag>? = tags.getNullable("tags")
+        fun tags(): List<JsonValue>? = tags.getNullable("tags")
 
         /**
          * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
@@ -1458,15 +1790,6 @@ private constructor(
         fun _acquisitionChannel(): JsonField<Pet.AcquisitionChannel> = acquisitionChannel
 
         /**
-         * Returns the raw JSON value of [category].
-         *
-         * Unlike [category], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("category")
-        @ExcludeMissing
-        fun _category(): JsonField<Pet.Category> = category
-
-        /**
          * Returns the raw JSON value of [microchipId].
          *
          * Unlike [microchipId], this method doesn't throw if the JSON field has an unexpected type.
@@ -1474,6 +1797,33 @@ private constructor(
         @JsonProperty("microchipId")
         @ExcludeMissing
         fun _microchipId(): JsonField<Pet.MicrochipId> = microchipId
+
+        /**
+         * Returns the raw JSON value of [relatedAddress].
+         *
+         * Unlike [relatedAddress], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("relatedAddress")
+        @ExcludeMissing
+        fun _relatedAddress(): JsonField<Address> = relatedAddress
+
+        /**
+         * Returns the raw JSON value of [relatedMoney].
+         *
+         * Unlike [relatedMoney], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("relatedMoney")
+        @ExcludeMissing
+        fun _relatedMoney(): JsonField<Money> = relatedMoney
+
+        /**
+         * Returns the raw JSON value of [relatedPet].
+         *
+         * Unlike [relatedPet], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("relatedPet") @ExcludeMissing fun _relatedPet(): JsonField<Pet> = relatedPet
 
         /**
          * Returns the raw JSON value of [status].
@@ -1487,7 +1837,7 @@ private constructor(
          *
          * Unlike [tags], this method doesn't throw if the JSON field has an unexpected type.
          */
-        @JsonProperty("tags") @ExcludeMissing fun _tags(): JsonField<List<Pet.Tag>> = tags
+        @JsonProperty("tags") @ExcludeMissing fun _tags(): JsonField<List<JsonValue>> = tags
 
         /**
          * Returns the raw JSON value of [activityId].
@@ -1550,10 +1900,18 @@ private constructor(
             private var photoUrls: JsonField<MutableList<String>>? = null
             private var id: JsonField<Long> = JsonMissing.of()
             private var acquisitionChannel: JsonField<Pet.AcquisitionChannel> = JsonMissing.of()
-            private var category: JsonField<Pet.Category> = JsonMissing.of()
+            private var category: JsonValue = JsonMissing.of()
             private var microchipId: JsonField<Pet.MicrochipId> = JsonMissing.of()
+            private var relatedAddress: JsonField<Address> = JsonMissing.of()
+            private var relatedCategory: JsonValue = JsonMissing.of()
+            private var relatedCustomer: JsonValue = JsonMissing.of()
+            private var relatedMoney: JsonField<Money> = JsonMissing.of()
+            private var relatedOrder: JsonValue = JsonMissing.of()
+            private var relatedPet: JsonField<Pet> = JsonMissing.of()
+            private var relatedShelter: JsonValue = JsonMissing.of()
+            private var relatedUser: JsonValue = JsonMissing.of()
             private var status: JsonField<PetStatus> = JsonMissing.of()
-            private var tags: JsonField<MutableList<Pet.Tag>>? = null
+            private var tags: JsonField<MutableList<JsonValue>>? = null
             private var activityId: JsonField<String>? = null
             private var family: JsonField<Family>? = null
             private var recordedAt: JsonField<OffsetDateTime>? = null
@@ -1566,6 +1924,14 @@ private constructor(
                 acquisitionChannel = sold.acquisitionChannel
                 category = sold.category
                 microchipId = sold.microchipId
+                relatedAddress = sold.relatedAddress
+                relatedCategory = sold.relatedCategory
+                relatedCustomer = sold.relatedCustomer
+                relatedMoney = sold.relatedMoney
+                relatedOrder = sold.relatedOrder
+                relatedPet = sold.relatedPet
+                relatedShelter = sold.relatedShelter
+                relatedUser = sold.relatedUser
                 status = sold.status
                 tags = sold.tags.map { it.toMutableList() }
                 activityId = sold.activityId
@@ -1649,16 +2015,7 @@ private constructor(
             fun acquisitionChannel(value: String) =
                 acquisitionChannel(Pet.AcquisitionChannel.of(value))
 
-            fun category(category: Pet.Category) = category(JsonField.of(category))
-
-            /**
-             * Sets [Builder.category] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.category] with a well-typed [Pet.Category] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun category(category: JsonField<Pet.Category>) = apply { this.category = category }
+            fun category(category: JsonValue) = apply { this.category = category }
 
             /** Microchip identifier; legacy chips used numeric identifiers. */
             fun microchipId(microchipId: Pet.MicrochipId) = microchipId(JsonField.of(microchipId))
@@ -1680,6 +2037,60 @@ private constructor(
             /** Alias for calling [microchipId] with `Pet.MicrochipId.ofLong(long)`. */
             fun microchipId(long: Long) = microchipId(Pet.MicrochipId.ofLong(long))
 
+            fun relatedAddress(relatedAddress: Address) =
+                relatedAddress(JsonField.of(relatedAddress))
+
+            /**
+             * Sets [Builder.relatedAddress] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.relatedAddress] with a well-typed [Address] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun relatedAddress(relatedAddress: JsonField<Address>) = apply {
+                this.relatedAddress = relatedAddress
+            }
+
+            fun relatedCategory(relatedCategory: JsonValue) = apply {
+                this.relatedCategory = relatedCategory
+            }
+
+            fun relatedCustomer(relatedCustomer: JsonValue) = apply {
+                this.relatedCustomer = relatedCustomer
+            }
+
+            fun relatedMoney(relatedMoney: Money) = relatedMoney(JsonField.of(relatedMoney))
+
+            /**
+             * Sets [Builder.relatedMoney] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.relatedMoney] with a well-typed [Money] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun relatedMoney(relatedMoney: JsonField<Money>) = apply {
+                this.relatedMoney = relatedMoney
+            }
+
+            fun relatedOrder(relatedOrder: JsonValue) = apply { this.relatedOrder = relatedOrder }
+
+            fun relatedPet(relatedPet: Pet) = relatedPet(JsonField.of(relatedPet))
+
+            /**
+             * Sets [Builder.relatedPet] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.relatedPet] with a well-typed [Pet] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun relatedPet(relatedPet: JsonField<Pet>) = apply { this.relatedPet = relatedPet }
+
+            fun relatedShelter(relatedShelter: JsonValue) = apply {
+                this.relatedShelter = relatedShelter
+            }
+
+            fun relatedUser(relatedUser: JsonValue) = apply { this.relatedUser = relatedUser }
+
             /** pet status in the store */
             fun status(status: PetStatus) = status(JsonField.of(status))
 
@@ -1692,25 +2103,25 @@ private constructor(
              */
             fun status(status: JsonField<PetStatus>) = apply { this.status = status }
 
-            fun tags(tags: List<Pet.Tag>) = tags(JsonField.of(tags))
+            fun tags(tags: List<JsonValue>) = tags(JsonField.of(tags))
 
             /**
              * Sets [Builder.tags] to an arbitrary JSON value.
              *
-             * You should usually call [Builder.tags] with a well-typed `List<Pet.Tag>` value
+             * You should usually call [Builder.tags] with a well-typed `List<JsonValue>` value
              * instead. This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun tags(tags: JsonField<List<Pet.Tag>>) = apply {
+            fun tags(tags: JsonField<List<JsonValue>>) = apply {
                 this.tags = tags.map { it.toMutableList() }
             }
 
             /**
-             * Adds a single [Pet.Tag] to [tags].
+             * Adds a single [JsonValue] to [tags].
              *
              * @throws IllegalStateException if the field was previously set to a non-list.
              */
-            fun addTag(tag: Pet.Tag) = apply {
+            fun addTag(tag: JsonValue) = apply {
                 tags =
                     (tags ?: JsonField.of(mutableListOf())).also { checkKnown("tags", it).add(tag) }
             }
@@ -1793,6 +2204,14 @@ private constructor(
                     acquisitionChannel,
                     category,
                     microchipId,
+                    relatedAddress,
+                    relatedCategory,
+                    relatedCustomer,
+                    relatedMoney,
+                    relatedOrder,
+                    relatedPet,
+                    relatedShelter,
+                    relatedUser,
                     status,
                     (tags ?: JsonMissing.of()).map { it.toImmutable() },
                     checkRequired("activityId", activityId),
@@ -1822,10 +2241,12 @@ private constructor(
             photoUrls()
             id()
             acquisitionChannel()
-            category()?.validate()
             microchipId()?.validate()
+            relatedAddress()?.validate()
+            relatedMoney()?.validate()
+            relatedPet()?.validate()
             status()?.validate()
-            tags()?.forEach { it.validate() }
+            tags()
             activityId()
             family().validate()
             recordedAt()
@@ -1851,10 +2272,12 @@ private constructor(
                 (photoUrls.asKnown()?.size ?: 0) +
                 (if (id.asKnown() == null) 0 else 1) +
                 (if (acquisitionChannel.asKnown() == null) 0 else 1) +
-                (category.asKnown()?.validity() ?: 0) +
                 (microchipId.asKnown()?.validity() ?: 0) +
+                (relatedAddress.asKnown()?.validity() ?: 0) +
+                (relatedMoney.asKnown()?.validity() ?: 0) +
+                (relatedPet.asKnown()?.validity() ?: 0) +
                 (status.asKnown()?.validity() ?: 0) +
-                (tags.asKnown()?.sumOf { it.validity().toInt() } ?: 0) +
+                (tags.asKnown()?.size ?: 0) +
                 (if (activityId.asKnown() == null) 0 else 1) +
                 (family.asKnown()?.validity() ?: 0) +
                 (if (recordedAt.asKnown() == null) 0 else 1)
@@ -2135,6 +2558,14 @@ private constructor(
                 acquisitionChannel == other.acquisitionChannel &&
                 category == other.category &&
                 microchipId == other.microchipId &&
+                relatedAddress == other.relatedAddress &&
+                relatedCategory == other.relatedCategory &&
+                relatedCustomer == other.relatedCustomer &&
+                relatedMoney == other.relatedMoney &&
+                relatedOrder == other.relatedOrder &&
+                relatedPet == other.relatedPet &&
+                relatedShelter == other.relatedShelter &&
+                relatedUser == other.relatedUser &&
                 status == other.status &&
                 tags == other.tags &&
                 activityId == other.activityId &&
@@ -2151,6 +2582,14 @@ private constructor(
                 acquisitionChannel,
                 category,
                 microchipId,
+                relatedAddress,
+                relatedCategory,
+                relatedCustomer,
+                relatedMoney,
+                relatedOrder,
+                relatedPet,
+                relatedShelter,
+                relatedUser,
                 status,
                 tags,
                 activityId,
@@ -2163,7 +2602,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Sold{name=$name, photoUrls=$photoUrls, id=$id, acquisitionChannel=$acquisitionChannel, category=$category, microchipId=$microchipId, status=$status, tags=$tags, activityId=$activityId, family=$family, recordedAt=$recordedAt, additionalProperties=$additionalProperties}"
+            "Sold{name=$name, photoUrls=$photoUrls, id=$id, acquisitionChannel=$acquisitionChannel, category=$category, microchipId=$microchipId, relatedAddress=$relatedAddress, relatedCategory=$relatedCategory, relatedCustomer=$relatedCustomer, relatedMoney=$relatedMoney, relatedOrder=$relatedOrder, relatedPet=$relatedPet, relatedShelter=$relatedShelter, relatedUser=$relatedUser, status=$status, tags=$tags, activityId=$activityId, family=$family, recordedAt=$recordedAt, additionalProperties=$additionalProperties}"
     }
 
     /**
@@ -2177,10 +2616,18 @@ private constructor(
         private val photoUrls: JsonField<List<String>>,
         private val id: JsonField<Long>,
         private val acquisitionChannel: JsonField<Pet.AcquisitionChannel>,
-        private val category: JsonField<Pet.Category>,
+        private val category: JsonValue,
         private val microchipId: JsonField<Pet.MicrochipId>,
+        private val relatedAddress: JsonField<Address>,
+        private val relatedCategory: JsonValue,
+        private val relatedCustomer: JsonValue,
+        private val relatedMoney: JsonField<Money>,
+        private val relatedOrder: JsonValue,
+        private val relatedPet: JsonField<Pet>,
+        private val relatedShelter: JsonValue,
+        private val relatedUser: JsonValue,
         private val status: JsonField<PetStatus>,
-        private val tags: JsonField<List<Pet.Tag>>,
+        private val tags: JsonField<List<JsonValue>>,
         private val activityId: JsonField<String>,
         private val family: JsonField<Family>,
         private val recordedAt: JsonField<OffsetDateTime>,
@@ -2198,14 +2645,36 @@ private constructor(
             @JsonProperty("acquisitionChannel")
             @ExcludeMissing
             acquisitionChannel: JsonField<Pet.AcquisitionChannel> = JsonMissing.of(),
-            @JsonProperty("category")
-            @ExcludeMissing
-            category: JsonField<Pet.Category> = JsonMissing.of(),
+            @JsonProperty("category") @ExcludeMissing category: JsonValue = JsonMissing.of(),
             @JsonProperty("microchipId")
             @ExcludeMissing
             microchipId: JsonField<Pet.MicrochipId> = JsonMissing.of(),
+            @JsonProperty("relatedAddress")
+            @ExcludeMissing
+            relatedAddress: JsonField<Address> = JsonMissing.of(),
+            @JsonProperty("relatedCategory")
+            @ExcludeMissing
+            relatedCategory: JsonValue = JsonMissing.of(),
+            @JsonProperty("relatedCustomer")
+            @ExcludeMissing
+            relatedCustomer: JsonValue = JsonMissing.of(),
+            @JsonProperty("relatedMoney")
+            @ExcludeMissing
+            relatedMoney: JsonField<Money> = JsonMissing.of(),
+            @JsonProperty("relatedOrder")
+            @ExcludeMissing
+            relatedOrder: JsonValue = JsonMissing.of(),
+            @JsonProperty("relatedPet")
+            @ExcludeMissing
+            relatedPet: JsonField<Pet> = JsonMissing.of(),
+            @JsonProperty("relatedShelter")
+            @ExcludeMissing
+            relatedShelter: JsonValue = JsonMissing.of(),
+            @JsonProperty("relatedUser") @ExcludeMissing relatedUser: JsonValue = JsonMissing.of(),
             @JsonProperty("status") @ExcludeMissing status: JsonField<PetStatus> = JsonMissing.of(),
-            @JsonProperty("tags") @ExcludeMissing tags: JsonField<List<Pet.Tag>> = JsonMissing.of(),
+            @JsonProperty("tags")
+            @ExcludeMissing
+            tags: JsonField<List<JsonValue>> = JsonMissing.of(),
             @JsonProperty("activityId")
             @ExcludeMissing
             activityId: JsonField<String> = JsonMissing.of(),
@@ -2223,6 +2692,14 @@ private constructor(
             acquisitionChannel,
             category,
             microchipId,
+            relatedAddress,
+            relatedCategory,
+            relatedCustomer,
+            relatedMoney,
+            relatedOrder,
+            relatedPet,
+            relatedShelter,
+            relatedUser,
             status,
             tags,
             activityId,
@@ -2240,6 +2717,14 @@ private constructor(
                 .acquisitionChannel(acquisitionChannel)
                 .category(category)
                 .microchipId(microchipId)
+                .relatedAddress(relatedAddress)
+                .relatedCategory(relatedCategory)
+                .relatedCustomer(relatedCustomer)
+                .relatedMoney(relatedMoney)
+                .relatedOrder(relatedOrder)
+                .relatedPet(relatedPet)
+                .relatedShelter(relatedShelter)
+                .relatedUser(relatedUser)
                 .status(status)
                 .tags(tags)
                 .build()
@@ -2275,10 +2760,12 @@ private constructor(
             acquisitionChannel.getNullable("acquisitionChannel")
 
         /**
-         * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
-         *   (e.g. if the server responded with an unexpected value).
+         * This arbitrary value can be deserialized into a custom type using the `convert` method:
+         * ```kotlin
+         * val myObject: MyClass = archived.category().convert(MyClass::class.java)
+         * ```
          */
-        fun category(): Pet.Category? = category.getNullable("category")
+        @JsonProperty("category") @ExcludeMissing fun _category(): JsonValue = category
 
         /**
          * Microchip identifier; legacy chips used numeric identifiers.
@@ -2287,6 +2774,70 @@ private constructor(
          *   (e.g. if the server responded with an unexpected value).
          */
         fun microchipId(): Pet.MicrochipId? = microchipId.getNullable("microchipId")
+
+        /**
+         * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
+         *   (e.g. if the server responded with an unexpected value).
+         */
+        fun relatedAddress(): Address? = relatedAddress.getNullable("relatedAddress")
+
+        /**
+         * This arbitrary value can be deserialized into a custom type using the `convert` method:
+         * ```kotlin
+         * val myObject: MyClass = archived.relatedCategory().convert(MyClass::class.java)
+         * ```
+         */
+        @JsonProperty("relatedCategory")
+        @ExcludeMissing
+        fun _relatedCategory(): JsonValue = relatedCategory
+
+        /**
+         * This arbitrary value can be deserialized into a custom type using the `convert` method:
+         * ```kotlin
+         * val myObject: MyClass = archived.relatedCustomer().convert(MyClass::class.java)
+         * ```
+         */
+        @JsonProperty("relatedCustomer")
+        @ExcludeMissing
+        fun _relatedCustomer(): JsonValue = relatedCustomer
+
+        /**
+         * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
+         *   (e.g. if the server responded with an unexpected value).
+         */
+        fun relatedMoney(): Money? = relatedMoney.getNullable("relatedMoney")
+
+        /**
+         * This arbitrary value can be deserialized into a custom type using the `convert` method:
+         * ```kotlin
+         * val myObject: MyClass = archived.relatedOrder().convert(MyClass::class.java)
+         * ```
+         */
+        @JsonProperty("relatedOrder") @ExcludeMissing fun _relatedOrder(): JsonValue = relatedOrder
+
+        /**
+         * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
+         *   (e.g. if the server responded with an unexpected value).
+         */
+        fun relatedPet(): Pet? = relatedPet.getNullable("relatedPet")
+
+        /**
+         * This arbitrary value can be deserialized into a custom type using the `convert` method:
+         * ```kotlin
+         * val myObject: MyClass = archived.relatedShelter().convert(MyClass::class.java)
+         * ```
+         */
+        @JsonProperty("relatedShelter")
+        @ExcludeMissing
+        fun _relatedShelter(): JsonValue = relatedShelter
+
+        /**
+         * This arbitrary value can be deserialized into a custom type using the `convert` method:
+         * ```kotlin
+         * val myObject: MyClass = archived.relatedUser().convert(MyClass::class.java)
+         * ```
+         */
+        @JsonProperty("relatedUser") @ExcludeMissing fun _relatedUser(): JsonValue = relatedUser
 
         /**
          * pet status in the store
@@ -2300,7 +2851,7 @@ private constructor(
          * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
          *   (e.g. if the server responded with an unexpected value).
          */
-        fun tags(): List<Pet.Tag>? = tags.getNullable("tags")
+        fun tags(): List<JsonValue>? = tags.getNullable("tags")
 
         /**
          * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
@@ -2363,15 +2914,6 @@ private constructor(
         fun _acquisitionChannel(): JsonField<Pet.AcquisitionChannel> = acquisitionChannel
 
         /**
-         * Returns the raw JSON value of [category].
-         *
-         * Unlike [category], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("category")
-        @ExcludeMissing
-        fun _category(): JsonField<Pet.Category> = category
-
-        /**
          * Returns the raw JSON value of [microchipId].
          *
          * Unlike [microchipId], this method doesn't throw if the JSON field has an unexpected type.
@@ -2379,6 +2921,33 @@ private constructor(
         @JsonProperty("microchipId")
         @ExcludeMissing
         fun _microchipId(): JsonField<Pet.MicrochipId> = microchipId
+
+        /**
+         * Returns the raw JSON value of [relatedAddress].
+         *
+         * Unlike [relatedAddress], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("relatedAddress")
+        @ExcludeMissing
+        fun _relatedAddress(): JsonField<Address> = relatedAddress
+
+        /**
+         * Returns the raw JSON value of [relatedMoney].
+         *
+         * Unlike [relatedMoney], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("relatedMoney")
+        @ExcludeMissing
+        fun _relatedMoney(): JsonField<Money> = relatedMoney
+
+        /**
+         * Returns the raw JSON value of [relatedPet].
+         *
+         * Unlike [relatedPet], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("relatedPet") @ExcludeMissing fun _relatedPet(): JsonField<Pet> = relatedPet
 
         /**
          * Returns the raw JSON value of [status].
@@ -2392,7 +2961,7 @@ private constructor(
          *
          * Unlike [tags], this method doesn't throw if the JSON field has an unexpected type.
          */
-        @JsonProperty("tags") @ExcludeMissing fun _tags(): JsonField<List<Pet.Tag>> = tags
+        @JsonProperty("tags") @ExcludeMissing fun _tags(): JsonField<List<JsonValue>> = tags
 
         /**
          * Returns the raw JSON value of [activityId].
@@ -2465,10 +3034,18 @@ private constructor(
             private var photoUrls: JsonField<MutableList<String>>? = null
             private var id: JsonField<Long> = JsonMissing.of()
             private var acquisitionChannel: JsonField<Pet.AcquisitionChannel> = JsonMissing.of()
-            private var category: JsonField<Pet.Category> = JsonMissing.of()
+            private var category: JsonValue = JsonMissing.of()
             private var microchipId: JsonField<Pet.MicrochipId> = JsonMissing.of()
+            private var relatedAddress: JsonField<Address> = JsonMissing.of()
+            private var relatedCategory: JsonValue = JsonMissing.of()
+            private var relatedCustomer: JsonValue = JsonMissing.of()
+            private var relatedMoney: JsonField<Money> = JsonMissing.of()
+            private var relatedOrder: JsonValue = JsonMissing.of()
+            private var relatedPet: JsonField<Pet> = JsonMissing.of()
+            private var relatedShelter: JsonValue = JsonMissing.of()
+            private var relatedUser: JsonValue = JsonMissing.of()
             private var status: JsonField<PetStatus> = JsonMissing.of()
-            private var tags: JsonField<MutableList<Pet.Tag>>? = null
+            private var tags: JsonField<MutableList<JsonValue>>? = null
             private var activityId: JsonField<String>? = null
             private var family: JsonField<Family>? = null
             private var recordedAt: JsonField<OffsetDateTime>? = null
@@ -2482,6 +3059,14 @@ private constructor(
                 acquisitionChannel = archived.acquisitionChannel
                 category = archived.category
                 microchipId = archived.microchipId
+                relatedAddress = archived.relatedAddress
+                relatedCategory = archived.relatedCategory
+                relatedCustomer = archived.relatedCustomer
+                relatedMoney = archived.relatedMoney
+                relatedOrder = archived.relatedOrder
+                relatedPet = archived.relatedPet
+                relatedShelter = archived.relatedShelter
+                relatedUser = archived.relatedUser
                 status = archived.status
                 tags = archived.tags.map { it.toMutableList() }
                 activityId = archived.activityId
@@ -2566,16 +3151,7 @@ private constructor(
             fun acquisitionChannel(value: String) =
                 acquisitionChannel(Pet.AcquisitionChannel.of(value))
 
-            fun category(category: Pet.Category) = category(JsonField.of(category))
-
-            /**
-             * Sets [Builder.category] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.category] with a well-typed [Pet.Category] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun category(category: JsonField<Pet.Category>) = apply { this.category = category }
+            fun category(category: JsonValue) = apply { this.category = category }
 
             /** Microchip identifier; legacy chips used numeric identifiers. */
             fun microchipId(microchipId: Pet.MicrochipId) = microchipId(JsonField.of(microchipId))
@@ -2597,6 +3173,60 @@ private constructor(
             /** Alias for calling [microchipId] with `Pet.MicrochipId.ofLong(long)`. */
             fun microchipId(long: Long) = microchipId(Pet.MicrochipId.ofLong(long))
 
+            fun relatedAddress(relatedAddress: Address) =
+                relatedAddress(JsonField.of(relatedAddress))
+
+            /**
+             * Sets [Builder.relatedAddress] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.relatedAddress] with a well-typed [Address] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun relatedAddress(relatedAddress: JsonField<Address>) = apply {
+                this.relatedAddress = relatedAddress
+            }
+
+            fun relatedCategory(relatedCategory: JsonValue) = apply {
+                this.relatedCategory = relatedCategory
+            }
+
+            fun relatedCustomer(relatedCustomer: JsonValue) = apply {
+                this.relatedCustomer = relatedCustomer
+            }
+
+            fun relatedMoney(relatedMoney: Money) = relatedMoney(JsonField.of(relatedMoney))
+
+            /**
+             * Sets [Builder.relatedMoney] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.relatedMoney] with a well-typed [Money] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun relatedMoney(relatedMoney: JsonField<Money>) = apply {
+                this.relatedMoney = relatedMoney
+            }
+
+            fun relatedOrder(relatedOrder: JsonValue) = apply { this.relatedOrder = relatedOrder }
+
+            fun relatedPet(relatedPet: Pet) = relatedPet(JsonField.of(relatedPet))
+
+            /**
+             * Sets [Builder.relatedPet] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.relatedPet] with a well-typed [Pet] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun relatedPet(relatedPet: JsonField<Pet>) = apply { this.relatedPet = relatedPet }
+
+            fun relatedShelter(relatedShelter: JsonValue) = apply {
+                this.relatedShelter = relatedShelter
+            }
+
+            fun relatedUser(relatedUser: JsonValue) = apply { this.relatedUser = relatedUser }
+
             /** pet status in the store */
             fun status(status: PetStatus) = status(JsonField.of(status))
 
@@ -2609,25 +3239,25 @@ private constructor(
              */
             fun status(status: JsonField<PetStatus>) = apply { this.status = status }
 
-            fun tags(tags: List<Pet.Tag>) = tags(JsonField.of(tags))
+            fun tags(tags: List<JsonValue>) = tags(JsonField.of(tags))
 
             /**
              * Sets [Builder.tags] to an arbitrary JSON value.
              *
-             * You should usually call [Builder.tags] with a well-typed `List<Pet.Tag>` value
+             * You should usually call [Builder.tags] with a well-typed `List<JsonValue>` value
              * instead. This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun tags(tags: JsonField<List<Pet.Tag>>) = apply {
+            fun tags(tags: JsonField<List<JsonValue>>) = apply {
                 this.tags = tags.map { it.toMutableList() }
             }
 
             /**
-             * Adds a single [Pet.Tag] to [tags].
+             * Adds a single [JsonValue] to [tags].
              *
              * @throws IllegalStateException if the field was previously set to a non-list.
              */
-            fun addTag(tag: Pet.Tag) = apply {
+            fun addTag(tag: JsonValue) = apply {
                 tags =
                     (tags ?: JsonField.of(mutableListOf())).also { checkKnown("tags", it).add(tag) }
             }
@@ -2724,6 +3354,14 @@ private constructor(
                     acquisitionChannel,
                     category,
                     microchipId,
+                    relatedAddress,
+                    relatedCategory,
+                    relatedCustomer,
+                    relatedMoney,
+                    relatedOrder,
+                    relatedPet,
+                    relatedShelter,
+                    relatedUser,
                     status,
                     (tags ?: JsonMissing.of()).map { it.toImmutable() },
                     checkRequired("activityId", activityId),
@@ -2754,10 +3392,12 @@ private constructor(
             photoUrls()
             id()
             acquisitionChannel()
-            category()?.validate()
             microchipId()?.validate()
+            relatedAddress()?.validate()
+            relatedMoney()?.validate()
+            relatedPet()?.validate()
             status()?.validate()
-            tags()?.forEach { it.validate() }
+            tags()
             activityId()
             family().validate()
             recordedAt()
@@ -2784,10 +3424,12 @@ private constructor(
                 (photoUrls.asKnown()?.size ?: 0) +
                 (if (id.asKnown() == null) 0 else 1) +
                 (if (acquisitionChannel.asKnown() == null) 0 else 1) +
-                (category.asKnown()?.validity() ?: 0) +
                 (microchipId.asKnown()?.validity() ?: 0) +
+                (relatedAddress.asKnown()?.validity() ?: 0) +
+                (relatedMoney.asKnown()?.validity() ?: 0) +
+                (relatedPet.asKnown()?.validity() ?: 0) +
                 (status.asKnown()?.validity() ?: 0) +
-                (tags.asKnown()?.sumOf { it.validity().toInt() } ?: 0) +
+                (tags.asKnown()?.size ?: 0) +
                 (if (activityId.asKnown() == null) 0 else 1) +
                 (family.asKnown()?.validity() ?: 0) +
                 (if (recordedAt.asKnown() == null) 0 else 1) +
@@ -3069,6 +3711,14 @@ private constructor(
                 acquisitionChannel == other.acquisitionChannel &&
                 category == other.category &&
                 microchipId == other.microchipId &&
+                relatedAddress == other.relatedAddress &&
+                relatedCategory == other.relatedCategory &&
+                relatedCustomer == other.relatedCustomer &&
+                relatedMoney == other.relatedMoney &&
+                relatedOrder == other.relatedOrder &&
+                relatedPet == other.relatedPet &&
+                relatedShelter == other.relatedShelter &&
+                relatedUser == other.relatedUser &&
                 status == other.status &&
                 tags == other.tags &&
                 activityId == other.activityId &&
@@ -3086,6 +3736,14 @@ private constructor(
                 acquisitionChannel,
                 category,
                 microchipId,
+                relatedAddress,
+                relatedCategory,
+                relatedCustomer,
+                relatedMoney,
+                relatedOrder,
+                relatedPet,
+                relatedShelter,
+                relatedUser,
                 status,
                 tags,
                 activityId,
@@ -3099,7 +3757,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Archived{name=$name, photoUrls=$photoUrls, id=$id, acquisitionChannel=$acquisitionChannel, category=$category, microchipId=$microchipId, status=$status, tags=$tags, activityId=$activityId, family=$family, recordedAt=$recordedAt, archivedReason=$archivedReason, additionalProperties=$additionalProperties}"
+            "Archived{name=$name, photoUrls=$photoUrls, id=$id, acquisitionChannel=$acquisitionChannel, category=$category, microchipId=$microchipId, relatedAddress=$relatedAddress, relatedCategory=$relatedCategory, relatedCustomer=$relatedCustomer, relatedMoney=$relatedMoney, relatedOrder=$relatedOrder, relatedPet=$relatedPet, relatedShelter=$relatedShelter, relatedUser=$relatedUser, status=$status, tags=$tags, activityId=$activityId, family=$family, recordedAt=$recordedAt, archivedReason=$archivedReason, additionalProperties=$additionalProperties}"
     }
 
     /**
@@ -3113,10 +3771,18 @@ private constructor(
         private val photoUrls: JsonField<List<String>>,
         private val id: JsonField<Long>,
         private val acquisitionChannel: JsonField<Pet.AcquisitionChannel>,
-        private val category: JsonField<Pet.Category>,
+        private val category: JsonValue,
         private val microchipId: JsonField<Pet.MicrochipId>,
+        private val relatedAddress: JsonField<Address>,
+        private val relatedCategory: JsonValue,
+        private val relatedCustomer: JsonValue,
+        private val relatedMoney: JsonField<Money>,
+        private val relatedOrder: JsonValue,
+        private val relatedPet: JsonField<Pet>,
+        private val relatedShelter: JsonValue,
+        private val relatedUser: JsonValue,
         private val status: JsonField<PetStatus>,
-        private val tags: JsonField<List<Pet.Tag>>,
+        private val tags: JsonField<List<JsonValue>>,
         private val family: JsonField<Family>,
         private val transferredTo: JsonField<TransferredTo>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -3132,14 +3798,36 @@ private constructor(
             @JsonProperty("acquisitionChannel")
             @ExcludeMissing
             acquisitionChannel: JsonField<Pet.AcquisitionChannel> = JsonMissing.of(),
-            @JsonProperty("category")
-            @ExcludeMissing
-            category: JsonField<Pet.Category> = JsonMissing.of(),
+            @JsonProperty("category") @ExcludeMissing category: JsonValue = JsonMissing.of(),
             @JsonProperty("microchipId")
             @ExcludeMissing
             microchipId: JsonField<Pet.MicrochipId> = JsonMissing.of(),
+            @JsonProperty("relatedAddress")
+            @ExcludeMissing
+            relatedAddress: JsonField<Address> = JsonMissing.of(),
+            @JsonProperty("relatedCategory")
+            @ExcludeMissing
+            relatedCategory: JsonValue = JsonMissing.of(),
+            @JsonProperty("relatedCustomer")
+            @ExcludeMissing
+            relatedCustomer: JsonValue = JsonMissing.of(),
+            @JsonProperty("relatedMoney")
+            @ExcludeMissing
+            relatedMoney: JsonField<Money> = JsonMissing.of(),
+            @JsonProperty("relatedOrder")
+            @ExcludeMissing
+            relatedOrder: JsonValue = JsonMissing.of(),
+            @JsonProperty("relatedPet")
+            @ExcludeMissing
+            relatedPet: JsonField<Pet> = JsonMissing.of(),
+            @JsonProperty("relatedShelter")
+            @ExcludeMissing
+            relatedShelter: JsonValue = JsonMissing.of(),
+            @JsonProperty("relatedUser") @ExcludeMissing relatedUser: JsonValue = JsonMissing.of(),
             @JsonProperty("status") @ExcludeMissing status: JsonField<PetStatus> = JsonMissing.of(),
-            @JsonProperty("tags") @ExcludeMissing tags: JsonField<List<Pet.Tag>> = JsonMissing.of(),
+            @JsonProperty("tags")
+            @ExcludeMissing
+            tags: JsonField<List<JsonValue>> = JsonMissing.of(),
             @JsonProperty("family") @ExcludeMissing family: JsonField<Family> = JsonMissing.of(),
             @JsonProperty("transferredTo")
             @ExcludeMissing
@@ -3151,6 +3839,14 @@ private constructor(
             acquisitionChannel,
             category,
             microchipId,
+            relatedAddress,
+            relatedCategory,
+            relatedCustomer,
+            relatedMoney,
+            relatedOrder,
+            relatedPet,
+            relatedShelter,
+            relatedUser,
             status,
             tags,
             family,
@@ -3166,6 +3862,14 @@ private constructor(
                 .acquisitionChannel(acquisitionChannel)
                 .category(category)
                 .microchipId(microchipId)
+                .relatedAddress(relatedAddress)
+                .relatedCategory(relatedCategory)
+                .relatedCustomer(relatedCustomer)
+                .relatedMoney(relatedMoney)
+                .relatedOrder(relatedOrder)
+                .relatedPet(relatedPet)
+                .relatedShelter(relatedShelter)
+                .relatedUser(relatedUser)
                 .status(status)
                 .tags(tags)
                 .build()
@@ -3201,10 +3905,12 @@ private constructor(
             acquisitionChannel.getNullable("acquisitionChannel")
 
         /**
-         * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
-         *   (e.g. if the server responded with an unexpected value).
+         * This arbitrary value can be deserialized into a custom type using the `convert` method:
+         * ```kotlin
+         * val myObject: MyClass = transferred.category().convert(MyClass::class.java)
+         * ```
          */
-        fun category(): Pet.Category? = category.getNullable("category")
+        @JsonProperty("category") @ExcludeMissing fun _category(): JsonValue = category
 
         /**
          * Microchip identifier; legacy chips used numeric identifiers.
@@ -3213,6 +3919,70 @@ private constructor(
          *   (e.g. if the server responded with an unexpected value).
          */
         fun microchipId(): Pet.MicrochipId? = microchipId.getNullable("microchipId")
+
+        /**
+         * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
+         *   (e.g. if the server responded with an unexpected value).
+         */
+        fun relatedAddress(): Address? = relatedAddress.getNullable("relatedAddress")
+
+        /**
+         * This arbitrary value can be deserialized into a custom type using the `convert` method:
+         * ```kotlin
+         * val myObject: MyClass = transferred.relatedCategory().convert(MyClass::class.java)
+         * ```
+         */
+        @JsonProperty("relatedCategory")
+        @ExcludeMissing
+        fun _relatedCategory(): JsonValue = relatedCategory
+
+        /**
+         * This arbitrary value can be deserialized into a custom type using the `convert` method:
+         * ```kotlin
+         * val myObject: MyClass = transferred.relatedCustomer().convert(MyClass::class.java)
+         * ```
+         */
+        @JsonProperty("relatedCustomer")
+        @ExcludeMissing
+        fun _relatedCustomer(): JsonValue = relatedCustomer
+
+        /**
+         * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
+         *   (e.g. if the server responded with an unexpected value).
+         */
+        fun relatedMoney(): Money? = relatedMoney.getNullable("relatedMoney")
+
+        /**
+         * This arbitrary value can be deserialized into a custom type using the `convert` method:
+         * ```kotlin
+         * val myObject: MyClass = transferred.relatedOrder().convert(MyClass::class.java)
+         * ```
+         */
+        @JsonProperty("relatedOrder") @ExcludeMissing fun _relatedOrder(): JsonValue = relatedOrder
+
+        /**
+         * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
+         *   (e.g. if the server responded with an unexpected value).
+         */
+        fun relatedPet(): Pet? = relatedPet.getNullable("relatedPet")
+
+        /**
+         * This arbitrary value can be deserialized into a custom type using the `convert` method:
+         * ```kotlin
+         * val myObject: MyClass = transferred.relatedShelter().convert(MyClass::class.java)
+         * ```
+         */
+        @JsonProperty("relatedShelter")
+        @ExcludeMissing
+        fun _relatedShelter(): JsonValue = relatedShelter
+
+        /**
+         * This arbitrary value can be deserialized into a custom type using the `convert` method:
+         * ```kotlin
+         * val myObject: MyClass = transferred.relatedUser().convert(MyClass::class.java)
+         * ```
+         */
+        @JsonProperty("relatedUser") @ExcludeMissing fun _relatedUser(): JsonValue = relatedUser
 
         /**
          * pet status in the store
@@ -3226,7 +3996,7 @@ private constructor(
          * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
          *   (e.g. if the server responded with an unexpected value).
          */
-        fun tags(): List<Pet.Tag>? = tags.getNullable("tags")
+        fun tags(): List<JsonValue>? = tags.getNullable("tags")
 
         /**
          * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
@@ -3275,15 +4045,6 @@ private constructor(
         fun _acquisitionChannel(): JsonField<Pet.AcquisitionChannel> = acquisitionChannel
 
         /**
-         * Returns the raw JSON value of [category].
-         *
-         * Unlike [category], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("category")
-        @ExcludeMissing
-        fun _category(): JsonField<Pet.Category> = category
-
-        /**
          * Returns the raw JSON value of [microchipId].
          *
          * Unlike [microchipId], this method doesn't throw if the JSON field has an unexpected type.
@@ -3291,6 +4052,33 @@ private constructor(
         @JsonProperty("microchipId")
         @ExcludeMissing
         fun _microchipId(): JsonField<Pet.MicrochipId> = microchipId
+
+        /**
+         * Returns the raw JSON value of [relatedAddress].
+         *
+         * Unlike [relatedAddress], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("relatedAddress")
+        @ExcludeMissing
+        fun _relatedAddress(): JsonField<Address> = relatedAddress
+
+        /**
+         * Returns the raw JSON value of [relatedMoney].
+         *
+         * Unlike [relatedMoney], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("relatedMoney")
+        @ExcludeMissing
+        fun _relatedMoney(): JsonField<Money> = relatedMoney
+
+        /**
+         * Returns the raw JSON value of [relatedPet].
+         *
+         * Unlike [relatedPet], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("relatedPet") @ExcludeMissing fun _relatedPet(): JsonField<Pet> = relatedPet
 
         /**
          * Returns the raw JSON value of [status].
@@ -3304,7 +4092,7 @@ private constructor(
          *
          * Unlike [tags], this method doesn't throw if the JSON field has an unexpected type.
          */
-        @JsonProperty("tags") @ExcludeMissing fun _tags(): JsonField<List<Pet.Tag>> = tags
+        @JsonProperty("tags") @ExcludeMissing fun _tags(): JsonField<List<JsonValue>> = tags
 
         /**
          * Returns the raw JSON value of [family].
@@ -3357,10 +4145,18 @@ private constructor(
             private var photoUrls: JsonField<MutableList<String>>? = null
             private var id: JsonField<Long> = JsonMissing.of()
             private var acquisitionChannel: JsonField<Pet.AcquisitionChannel> = JsonMissing.of()
-            private var category: JsonField<Pet.Category> = JsonMissing.of()
+            private var category: JsonValue = JsonMissing.of()
             private var microchipId: JsonField<Pet.MicrochipId> = JsonMissing.of()
+            private var relatedAddress: JsonField<Address> = JsonMissing.of()
+            private var relatedCategory: JsonValue = JsonMissing.of()
+            private var relatedCustomer: JsonValue = JsonMissing.of()
+            private var relatedMoney: JsonField<Money> = JsonMissing.of()
+            private var relatedOrder: JsonValue = JsonMissing.of()
+            private var relatedPet: JsonField<Pet> = JsonMissing.of()
+            private var relatedShelter: JsonValue = JsonMissing.of()
+            private var relatedUser: JsonValue = JsonMissing.of()
             private var status: JsonField<PetStatus> = JsonMissing.of()
-            private var tags: JsonField<MutableList<Pet.Tag>>? = null
+            private var tags: JsonField<MutableList<JsonValue>>? = null
             private var family: JsonField<Family>? = null
             private var transferredTo: JsonField<TransferredTo> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -3372,6 +4168,14 @@ private constructor(
                 acquisitionChannel = transferred.acquisitionChannel
                 category = transferred.category
                 microchipId = transferred.microchipId
+                relatedAddress = transferred.relatedAddress
+                relatedCategory = transferred.relatedCategory
+                relatedCustomer = transferred.relatedCustomer
+                relatedMoney = transferred.relatedMoney
+                relatedOrder = transferred.relatedOrder
+                relatedPet = transferred.relatedPet
+                relatedShelter = transferred.relatedShelter
+                relatedUser = transferred.relatedUser
                 status = transferred.status
                 tags = transferred.tags.map { it.toMutableList() }
                 family = transferred.family
@@ -3454,16 +4258,7 @@ private constructor(
             fun acquisitionChannel(value: String) =
                 acquisitionChannel(Pet.AcquisitionChannel.of(value))
 
-            fun category(category: Pet.Category) = category(JsonField.of(category))
-
-            /**
-             * Sets [Builder.category] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.category] with a well-typed [Pet.Category] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun category(category: JsonField<Pet.Category>) = apply { this.category = category }
+            fun category(category: JsonValue) = apply { this.category = category }
 
             /** Microchip identifier; legacy chips used numeric identifiers. */
             fun microchipId(microchipId: Pet.MicrochipId) = microchipId(JsonField.of(microchipId))
@@ -3485,6 +4280,60 @@ private constructor(
             /** Alias for calling [microchipId] with `Pet.MicrochipId.ofLong(long)`. */
             fun microchipId(long: Long) = microchipId(Pet.MicrochipId.ofLong(long))
 
+            fun relatedAddress(relatedAddress: Address) =
+                relatedAddress(JsonField.of(relatedAddress))
+
+            /**
+             * Sets [Builder.relatedAddress] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.relatedAddress] with a well-typed [Address] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun relatedAddress(relatedAddress: JsonField<Address>) = apply {
+                this.relatedAddress = relatedAddress
+            }
+
+            fun relatedCategory(relatedCategory: JsonValue) = apply {
+                this.relatedCategory = relatedCategory
+            }
+
+            fun relatedCustomer(relatedCustomer: JsonValue) = apply {
+                this.relatedCustomer = relatedCustomer
+            }
+
+            fun relatedMoney(relatedMoney: Money) = relatedMoney(JsonField.of(relatedMoney))
+
+            /**
+             * Sets [Builder.relatedMoney] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.relatedMoney] with a well-typed [Money] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun relatedMoney(relatedMoney: JsonField<Money>) = apply {
+                this.relatedMoney = relatedMoney
+            }
+
+            fun relatedOrder(relatedOrder: JsonValue) = apply { this.relatedOrder = relatedOrder }
+
+            fun relatedPet(relatedPet: Pet) = relatedPet(JsonField.of(relatedPet))
+
+            /**
+             * Sets [Builder.relatedPet] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.relatedPet] with a well-typed [Pet] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun relatedPet(relatedPet: JsonField<Pet>) = apply { this.relatedPet = relatedPet }
+
+            fun relatedShelter(relatedShelter: JsonValue) = apply {
+                this.relatedShelter = relatedShelter
+            }
+
+            fun relatedUser(relatedUser: JsonValue) = apply { this.relatedUser = relatedUser }
+
             /** pet status in the store */
             fun status(status: PetStatus) = status(JsonField.of(status))
 
@@ -3497,25 +4346,25 @@ private constructor(
              */
             fun status(status: JsonField<PetStatus>) = apply { this.status = status }
 
-            fun tags(tags: List<Pet.Tag>) = tags(JsonField.of(tags))
+            fun tags(tags: List<JsonValue>) = tags(JsonField.of(tags))
 
             /**
              * Sets [Builder.tags] to an arbitrary JSON value.
              *
-             * You should usually call [Builder.tags] with a well-typed `List<Pet.Tag>` value
+             * You should usually call [Builder.tags] with a well-typed `List<JsonValue>` value
              * instead. This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun tags(tags: JsonField<List<Pet.Tag>>) = apply {
+            fun tags(tags: JsonField<List<JsonValue>>) = apply {
                 this.tags = tags.map { it.toMutableList() }
             }
 
             /**
-             * Adds a single [Pet.Tag] to [tags].
+             * Adds a single [JsonValue] to [tags].
              *
              * @throws IllegalStateException if the field was previously set to a non-list.
              */
-            fun addTag(tag: Pet.Tag) = apply {
+            fun addTag(tag: JsonValue) = apply {
                 tags =
                     (tags ?: JsonField.of(mutableListOf())).also { checkKnown("tags", it).add(tag) }
             }
@@ -3586,6 +4435,14 @@ private constructor(
                     acquisitionChannel,
                     category,
                     microchipId,
+                    relatedAddress,
+                    relatedCategory,
+                    relatedCustomer,
+                    relatedMoney,
+                    relatedOrder,
+                    relatedPet,
+                    relatedShelter,
+                    relatedUser,
                     status,
                     (tags ?: JsonMissing.of()).map { it.toImmutable() },
                     checkRequired("family", family),
@@ -3614,10 +4471,12 @@ private constructor(
             photoUrls()
             id()
             acquisitionChannel()
-            category()?.validate()
             microchipId()?.validate()
+            relatedAddress()?.validate()
+            relatedMoney()?.validate()
+            relatedPet()?.validate()
             status()?.validate()
-            tags()?.forEach { it.validate() }
+            tags()
             family().validate()
             transferredTo()?.validate()
             validated = true
@@ -3642,10 +4501,12 @@ private constructor(
                 (photoUrls.asKnown()?.size ?: 0) +
                 (if (id.asKnown() == null) 0 else 1) +
                 (if (acquisitionChannel.asKnown() == null) 0 else 1) +
-                (category.asKnown()?.validity() ?: 0) +
                 (microchipId.asKnown()?.validity() ?: 0) +
+                (relatedAddress.asKnown()?.validity() ?: 0) +
+                (relatedMoney.asKnown()?.validity() ?: 0) +
+                (relatedPet.asKnown()?.validity() ?: 0) +
                 (status.asKnown()?.validity() ?: 0) +
-                (tags.asKnown()?.sumOf { it.validity().toInt() } ?: 0) +
+                (tags.asKnown()?.size ?: 0) +
                 (family.asKnown()?.validity() ?: 0) +
                 (transferredTo.asKnown()?.validity() ?: 0)
 
@@ -3788,6 +4649,14 @@ private constructor(
             private val address: JsonField<Address>,
             private val contact: JsonField<Contact>,
             private val location: JsonField<Location>,
+            private val relatedAddress: JsonField<Address>,
+            private val relatedCategory: JsonValue,
+            private val relatedCustomer: JsonValue,
+            private val relatedMoney: JsonField<Money>,
+            private val relatedOrder: JsonValue,
+            private val relatedPet: JsonField<Pet>,
+            private val relatedTag: JsonValue,
+            private val relatedUser: JsonValue,
             private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
 
@@ -3803,7 +4672,45 @@ private constructor(
                 @JsonProperty("location")
                 @ExcludeMissing
                 location: JsonField<Location> = JsonMissing.of(),
-            ) : this(name, address, contact, location, mutableMapOf())
+                @JsonProperty("relatedAddress")
+                @ExcludeMissing
+                relatedAddress: JsonField<Address> = JsonMissing.of(),
+                @JsonProperty("relatedCategory")
+                @ExcludeMissing
+                relatedCategory: JsonValue = JsonMissing.of(),
+                @JsonProperty("relatedCustomer")
+                @ExcludeMissing
+                relatedCustomer: JsonValue = JsonMissing.of(),
+                @JsonProperty("relatedMoney")
+                @ExcludeMissing
+                relatedMoney: JsonField<Money> = JsonMissing.of(),
+                @JsonProperty("relatedOrder")
+                @ExcludeMissing
+                relatedOrder: JsonValue = JsonMissing.of(),
+                @JsonProperty("relatedPet")
+                @ExcludeMissing
+                relatedPet: JsonField<Pet> = JsonMissing.of(),
+                @JsonProperty("relatedTag")
+                @ExcludeMissing
+                relatedTag: JsonValue = JsonMissing.of(),
+                @JsonProperty("relatedUser")
+                @ExcludeMissing
+                relatedUser: JsonValue = JsonMissing.of(),
+            ) : this(
+                name,
+                address,
+                contact,
+                location,
+                relatedAddress,
+                relatedCategory,
+                relatedCustomer,
+                relatedMoney,
+                relatedOrder,
+                relatedPet,
+                relatedTag,
+                relatedUser,
+                mutableMapOf(),
+            )
 
             /**
              * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected
@@ -3829,6 +4736,75 @@ private constructor(
              *   type (e.g. if the server responded with an unexpected value).
              */
             fun location(): Location? = location.getNullable("location")
+
+            /**
+             * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected
+             *   type (e.g. if the server responded with an unexpected value).
+             */
+            fun relatedAddress(): Address? = relatedAddress.getNullable("relatedAddress")
+
+            /**
+             * This arbitrary value can be deserialized into a custom type using the `convert`
+             * method:
+             * ```kotlin
+             * val myObject: MyClass = transferredTo.relatedCategory().convert(MyClass::class.java)
+             * ```
+             */
+            @JsonProperty("relatedCategory")
+            @ExcludeMissing
+            fun _relatedCategory(): JsonValue = relatedCategory
+
+            /**
+             * This arbitrary value can be deserialized into a custom type using the `convert`
+             * method:
+             * ```kotlin
+             * val myObject: MyClass = transferredTo.relatedCustomer().convert(MyClass::class.java)
+             * ```
+             */
+            @JsonProperty("relatedCustomer")
+            @ExcludeMissing
+            fun _relatedCustomer(): JsonValue = relatedCustomer
+
+            /**
+             * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected
+             *   type (e.g. if the server responded with an unexpected value).
+             */
+            fun relatedMoney(): Money? = relatedMoney.getNullable("relatedMoney")
+
+            /**
+             * This arbitrary value can be deserialized into a custom type using the `convert`
+             * method:
+             * ```kotlin
+             * val myObject: MyClass = transferredTo.relatedOrder().convert(MyClass::class.java)
+             * ```
+             */
+            @JsonProperty("relatedOrder")
+            @ExcludeMissing
+            fun _relatedOrder(): JsonValue = relatedOrder
+
+            /**
+             * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected
+             *   type (e.g. if the server responded with an unexpected value).
+             */
+            fun relatedPet(): Pet? = relatedPet.getNullable("relatedPet")
+
+            /**
+             * This arbitrary value can be deserialized into a custom type using the `convert`
+             * method:
+             * ```kotlin
+             * val myObject: MyClass = transferredTo.relatedTag().convert(MyClass::class.java)
+             * ```
+             */
+            @JsonProperty("relatedTag") @ExcludeMissing fun _relatedTag(): JsonValue = relatedTag
+
+            /**
+             * This arbitrary value can be deserialized into a custom type using the `convert`
+             * method:
+             * ```kotlin
+             * val myObject: MyClass = transferredTo.relatedUser().convert(MyClass::class.java)
+             * ```
+             */
+            @JsonProperty("relatedUser") @ExcludeMissing fun _relatedUser(): JsonValue = relatedUser
 
             /**
              * Returns the raw JSON value of [name].
@@ -3860,6 +4836,36 @@ private constructor(
             @JsonProperty("location")
             @ExcludeMissing
             fun _location(): JsonField<Location> = location
+
+            /**
+             * Returns the raw JSON value of [relatedAddress].
+             *
+             * Unlike [relatedAddress], this method doesn't throw if the JSON field has an
+             * unexpected type.
+             */
+            @JsonProperty("relatedAddress")
+            @ExcludeMissing
+            fun _relatedAddress(): JsonField<Address> = relatedAddress
+
+            /**
+             * Returns the raw JSON value of [relatedMoney].
+             *
+             * Unlike [relatedMoney], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
+            @JsonProperty("relatedMoney")
+            @ExcludeMissing
+            fun _relatedMoney(): JsonField<Money> = relatedMoney
+
+            /**
+             * Returns the raw JSON value of [relatedPet].
+             *
+             * Unlike [relatedPet], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
+            @JsonProperty("relatedPet")
+            @ExcludeMissing
+            fun _relatedPet(): JsonField<Pet> = relatedPet
 
             @JsonAnySetter
             private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -3893,6 +4899,14 @@ private constructor(
                 private var address: JsonField<Address> = JsonMissing.of()
                 private var contact: JsonField<Contact> = JsonMissing.of()
                 private var location: JsonField<Location> = JsonMissing.of()
+                private var relatedAddress: JsonField<Address> = JsonMissing.of()
+                private var relatedCategory: JsonValue = JsonMissing.of()
+                private var relatedCustomer: JsonValue = JsonMissing.of()
+                private var relatedMoney: JsonField<Money> = JsonMissing.of()
+                private var relatedOrder: JsonValue = JsonMissing.of()
+                private var relatedPet: JsonField<Pet> = JsonMissing.of()
+                private var relatedTag: JsonValue = JsonMissing.of()
+                private var relatedUser: JsonValue = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 internal fun from(transferredTo: TransferredTo) = apply {
@@ -3900,6 +4914,14 @@ private constructor(
                     address = transferredTo.address
                     contact = transferredTo.contact
                     location = transferredTo.location
+                    relatedAddress = transferredTo.relatedAddress
+                    relatedCategory = transferredTo.relatedCategory
+                    relatedCustomer = transferredTo.relatedCustomer
+                    relatedMoney = transferredTo.relatedMoney
+                    relatedOrder = transferredTo.relatedOrder
+                    relatedPet = transferredTo.relatedPet
+                    relatedTag = transferredTo.relatedTag
+                    relatedUser = transferredTo.relatedUser
                     additionalProperties = transferredTo.additionalProperties.toMutableMap()
                 }
 
@@ -3947,6 +4969,60 @@ private constructor(
                  */
                 fun location(location: JsonField<Location>) = apply { this.location = location }
 
+                fun relatedAddress(relatedAddress: Address) =
+                    relatedAddress(JsonField.of(relatedAddress))
+
+                /**
+                 * Sets [Builder.relatedAddress] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.relatedAddress] with a well-typed [Address]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
+                 */
+                fun relatedAddress(relatedAddress: JsonField<Address>) = apply {
+                    this.relatedAddress = relatedAddress
+                }
+
+                fun relatedCategory(relatedCategory: JsonValue) = apply {
+                    this.relatedCategory = relatedCategory
+                }
+
+                fun relatedCustomer(relatedCustomer: JsonValue) = apply {
+                    this.relatedCustomer = relatedCustomer
+                }
+
+                fun relatedMoney(relatedMoney: Money) = relatedMoney(JsonField.of(relatedMoney))
+
+                /**
+                 * Sets [Builder.relatedMoney] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.relatedMoney] with a well-typed [Money] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun relatedMoney(relatedMoney: JsonField<Money>) = apply {
+                    this.relatedMoney = relatedMoney
+                }
+
+                fun relatedOrder(relatedOrder: JsonValue) = apply {
+                    this.relatedOrder = relatedOrder
+                }
+
+                fun relatedPet(relatedPet: Pet) = relatedPet(JsonField.of(relatedPet))
+
+                /**
+                 * Sets [Builder.relatedPet] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.relatedPet] with a well-typed [Pet] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun relatedPet(relatedPet: JsonField<Pet>) = apply { this.relatedPet = relatedPet }
+
+                fun relatedTag(relatedTag: JsonValue) = apply { this.relatedTag = relatedTag }
+
+                fun relatedUser(relatedUser: JsonValue) = apply { this.relatedUser = relatedUser }
+
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
                     putAllAdditionalProperties(additionalProperties)
@@ -3987,6 +5063,14 @@ private constructor(
                         address,
                         contact,
                         location,
+                        relatedAddress,
+                        relatedCategory,
+                        relatedCustomer,
+                        relatedMoney,
+                        relatedOrder,
+                        relatedPet,
+                        relatedTag,
+                        relatedUser,
                         additionalProperties.toMutableMap(),
                     )
             }
@@ -4012,6 +5096,9 @@ private constructor(
                 address()?.validate()
                 contact()?.validate()
                 location()?.validate()
+                relatedAddress()?.validate()
+                relatedMoney()?.validate()
+                relatedPet()?.validate()
                 validated = true
             }
 
@@ -4033,7 +5120,10 @@ private constructor(
                 (if (name.asKnown() == null) 0 else 1) +
                     (address.asKnown()?.validity() ?: 0) +
                     (contact.asKnown()?.validity() ?: 0) +
-                    (location.asKnown()?.validity() ?: 0)
+                    (location.asKnown()?.validity() ?: 0) +
+                    (relatedAddress.asKnown()?.validity() ?: 0) +
+                    (relatedMoney.asKnown()?.validity() ?: 0) +
+                    (relatedPet.asKnown()?.validity() ?: 0)
 
             class Contact
             @JsonCreator(mode = JsonCreator.Mode.DISABLED)
@@ -5265,17 +6355,39 @@ private constructor(
                     address == other.address &&
                     contact == other.contact &&
                     location == other.location &&
+                    relatedAddress == other.relatedAddress &&
+                    relatedCategory == other.relatedCategory &&
+                    relatedCustomer == other.relatedCustomer &&
+                    relatedMoney == other.relatedMoney &&
+                    relatedOrder == other.relatedOrder &&
+                    relatedPet == other.relatedPet &&
+                    relatedTag == other.relatedTag &&
+                    relatedUser == other.relatedUser &&
                     additionalProperties == other.additionalProperties
             }
 
             private val hashCode: Int by lazy {
-                Objects.hash(name, address, contact, location, additionalProperties)
+                Objects.hash(
+                    name,
+                    address,
+                    contact,
+                    location,
+                    relatedAddress,
+                    relatedCategory,
+                    relatedCustomer,
+                    relatedMoney,
+                    relatedOrder,
+                    relatedPet,
+                    relatedTag,
+                    relatedUser,
+                    additionalProperties,
+                )
             }
 
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "TransferredTo{name=$name, address=$address, contact=$contact, location=$location, additionalProperties=$additionalProperties}"
+                "TransferredTo{name=$name, address=$address, contact=$contact, location=$location, relatedAddress=$relatedAddress, relatedCategory=$relatedCategory, relatedCustomer=$relatedCustomer, relatedMoney=$relatedMoney, relatedOrder=$relatedOrder, relatedPet=$relatedPet, relatedTag=$relatedTag, relatedUser=$relatedUser, additionalProperties=$additionalProperties}"
         }
 
         override fun equals(other: Any?): Boolean {
@@ -5290,6 +6402,14 @@ private constructor(
                 acquisitionChannel == other.acquisitionChannel &&
                 category == other.category &&
                 microchipId == other.microchipId &&
+                relatedAddress == other.relatedAddress &&
+                relatedCategory == other.relatedCategory &&
+                relatedCustomer == other.relatedCustomer &&
+                relatedMoney == other.relatedMoney &&
+                relatedOrder == other.relatedOrder &&
+                relatedPet == other.relatedPet &&
+                relatedShelter == other.relatedShelter &&
+                relatedUser == other.relatedUser &&
                 status == other.status &&
                 tags == other.tags &&
                 family == other.family &&
@@ -5305,6 +6425,14 @@ private constructor(
                 acquisitionChannel,
                 category,
                 microchipId,
+                relatedAddress,
+                relatedCategory,
+                relatedCustomer,
+                relatedMoney,
+                relatedOrder,
+                relatedPet,
+                relatedShelter,
+                relatedUser,
                 status,
                 tags,
                 family,
@@ -5316,6 +6444,6 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Transferred{name=$name, photoUrls=$photoUrls, id=$id, acquisitionChannel=$acquisitionChannel, category=$category, microchipId=$microchipId, status=$status, tags=$tags, family=$family, transferredTo=$transferredTo, additionalProperties=$additionalProperties}"
+            "Transferred{name=$name, photoUrls=$photoUrls, id=$id, acquisitionChannel=$acquisitionChannel, category=$category, microchipId=$microchipId, relatedAddress=$relatedAddress, relatedCategory=$relatedCategory, relatedCustomer=$relatedCustomer, relatedMoney=$relatedMoney, relatedOrder=$relatedOrder, relatedPet=$relatedPet, relatedShelter=$relatedShelter, relatedUser=$relatedUser, status=$status, tags=$tags, family=$family, transferredTo=$transferredTo, additionalProperties=$additionalProperties}"
     }
 }

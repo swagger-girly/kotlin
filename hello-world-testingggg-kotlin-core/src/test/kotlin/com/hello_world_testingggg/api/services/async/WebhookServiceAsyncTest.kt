@@ -24,7 +24,7 @@ internal class WebhookServiceAsyncTest {
         val webhookServiceAsync = client.webhooks()
 
         val payload =
-            "{\"pet\":{\"name\":\"doggie\",\"photoUrls\":[\"string\"],\"id\":10,\"acquisitionChannel\":\"breeder\",\"category\":{\"id\":1,\"name\":\"Dogs\",\"subcategories\":[]},\"microchipId\":\"string\",\"status\":\"available\",\"tags\":[{\"id\":0,\"name\":\"name\"}]},\"type\":\"pet.created\"}"
+            "{\"pet\":{\"name\":\"doggie\",\"photoUrls\":[\"string\"],\"id\":10,\"acquisitionChannel\":\"breeder\",\"category\":{},\"microchipId\":\"string\",\"relatedAddress\":{\"city\":\"Palo Alto\",\"geo\":{\"latitude\":37.4443,\"longitude\":-122.1598},\"relatedCategory\":{},\"relatedCustomer\":{},\"relatedMoney\":{\"amount\":2500,\"currency\":\"USD\",\"relatedCategory\":{},\"relatedCustomer\":{},\"relatedOrder\":{},\"relatedShelter\":{},\"relatedTag\":{},\"relatedUser\":{}},\"relatedOrder\":{},\"relatedShelter\":{},\"relatedTag\":{},\"relatedUser\":{},\"state\":\"CA\",\"street\":\"437 Lytton\",\"zip\":\"94301\"},\"relatedCategory\":{},\"relatedCustomer\":{},\"relatedMoney\":{\"amount\":2500,\"currency\":\"USD\",\"relatedCategory\":{},\"relatedCustomer\":{},\"relatedOrder\":{},\"relatedShelter\":{},\"relatedTag\":{},\"relatedUser\":{}},\"relatedOrder\":{},\"relatedShelter\":{},\"relatedUser\":{},\"status\":\"available\",\"tags\":[{}]},\"type\":\"pet.created\"}"
         val webhookSecret = "whsec_c2VjcmV0Cg=="
         val messageId = "1"
         val timestampSeconds = Instant.now().epochSecond
