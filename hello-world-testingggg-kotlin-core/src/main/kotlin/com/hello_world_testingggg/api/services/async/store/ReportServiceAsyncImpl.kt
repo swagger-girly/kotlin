@@ -18,13 +18,13 @@ import com.hello_world_testingggg.api.core.http.HttpResponseFor
 import com.hello_world_testingggg.api.core.http.json
 import com.hello_world_testingggg.api.core.http.parseable
 import com.hello_world_testingggg.api.core.prepareAsync
-import com.hello_world_testingggg.api.models.store.reports.Report
-import com.hello_world_testingggg.api.models.store.reports.ReportEmbedParams
-import com.hello_world_testingggg.api.models.store.reports.ReportList
-import com.hello_world_testingggg.api.models.store.reports.ReportListPageAsync
-import com.hello_world_testingggg.api.models.store.reports.ReportListParams
-import com.hello_world_testingggg.api.models.store.reports.ReportPauseParams
-import com.hello_world_testingggg.api.models.store.reports.ReportRetrieveParams
+import com.hello_world_testingggg.api.models.Report
+import com.hello_world_testingggg.api.models.ReportList
+import com.hello_world_testingggg.api.models.StoreReportEmbedParams
+import com.hello_world_testingggg.api.models.StoreReportListPageAsync
+import com.hello_world_testingggg.api.models.StoreReportListParams
+import com.hello_world_testingggg.api.models.StoreReportPauseParams
+import com.hello_world_testingggg.api.models.StoreReportRetrieveParams
 import com.hello_world_testingggg.api.services.async.store.reports.InventoryServiceAsync
 import com.hello_world_testingggg.api.services.async.store.reports.InventoryServiceAsyncImpl
 
@@ -49,24 +49,27 @@ class ReportServiceAsyncImpl internal constructor(private val clientOptions: Cli
     override fun inventory(): InventoryServiceAsync = inventory
 
     override suspend fun retrieve(
-        params: ReportRetrieveParams,
+        params: StoreReportRetrieveParams,
         requestOptions: RequestOptions,
     ): Report =
         // get /store/reports/{reportId}
         withRawResponse().retrieve(params, requestOptions).parse()
 
     override suspend fun list(
-        params: ReportListParams,
+        params: StoreReportListParams,
         requestOptions: RequestOptions,
-    ): ReportListPageAsync =
+    ): StoreReportListPageAsync =
         // get /store/reports
         withRawResponse().list(params, requestOptions).parse()
 
-    override suspend fun embed(params: ReportEmbedParams, requestOptions: RequestOptions): String =
+    override suspend fun embed(
+        params: StoreReportEmbedParams,
+        requestOptions: RequestOptions,
+    ): String =
         // get /store/reports/{reportId}/embed
         withRawResponse().embed(params, requestOptions).parse()
 
-    override suspend fun pause(params: ReportPauseParams, requestOptions: RequestOptions) {
+    override suspend fun pause(params: StoreReportPauseParams, requestOptions: RequestOptions) {
         // post /store/reports/{reportId}/pause
         withRawResponse().pause(params, requestOptions)
     }
@@ -94,7 +97,7 @@ class ReportServiceAsyncImpl internal constructor(private val clientOptions: Cli
         private val retrieveHandler: Handler<Report> = jsonHandler<Report>(clientOptions.jsonMapper)
 
         override suspend fun retrieve(
-            params: ReportRetrieveParams,
+            params: StoreReportRetrieveParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<Report> {
             // We check here instead of in the params builder because this can be specified
@@ -124,9 +127,9 @@ class ReportServiceAsyncImpl internal constructor(private val clientOptions: Cli
             jsonHandler<ReportList>(clientOptions.jsonMapper)
 
         override suspend fun list(
-            params: ReportListParams,
+            params: StoreReportListParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<ReportListPageAsync> {
+        ): HttpResponseFor<StoreReportListPageAsync> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -145,7 +148,7 @@ class ReportServiceAsyncImpl internal constructor(private val clientOptions: Cli
                         }
                     }
                     .let {
-                        ReportListPageAsync.builder()
+                        StoreReportListPageAsync.builder()
                             .service(ReportServiceAsyncImpl(clientOptions))
                             .params(params)
                             .response(it)
@@ -157,7 +160,7 @@ class ReportServiceAsyncImpl internal constructor(private val clientOptions: Cli
         private val embedHandler: Handler<String> = stringHandler()
 
         override suspend fun embed(
-            params: ReportEmbedParams,
+            params: StoreReportEmbedParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<String> {
             // We check here instead of in the params builder because this can be specified
@@ -181,7 +184,7 @@ class ReportServiceAsyncImpl internal constructor(private val clientOptions: Cli
         private val pauseHandler: Handler<Void?> = emptyHandler()
 
         override suspend fun pause(
-            params: ReportPauseParams,
+            params: StoreReportPauseParams,
             requestOptions: RequestOptions,
         ): HttpResponse {
             // We check here instead of in the params builder because this can be specified

@@ -24,8 +24,8 @@ import com.hello_world_testingggg.api.errors.UnexpectedStatusCodeException
 import com.hello_world_testingggg.api.errors.UnprocessableEntityException
 import com.hello_world_testingggg.api.models.Address
 import com.hello_world_testingggg.api.models.Money
-import com.hello_world_testingggg.api.models.pet.Pet
-import com.hello_world_testingggg.api.models.pet.PetStatus
+import com.hello_world_testingggg.api.models.Pet
+import com.hello_world_testingggg.api.models.PetStatus
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.entry
 import org.junit.jupiter.api.BeforeEach
@@ -87,7 +87,7 @@ internal class ErrorHandlingTest {
                             Address.builder()
                                 .city("Palo Alto")
                                 .geo(
-                                    Address.Geo.builder()
+                                    Address.GeoPoint.builder()
                                         .latitude(37.4443)
                                         .longitude(-122.1598)
                                         .build()
@@ -167,7 +167,7 @@ internal class ErrorHandlingTest {
                             Address.builder()
                                 .city("Palo Alto")
                                 .geo(
-                                    Address.Geo.builder()
+                                    Address.GeoPoint.builder()
                                         .latitude(37.4443)
                                         .longitude(-122.1598)
                                         .build()
@@ -247,7 +247,7 @@ internal class ErrorHandlingTest {
                             Address.builder()
                                 .city("Palo Alto")
                                 .geo(
-                                    Address.Geo.builder()
+                                    Address.GeoPoint.builder()
                                         .latitude(37.4443)
                                         .longitude(-122.1598)
                                         .build()
@@ -327,7 +327,7 @@ internal class ErrorHandlingTest {
                             Address.builder()
                                 .city("Palo Alto")
                                 .geo(
-                                    Address.Geo.builder()
+                                    Address.GeoPoint.builder()
                                         .latitude(37.4443)
                                         .longitude(-122.1598)
                                         .build()
@@ -407,7 +407,7 @@ internal class ErrorHandlingTest {
                             Address.builder()
                                 .city("Palo Alto")
                                 .geo(
-                                    Address.Geo.builder()
+                                    Address.GeoPoint.builder()
                                         .latitude(37.4443)
                                         .longitude(-122.1598)
                                         .build()
@@ -487,7 +487,7 @@ internal class ErrorHandlingTest {
                             Address.builder()
                                 .city("Palo Alto")
                                 .geo(
-                                    Address.Geo.builder()
+                                    Address.GeoPoint.builder()
                                         .latitude(37.4443)
                                         .longitude(-122.1598)
                                         .build()
@@ -567,7 +567,7 @@ internal class ErrorHandlingTest {
                             Address.builder()
                                 .city("Palo Alto")
                                 .geo(
-                                    Address.Geo.builder()
+                                    Address.GeoPoint.builder()
                                         .latitude(37.4443)
                                         .longitude(-122.1598)
                                         .build()
@@ -647,7 +647,7 @@ internal class ErrorHandlingTest {
                             Address.builder()
                                 .city("Palo Alto")
                                 .geo(
-                                    Address.Geo.builder()
+                                    Address.GeoPoint.builder()
                                         .latitude(37.4443)
                                         .longitude(-122.1598)
                                         .build()
@@ -727,7 +727,7 @@ internal class ErrorHandlingTest {
                             Address.builder()
                                 .city("Palo Alto")
                                 .geo(
-                                    Address.Geo.builder()
+                                    Address.GeoPoint.builder()
                                         .latitude(37.4443)
                                         .longitude(-122.1598)
                                         .build()
@@ -807,7 +807,7 @@ internal class ErrorHandlingTest {
                             Address.builder()
                                 .city("Palo Alto")
                                 .geo(
-                                    Address.Geo.builder()
+                                    Address.GeoPoint.builder()
                                         .latitude(37.4443)
                                         .longitude(-122.1598)
                                         .build()
@@ -887,7 +887,7 @@ internal class ErrorHandlingTest {
                             Address.builder()
                                 .city("Palo Alto")
                                 .geo(
-                                    Address.Geo.builder()
+                                    Address.GeoPoint.builder()
                                         .latitude(37.4443)
                                         .longitude(-122.1598)
                                         .build()
@@ -967,7 +967,7 @@ internal class ErrorHandlingTest {
                             Address.builder()
                                 .city("Palo Alto")
                                 .geo(
-                                    Address.Geo.builder()
+                                    Address.GeoPoint.builder()
                                         .latitude(37.4443)
                                         .longitude(-122.1598)
                                         .build()
@@ -1047,7 +1047,7 @@ internal class ErrorHandlingTest {
                             Address.builder()
                                 .city("Palo Alto")
                                 .geo(
-                                    Address.Geo.builder()
+                                    Address.GeoPoint.builder()
                                         .latitude(37.4443)
                                         .longitude(-122.1598)
                                         .build()
@@ -1127,7 +1127,7 @@ internal class ErrorHandlingTest {
                             Address.builder()
                                 .city("Palo Alto")
                                 .geo(
-                                    Address.Geo.builder()
+                                    Address.GeoPoint.builder()
                                         .latitude(37.4443)
                                         .longitude(-122.1598)
                                         .build()
@@ -1207,7 +1207,7 @@ internal class ErrorHandlingTest {
                             Address.builder()
                                 .city("Palo Alto")
                                 .geo(
-                                    Address.Geo.builder()
+                                    Address.GeoPoint.builder()
                                         .latitude(37.4443)
                                         .longitude(-122.1598)
                                         .build()
@@ -1287,7 +1287,7 @@ internal class ErrorHandlingTest {
                             Address.builder()
                                 .city("Palo Alto")
                                 .geo(
-                                    Address.Geo.builder()
+                                    Address.GeoPoint.builder()
                                         .latitude(37.4443)
                                         .longitude(-122.1598)
                                         .build()
@@ -1365,7 +1365,7 @@ internal class ErrorHandlingTest {
                             Address.builder()
                                 .city("Palo Alto")
                                 .geo(
-                                    Address.Geo.builder()
+                                    Address.GeoPoint.builder()
                                         .latitude(37.4443)
                                         .longitude(-122.1598)
                                         .build()

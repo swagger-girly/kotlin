@@ -4,7 +4,7 @@ package com.hello_world_testingggg.api.services.blocking
 
 import com.hello_world_testingggg.api.client.okhttp.HelloWorldTestinggggOkHttpClient
 import com.hello_world_testingggg.api.core.JsonValue
-import com.hello_world_testingggg.api.models.ai.AiAiQueryParams
+import com.hello_world_testingggg.api.models.AiAiQueryParams
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 

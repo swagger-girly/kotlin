@@ -7,16 +7,16 @@ import com.hello_world_testingggg.api.core.ClientOptions
 import com.hello_world_testingggg.api.core.RequestOptions
 import com.hello_world_testingggg.api.core.http.HttpResponse
 import com.hello_world_testingggg.api.core.http.HttpResponseFor
-import com.hello_world_testingggg.api.models.files.Archive
-import com.hello_world_testingggg.api.models.files.File
-import com.hello_world_testingggg.api.models.files.FileCreateArchiveParams
-import com.hello_world_testingggg.api.models.files.FileDeleteParams
-import com.hello_world_testingggg.api.models.files.FileDownloadParams
-import com.hello_world_testingggg.api.models.files.FileListParams
-import com.hello_world_testingggg.api.models.files.FileUpdateParams
-import com.hello_world_testingggg.api.models.files.FileUploadDirectParams
-import com.hello_world_testingggg.api.models.files.FileUploadParams
-import com.hello_world_testingggg.api.models.files.Fileslist
+import com.hello_world_testingggg.api.models.Archive
+import com.hello_world_testingggg.api.models.File
+import com.hello_world_testingggg.api.models.FileCreateArchiveParams
+import com.hello_world_testingggg.api.models.FileDeleteParams
+import com.hello_world_testingggg.api.models.FileDownloadParams
+import com.hello_world_testingggg.api.models.FileListParams
+import com.hello_world_testingggg.api.models.FileUpdateParams
+import com.hello_world_testingggg.api.models.FileUploadDirectParams
+import com.hello_world_testingggg.api.models.FileUploadParams
+import com.hello_world_testingggg.api.models.Fileslist
 
 /** File storage operations */
 interface FileServiceAsync {

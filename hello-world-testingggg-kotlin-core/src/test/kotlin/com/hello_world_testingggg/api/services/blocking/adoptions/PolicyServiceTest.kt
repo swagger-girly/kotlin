@@ -5,13 +5,13 @@ package com.hello_world_testingggg.api.services.blocking.adoptions
 import com.hello_world_testingggg.api.client.okhttp.HelloWorldTestinggggOkHttpClient
 import com.hello_world_testingggg.api.core.JsonValue
 import com.hello_world_testingggg.api.models.Address
+import com.hello_world_testingggg.api.models.AdoptionPolicyCreateParams
+import com.hello_world_testingggg.api.models.AdoptionPolicyUpdateParams
+import com.hello_world_testingggg.api.models.AdoptionRule
 import com.hello_world_testingggg.api.models.Money
-import com.hello_world_testingggg.api.models.adoptions.policies.AdoptionRule
-import com.hello_world_testingggg.api.models.adoptions.policies.PolicyCreateParams
-import com.hello_world_testingggg.api.models.adoptions.policies.PolicyUpdateParams
-import com.hello_world_testingggg.api.models.adoptions.policies.RuleAttribute
-import com.hello_world_testingggg.api.models.pet.Pet
-import com.hello_world_testingggg.api.models.pet.PetStatus
+import com.hello_world_testingggg.api.models.Pet
+import com.hello_world_testingggg.api.models.PetStatus
+import com.hello_world_testingggg.api.models.RuleAttribute
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
@@ -30,7 +30,7 @@ internal class PolicyServiceTest {
 
         val policy =
             policyService.create(
-                PolicyCreateParams.builder()
+                AdoptionPolicyCreateParams.builder()
                     .name("name")
                     .addRule(
                         AdoptionRule.builder()
@@ -40,8 +40,8 @@ internal class PolicyServiceTest {
                             .build()
                     )
                     .escalation(
-                        PolicyCreateParams.Escalation.builder()
-                            .operator(PolicyCreateParams.Escalation.Operator.ALL)
+                        AdoptionPolicyCreateParams.RuleGroup.builder()
+                            .operator(AdoptionPolicyCreateParams.RuleGroup.Operator.ALL)
                             .groups(listOf())
                             .addRule(
                                 AdoptionRule.builder()
@@ -60,7 +60,7 @@ internal class PolicyServiceTest {
                                 Address.builder()
                                     .city("Palo Alto")
                                     .geo(
-                                        Address.Geo.builder()
+                                        Address.GeoPoint.builder()
                                             .latitude(37.4443)
                                             .longitude(-122.1598)
                                             .build()
@@ -120,7 +120,7 @@ internal class PolicyServiceTest {
                     )
                     .notificationTarget("string")
                     .regionalOverrides(
-                        PolicyCreateParams.RegionalOverrides.builder()
+                        AdoptionPolicyCreateParams.RegionalOverrides.builder()
                             .putAdditionalProperty("foo", JsonValue.from("string"))
                             .build()
                     )
@@ -159,16 +159,17 @@ internal class PolicyServiceTest {
 
         val policy =
             policyService.update(
-                PolicyUpdateParams.builder()
+                AdoptionPolicyUpdateParams.builder()
                     .policyId("policyId")
                     .body(
-                        PolicyUpdateParams.Body.AdoptionPolicyDetailsUpdate.builder()
+                        AdoptionPolicyUpdateParams.Body.AdoptionPolicyDetailsUpdate.builder()
                             .escalation(
-                                PolicyUpdateParams.Body.AdoptionPolicyDetailsUpdate.Escalation
+                                AdoptionPolicyUpdateParams.Body.AdoptionPolicyDetailsUpdate
+                                    .RuleGroup
                                     .builder()
                                     .operator(
-                                        PolicyUpdateParams.Body.AdoptionPolicyDetailsUpdate
-                                            .Escalation
+                                        AdoptionPolicyUpdateParams.Body.AdoptionPolicyDetailsUpdate
+                                            .RuleGroup
                                             .Operator
                                             .ALL
                                     )

@@ -17,7 +17,7 @@ import com.hello_world_testingggg.api.core.http.parseable
 import com.hello_world_testingggg.api.core.prepare
 import com.hello_world_testingggg.api.models.ClientHealthParams
 import com.hello_world_testingggg.api.models.ClientRetrieveRateLimitsParams
-import com.hello_world_testingggg.api.models.ClientRetrieveRateLimitsResponse
+import com.hello_world_testingggg.api.models.RetrieveRateLimitsResponse
 import com.hello_world_testingggg.api.models.SystemHealth
 import com.hello_world_testingggg.api.services.blocking.AdoptionService
 import com.hello_world_testingggg.api.services.blocking.AdoptionServiceImpl
@@ -143,7 +143,7 @@ class HelloWorldTestinggggClientImpl(private val clientOptions: ClientOptions) :
     override fun retrieveRateLimits(
         params: ClientRetrieveRateLimitsParams,
         requestOptions: RequestOptions,
-    ): ClientRetrieveRateLimitsResponse =
+    ): RetrieveRateLimitsResponse =
         // get /rate_limits
         withRawResponse().retrieveRateLimits(params, requestOptions).parse()
 
@@ -268,13 +268,13 @@ class HelloWorldTestinggggClientImpl(private val clientOptions: ClientOptions) :
             }
         }
 
-        private val retrieveRateLimitsHandler: Handler<ClientRetrieveRateLimitsResponse> =
-            jsonHandler<ClientRetrieveRateLimitsResponse>(clientOptions.jsonMapper)
+        private val retrieveRateLimitsHandler: Handler<RetrieveRateLimitsResponse> =
+            jsonHandler<RetrieveRateLimitsResponse>(clientOptions.jsonMapper)
 
         override fun retrieveRateLimits(
             params: ClientRetrieveRateLimitsParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<ClientRetrieveRateLimitsResponse> {
+        ): HttpResponseFor<RetrieveRateLimitsResponse> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)

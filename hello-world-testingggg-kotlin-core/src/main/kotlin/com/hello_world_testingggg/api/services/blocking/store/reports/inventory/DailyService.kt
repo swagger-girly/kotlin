@@ -6,8 +6,8 @@ import com.google.errorprone.annotations.MustBeClosed
 import com.hello_world_testingggg.api.core.ClientOptions
 import com.hello_world_testingggg.api.core.RequestOptions
 import com.hello_world_testingggg.api.core.http.HttpResponseFor
-import com.hello_world_testingggg.api.models.store.reports.DailyInventory
-import com.hello_world_testingggg.api.models.store.reports.inventory.daily.DailyRetrieveParams
+import com.hello_world_testingggg.api.models.DailyInventory
+import com.hello_world_testingggg.api.models.StoreReportInventoryDailyRetrieveParams
 import java.time.LocalDate
 
 /** Access to Petstore orders */
@@ -28,13 +28,13 @@ interface DailyService {
     /** Returns daily inventory metrics for a generated report. */
     fun retrieve(
         date: LocalDate,
-        params: DailyRetrieveParams,
+        params: StoreReportInventoryDailyRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): DailyInventory = retrieve(params.toBuilder().date(date).build(), requestOptions)
 
     /** @see retrieve */
     fun retrieve(
-        params: DailyRetrieveParams,
+        params: StoreReportInventoryDailyRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): DailyInventory
 
@@ -55,7 +55,7 @@ interface DailyService {
         @MustBeClosed
         fun retrieve(
             date: LocalDate,
-            params: DailyRetrieveParams,
+            params: StoreReportInventoryDailyRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<DailyInventory> =
             retrieve(params.toBuilder().date(date).build(), requestOptions)
@@ -63,7 +63,7 @@ interface DailyService {
         /** @see retrieve */
         @MustBeClosed
         fun retrieve(
-            params: DailyRetrieveParams,
+            params: StoreReportInventoryDailyRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<DailyInventory>
     }

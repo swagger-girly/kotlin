@@ -5,8 +5,6 @@ package com.hello_world_testingggg.api.models
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import com.hello_world_testingggg.api.core.JsonValue
 import com.hello_world_testingggg.api.core.jsonMapper
-import com.hello_world_testingggg.api.models.pet.Pet
-import com.hello_world_testingggg.api.models.pet.PetStatus
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -17,7 +15,7 @@ internal class AddressTest {
         val address =
             Address.builder()
                 .city("Palo Alto")
-                .geo(Address.Geo.builder().latitude(37.4443).longitude(-122.1598).build())
+                .geo(Address.GeoPoint.builder().latitude(37.4443).longitude(-122.1598).build())
                 .relatedCategory(JsonValue.from(mapOf<String, Any>()))
                 .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
                 .relatedMoney(
@@ -77,7 +75,7 @@ internal class AddressTest {
 
         assertThat(address.city()).isEqualTo("Palo Alto")
         assertThat(address.geo())
-            .isEqualTo(Address.Geo.builder().latitude(37.4443).longitude(-122.1598).build())
+            .isEqualTo(Address.GeoPoint.builder().latitude(37.4443).longitude(-122.1598).build())
         assertThat(address._relatedCategory()).isEqualTo(JsonValue.from(mapOf<String, Any>()))
         assertThat(address._relatedCustomer()).isEqualTo(JsonValue.from(mapOf<String, Any>()))
         assertThat(address.relatedMoney())
@@ -143,7 +141,7 @@ internal class AddressTest {
         val address =
             Address.builder()
                 .city("Palo Alto")
-                .geo(Address.Geo.builder().latitude(37.4443).longitude(-122.1598).build())
+                .geo(Address.GeoPoint.builder().latitude(37.4443).longitude(-122.1598).build())
                 .relatedCategory(JsonValue.from(mapOf<String, Any>()))
                 .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
                 .relatedMoney(

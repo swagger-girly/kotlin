@@ -6,15 +6,15 @@ import com.hello_world_testingggg.api.client.okhttp.HelloWorldTestinggggOkHttpCl
 import com.hello_world_testingggg.api.core.JsonValue
 import com.hello_world_testingggg.api.models.Address
 import com.hello_world_testingggg.api.models.Money
-import com.hello_world_testingggg.api.models.pet.Pet
-import com.hello_world_testingggg.api.models.pet.PetFindByStatusParams
-import com.hello_world_testingggg.api.models.pet.PetFindByTagsParams
-import com.hello_world_testingggg.api.models.pet.PetListUnpaginatedParams
-import com.hello_world_testingggg.api.models.pet.PetSearchParams
-import com.hello_world_testingggg.api.models.pet.PetStatus
-import com.hello_world_testingggg.api.models.pet.PetUpdateWithFormParams
-import com.hello_world_testingggg.api.models.pet.PetUploadImageParams
-import com.hello_world_testingggg.api.models.pet.PetWatchStatusParams
+import com.hello_world_testingggg.api.models.Pet
+import com.hello_world_testingggg.api.models.PetFindByStatusParams
+import com.hello_world_testingggg.api.models.PetFindByTagsParams
+import com.hello_world_testingggg.api.models.PetListUnpaginatedParams
+import com.hello_world_testingggg.api.models.PetSearchParams
+import com.hello_world_testingggg.api.models.PetStatus
+import com.hello_world_testingggg.api.models.PetUpdateWithFormParams
+import com.hello_world_testingggg.api.models.PetUploadImageParams
+import com.hello_world_testingggg.api.models.PetWatchStatusParams
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
@@ -44,7 +44,10 @@ internal class PetServiceTest {
                         Address.builder()
                             .city("Palo Alto")
                             .geo(
-                                Address.Geo.builder().latitude(37.4443).longitude(-122.1598).build()
+                                Address.GeoPoint.builder()
+                                    .latitude(37.4443)
+                                    .longitude(-122.1598)
+                                    .build()
                             )
                             .relatedCategory(JsonValue.from(mapOf<String, Any>()))
                             .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
@@ -134,7 +137,10 @@ internal class PetServiceTest {
                         Address.builder()
                             .city("Palo Alto")
                             .geo(
-                                Address.Geo.builder().latitude(37.4443).longitude(-122.1598).build()
+                                Address.GeoPoint.builder()
+                                    .latitude(37.4443)
+                                    .longitude(-122.1598)
+                                    .build()
                             )
                             .relatedCategory(JsonValue.from(mapOf<String, Any>()))
                             .relatedCustomer(JsonValue.from(mapOf<String, Any>()))

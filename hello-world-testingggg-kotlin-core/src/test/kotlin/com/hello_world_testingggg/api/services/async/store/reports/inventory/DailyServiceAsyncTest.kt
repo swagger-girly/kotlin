@@ -3,7 +3,7 @@
 package com.hello_world_testingggg.api.services.async.store.reports.inventory
 
 import com.hello_world_testingggg.api.client.okhttp.HelloWorldTestinggggOkHttpClientAsync
-import com.hello_world_testingggg.api.models.store.reports.inventory.daily.DailyRetrieveParams
+import com.hello_world_testingggg.api.models.StoreReportInventoryDailyRetrieveParams
 import java.time.LocalDate
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -23,7 +23,7 @@ internal class DailyServiceAsyncTest {
 
         val dailyInventory =
             dailyServiceAsync.retrieve(
-                DailyRetrieveParams.builder()
+                StoreReportInventoryDailyRetrieveParams.builder()
                     .reportId("reportId")
                     .date(LocalDate.parse("2019-12-27"))
                     .build()

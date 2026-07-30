@@ -6,12 +6,12 @@ import com.hello_world_testingggg.api.client.okhttp.HelloWorldTestinggggOkHttpCl
 import com.hello_world_testingggg.api.core.JsonValue
 import com.hello_world_testingggg.api.models.Address
 import com.hello_world_testingggg.api.models.Money
-import com.hello_world_testingggg.api.models.pet.Pet
-import com.hello_world_testingggg.api.models.pet.PetStatus
-import com.hello_world_testingggg.api.models.placements.PlacementCreateParams
-import com.hello_world_testingggg.api.models.placements.PlacementEvent
-import com.hello_world_testingggg.api.models.placements.PlacementRecordEventParams
-import com.hello_world_testingggg.api.models.placements.TransferLeg
+import com.hello_world_testingggg.api.models.Pet
+import com.hello_world_testingggg.api.models.PetStatus
+import com.hello_world_testingggg.api.models.PlacementCreateParams
+import com.hello_world_testingggg.api.models.PlacementEvent
+import com.hello_world_testingggg.api.models.PlacementRecordEventParams
+import com.hello_world_testingggg.api.models.TransferLeg
 import java.time.OffsetDateTime
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -42,7 +42,7 @@ internal class PlacementServiceTest {
                                         Address.builder()
                                             .city("Palo Alto")
                                             .geo(
-                                                Address.Geo.builder()
+                                                Address.GeoPoint.builder()
                                                     .latitude(37.4443)
                                                     .longitude(-122.1598)
                                                     .build()
@@ -176,14 +176,14 @@ internal class PlacementServiceTest {
                             .build()
                     )
                     .logistics(
-                        PlacementCreateParams.Logistics.builder()
+                        PlacementCreateParams.PlacementLogistics.builder()
                             .delivery(
                                 TransferLeg.builder()
                                     .location(
                                         Address.builder()
                                             .city("Palo Alto")
                                             .geo(
-                                                Address.Geo.builder()
+                                                Address.GeoPoint.builder()
                                                     .latitude(37.4443)
                                                     .longitude(-122.1598)
                                                     .build()
@@ -312,20 +312,21 @@ internal class PlacementServiceTest {
                                     .build()
                             )
                             .handler(
-                                PlacementCreateParams.Logistics.Handler.builder()
+                                PlacementCreateParams.PlacementLogistics.Handler.builder()
                                     .certification(
-                                        PlacementCreateParams.Logistics.Handler.Certification
+                                        PlacementCreateParams.PlacementLogistics.Handler
+                                            .Certification
                                             .builder()
                                             .level(
-                                                PlacementCreateParams.Logistics.Handler
+                                                PlacementCreateParams.PlacementLogistics.Handler
                                                     .Certification
                                                     .Level
                                                     .STANDARD
                                             )
                                             .audit(
-                                                PlacementCreateParams.Logistics.Handler
+                                                PlacementCreateParams.PlacementLogistics.Handler
                                                     .Certification
-                                                    .Audit
+                                                    .AuditStamp
                                                     .builder()
                                                     .recordedAt(
                                                         OffsetDateTime.parse(
@@ -334,9 +335,10 @@ internal class PlacementServiceTest {
                                                     )
                                                     .recordedBy("recordedBy")
                                                     .source(
-                                                        PlacementCreateParams.Logistics.Handler
+                                                        PlacementCreateParams.PlacementLogistics
+                                                            .Handler
                                                             .Certification
-                                                            .Audit
+                                                            .AuditStamp
                                                             .Source
                                                             .MANUAL
                                                     )
@@ -354,7 +356,7 @@ internal class PlacementServiceTest {
                                         Address.builder()
                                             .city("Palo Alto")
                                             .geo(
-                                                Address.Geo.builder()
+                                                Address.GeoPoint.builder()
                                                     .latitude(37.4443)
                                                     .longitude(-122.1598)
                                                     .build()
@@ -461,7 +463,7 @@ internal class PlacementServiceTest {
                                         Address.builder()
                                             .city("Palo Alto")
                                             .geo(
-                                                Address.Geo.builder()
+                                                Address.GeoPoint.builder()
                                                     .latitude(37.4443)
                                                     .longitude(-122.1598)
                                                     .build()

@@ -8,7 +8,7 @@ import com.hello_world_testingggg.api.core.UnwrapWebhookParams
 import com.hello_world_testingggg.api.core.checkRequired
 import com.hello_world_testingggg.api.errors.HelloWorldTestinggggInvalidDataException
 import com.hello_world_testingggg.api.errors.HelloWorldTestinggggWebhookException
-import com.hello_world_testingggg.api.models.notifications.webhooks.ParsePetWebhookEvent
+import com.hello_world_testingggg.api.models.ParsePetWebhookEvent
 import com.standardwebhooks.Webhook
 import com.standardwebhooks.exceptions.WebhookVerificationException
 
