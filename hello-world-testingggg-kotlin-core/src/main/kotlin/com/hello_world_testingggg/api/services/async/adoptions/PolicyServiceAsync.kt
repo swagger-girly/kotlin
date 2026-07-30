@@ -6,12 +6,12 @@ import com.google.errorprone.annotations.MustBeClosed
 import com.hello_world_testingggg.api.core.ClientOptions
 import com.hello_world_testingggg.api.core.RequestOptions
 import com.hello_world_testingggg.api.core.http.HttpResponseFor
-import com.hello_world_testingggg.api.models.adoptions.policies.Policy
-import com.hello_world_testingggg.api.models.adoptions.policies.PolicyCreateParams
-import com.hello_world_testingggg.api.models.adoptions.policies.PolicyListPageAsync
-import com.hello_world_testingggg.api.models.adoptions.policies.PolicyListParams
-import com.hello_world_testingggg.api.models.adoptions.policies.PolicyRetrieveParams
-import com.hello_world_testingggg.api.models.adoptions.policies.PolicyUpdateParams
+import com.hello_world_testingggg.api.models.AdoptionPolicyCreateParams
+import com.hello_world_testingggg.api.models.AdoptionPolicyListPageAsync
+import com.hello_world_testingggg.api.models.AdoptionPolicyListParams
+import com.hello_world_testingggg.api.models.AdoptionPolicyRetrieveParams
+import com.hello_world_testingggg.api.models.AdoptionPolicyUpdateParams
+import com.hello_world_testingggg.api.models.Policy
 
 /** Adoption policies and applications */
 interface PolicyServiceAsync {
@@ -33,49 +33,49 @@ interface PolicyServiceAsync {
      * optional escalation rule group.
      */
     suspend fun create(
-        params: PolicyCreateParams,
+        params: AdoptionPolicyCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Policy
 
     /** Returns a single adoption policy. */
     suspend fun retrieve(
         policyId: String,
-        params: PolicyRetrieveParams = PolicyRetrieveParams.none(),
+        params: AdoptionPolicyRetrieveParams = AdoptionPolicyRetrieveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Policy = retrieve(params.toBuilder().policyId(policyId).build(), requestOptions)
 
     /** @see retrieve */
     suspend fun retrieve(
-        params: PolicyRetrieveParams,
+        params: AdoptionPolicyRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Policy
 
     /** @see retrieve */
     suspend fun retrieve(policyId: String, requestOptions: RequestOptions): Policy =
-        retrieve(policyId, PolicyRetrieveParams.none(), requestOptions)
+        retrieve(policyId, AdoptionPolicyRetrieveParams.none(), requestOptions)
 
     /** Updates either the policy details or its lifecycle state. */
     suspend fun update(
         policyId: String,
-        params: PolicyUpdateParams,
+        params: AdoptionPolicyUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Policy = update(params.toBuilder().policyId(policyId).build(), requestOptions)
 
     /** @see update */
     suspend fun update(
-        params: PolicyUpdateParams,
+        params: AdoptionPolicyUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Policy
 
     /** Returns a cursor-paginated list of adoption policies. */
     suspend fun list(
-        params: PolicyListParams = PolicyListParams.none(),
+        params: AdoptionPolicyListParams = AdoptionPolicyListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): PolicyListPageAsync
+    ): AdoptionPolicyListPageAsync
 
     /** @see list */
-    suspend fun list(requestOptions: RequestOptions): PolicyListPageAsync =
-        list(PolicyListParams.none(), requestOptions)
+    suspend fun list(requestOptions: RequestOptions): AdoptionPolicyListPageAsync =
+        list(AdoptionPolicyListParams.none(), requestOptions)
 
     /**
      * A view of [PolicyServiceAsync] that provides access to raw HTTP responses for each method.
@@ -97,7 +97,7 @@ interface PolicyServiceAsync {
          */
         @MustBeClosed
         suspend fun create(
-            params: PolicyCreateParams,
+            params: AdoptionPolicyCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Policy>
 
@@ -108,7 +108,7 @@ interface PolicyServiceAsync {
         @MustBeClosed
         suspend fun retrieve(
             policyId: String,
-            params: PolicyRetrieveParams = PolicyRetrieveParams.none(),
+            params: AdoptionPolicyRetrieveParams = AdoptionPolicyRetrieveParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Policy> =
             retrieve(params.toBuilder().policyId(policyId).build(), requestOptions)
@@ -116,7 +116,7 @@ interface PolicyServiceAsync {
         /** @see retrieve */
         @MustBeClosed
         suspend fun retrieve(
-            params: PolicyRetrieveParams,
+            params: AdoptionPolicyRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Policy>
 
@@ -125,7 +125,8 @@ interface PolicyServiceAsync {
         suspend fun retrieve(
             policyId: String,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<Policy> = retrieve(policyId, PolicyRetrieveParams.none(), requestOptions)
+        ): HttpResponseFor<Policy> =
+            retrieve(policyId, AdoptionPolicyRetrieveParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `patch /adoptions/policies/{policyId}`, but is otherwise
@@ -134,7 +135,7 @@ interface PolicyServiceAsync {
         @MustBeClosed
         suspend fun update(
             policyId: String,
-            params: PolicyUpdateParams,
+            params: AdoptionPolicyUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Policy> =
             update(params.toBuilder().policyId(policyId).build(), requestOptions)
@@ -142,7 +143,7 @@ interface PolicyServiceAsync {
         /** @see update */
         @MustBeClosed
         suspend fun update(
-            params: PolicyUpdateParams,
+            params: AdoptionPolicyUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Policy>
 
@@ -152,13 +153,15 @@ interface PolicyServiceAsync {
          */
         @MustBeClosed
         suspend fun list(
-            params: PolicyListParams = PolicyListParams.none(),
+            params: AdoptionPolicyListParams = AdoptionPolicyListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<PolicyListPageAsync>
+        ): HttpResponseFor<AdoptionPolicyListPageAsync>
 
         /** @see list */
         @MustBeClosed
-        suspend fun list(requestOptions: RequestOptions): HttpResponseFor<PolicyListPageAsync> =
-            list(PolicyListParams.none(), requestOptions)
+        suspend fun list(
+            requestOptions: RequestOptions
+        ): HttpResponseFor<AdoptionPolicyListPageAsync> =
+            list(AdoptionPolicyListParams.none(), requestOptions)
     }
 }

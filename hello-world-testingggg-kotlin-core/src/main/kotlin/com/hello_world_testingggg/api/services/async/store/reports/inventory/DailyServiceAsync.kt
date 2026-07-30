@@ -6,8 +6,8 @@ import com.google.errorprone.annotations.MustBeClosed
 import com.hello_world_testingggg.api.core.ClientOptions
 import com.hello_world_testingggg.api.core.RequestOptions
 import com.hello_world_testingggg.api.core.http.HttpResponseFor
-import com.hello_world_testingggg.api.models.store.reports.DailyInventory
-import com.hello_world_testingggg.api.models.store.reports.inventory.daily.DailyRetrieveParams
+import com.hello_world_testingggg.api.models.DailyInventory
+import com.hello_world_testingggg.api.models.StoreReportInventoryDailyRetrieveParams
 import java.time.LocalDate
 
 /** Access to Petstore orders */
@@ -28,13 +28,13 @@ interface DailyServiceAsync {
     /** Returns daily inventory metrics for a generated report. */
     suspend fun retrieve(
         date: LocalDate,
-        params: DailyRetrieveParams,
+        params: StoreReportInventoryDailyRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): DailyInventory = retrieve(params.toBuilder().date(date).build(), requestOptions)
 
     /** @see retrieve */
     suspend fun retrieve(
-        params: DailyRetrieveParams,
+        params: StoreReportInventoryDailyRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): DailyInventory
 
@@ -57,7 +57,7 @@ interface DailyServiceAsync {
         @MustBeClosed
         suspend fun retrieve(
             date: LocalDate,
-            params: DailyRetrieveParams,
+            params: StoreReportInventoryDailyRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<DailyInventory> =
             retrieve(params.toBuilder().date(date).build(), requestOptions)
@@ -65,7 +65,7 @@ interface DailyServiceAsync {
         /** @see retrieve */
         @MustBeClosed
         suspend fun retrieve(
-            params: DailyRetrieveParams,
+            params: StoreReportInventoryDailyRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<DailyInventory>
     }

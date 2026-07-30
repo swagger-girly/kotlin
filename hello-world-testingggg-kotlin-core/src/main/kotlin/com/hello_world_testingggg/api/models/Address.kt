@@ -12,7 +12,6 @@ import com.hello_world_testingggg.api.core.JsonMissing
 import com.hello_world_testingggg.api.core.JsonValue
 import com.hello_world_testingggg.api.core.checkRequired
 import com.hello_world_testingggg.api.errors.HelloWorldTestinggggInvalidDataException
-import com.hello_world_testingggg.api.models.pet.Pet
 import java.util.Collections
 import java.util.Objects
 
@@ -20,7 +19,7 @@ class Address
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val city: JsonField<String>,
-    private val geo: JsonField<Geo>,
+    private val geo: JsonField<GeoPoint>,
     private val relatedCategory: JsonValue,
     private val relatedCustomer: JsonValue,
     private val relatedMoney: JsonField<Money>,
@@ -38,7 +37,7 @@ private constructor(
     @JsonCreator
     private constructor(
         @JsonProperty("city") @ExcludeMissing city: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("geo") @ExcludeMissing geo: JsonField<Geo> = JsonMissing.of(),
+        @JsonProperty("geo") @ExcludeMissing geo: JsonField<GeoPoint> = JsonMissing.of(),
         @JsonProperty("relatedCategory")
         @ExcludeMissing
         relatedCategory: JsonValue = JsonMissing.of(),
@@ -85,7 +84,7 @@ private constructor(
      * @throws HelloWorldTestinggggInvalidDataException if the JSON field has an unexpected type
      *   (e.g. if the server responded with an unexpected value).
      */
-    fun geo(): Geo? = geo.getNullable("geo")
+    fun geo(): GeoPoint? = geo.getNullable("geo")
 
     /**
      * This arbitrary value can be deserialized into a custom type using the `convert` method:
@@ -183,7 +182,7 @@ private constructor(
      *
      * Unlike [geo], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @JsonProperty("geo") @ExcludeMissing fun _geo(): JsonField<Geo> = geo
+    @JsonProperty("geo") @ExcludeMissing fun _geo(): JsonField<GeoPoint> = geo
 
     /**
      * Returns the raw JSON value of [relatedMoney].
@@ -244,7 +243,7 @@ private constructor(
     class Builder internal constructor() {
 
         private var city: JsonField<String> = JsonMissing.of()
-        private var geo: JsonField<Geo> = JsonMissing.of()
+        private var geo: JsonField<GeoPoint> = JsonMissing.of()
         private var relatedCategory: JsonValue = JsonMissing.of()
         private var relatedCustomer: JsonValue = JsonMissing.of()
         private var relatedMoney: JsonField<Money> = JsonMissing.of()
@@ -285,15 +284,15 @@ private constructor(
          */
         fun city(city: JsonField<String>) = apply { this.city = city }
 
-        fun geo(geo: Geo) = geo(JsonField.of(geo))
+        fun geo(geo: GeoPoint) = geo(JsonField.of(geo))
 
         /**
          * Sets [Builder.geo] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.geo] with a well-typed [Geo] value instead. This method
-         * is primarily for setting the field to an undocumented or not yet supported value.
+         * You should usually call [Builder.geo] with a well-typed [GeoPoint] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun geo(geo: JsonField<Geo>) = apply { this.geo = geo }
+        fun geo(geo: JsonField<GeoPoint>) = apply { this.geo = geo }
 
         fun relatedCategory(relatedCategory: JsonValue) = apply {
             this.relatedCategory = relatedCategory
@@ -456,7 +455,7 @@ private constructor(
             (if (street.asKnown() == null) 0 else 1) +
             (if (zip.asKnown() == null) 0 else 1)
 
-    class Geo
+    class GeoPoint
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val latitude: JsonField<Double>,
@@ -517,7 +516,7 @@ private constructor(
         companion object {
 
             /**
-             * Returns a mutable builder for constructing an instance of [Geo].
+             * Returns a mutable builder for constructing an instance of [GeoPoint].
              *
              * The following fields are required:
              * ```kotlin
@@ -528,17 +527,17 @@ private constructor(
             fun builder() = Builder()
         }
 
-        /** A builder for [Geo]. */
+        /** A builder for [GeoPoint]. */
         class Builder internal constructor() {
 
             private var latitude: JsonField<Double>? = null
             private var longitude: JsonField<Double>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
-            internal fun from(geo: Geo) = apply {
-                latitude = geo.latitude
-                longitude = geo.longitude
-                additionalProperties = geo.additionalProperties.toMutableMap()
+            internal fun from(geoPoint: GeoPoint) = apply {
+                latitude = geoPoint.latitude
+                longitude = geoPoint.longitude
+                additionalProperties = geoPoint.additionalProperties.toMutableMap()
             }
 
             fun latitude(latitude: Double) = latitude(JsonField.of(latitude))
@@ -583,7 +582,7 @@ private constructor(
             }
 
             /**
-             * Returns an immutable instance of [Geo].
+             * Returns an immutable instance of [GeoPoint].
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              *
@@ -595,8 +594,8 @@ private constructor(
              *
              * @throws IllegalStateException if any required field is unset.
              */
-            fun build(): Geo =
-                Geo(
+            fun build(): GeoPoint =
+                GeoPoint(
                     checkRequired("latitude", latitude),
                     checkRequired("longitude", longitude),
                     additionalProperties.toMutableMap(),
@@ -614,7 +613,7 @@ private constructor(
          * @throws HelloWorldTestinggggInvalidDataException if any value type in this object doesn't
          *   match its expected type.
          */
-        fun validate(): Geo = apply {
+        fun validate(): GeoPoint = apply {
             if (validated) {
                 return@apply
             }
@@ -646,7 +645,7 @@ private constructor(
                 return true
             }
 
-            return other is Geo &&
+            return other is GeoPoint &&
                 latitude == other.latitude &&
                 longitude == other.longitude &&
                 additionalProperties == other.additionalProperties
@@ -659,7 +658,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Geo{latitude=$latitude, longitude=$longitude, additionalProperties=$additionalProperties}"
+            "GeoPoint{latitude=$latitude, longitude=$longitude, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

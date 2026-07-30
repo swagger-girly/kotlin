@@ -16,13 +16,13 @@ import com.hello_world_testingggg.api.core.http.HttpResponseFor
 import com.hello_world_testingggg.api.core.http.json
 import com.hello_world_testingggg.api.core.http.parseable
 import com.hello_world_testingggg.api.core.prepareAsync
-import com.hello_world_testingggg.api.models.adoptions.policies.Policy
-import com.hello_world_testingggg.api.models.adoptions.policies.PolicyCreateParams
-import com.hello_world_testingggg.api.models.adoptions.policies.PolicyListPageAsync
-import com.hello_world_testingggg.api.models.adoptions.policies.PolicyListPageResponse
-import com.hello_world_testingggg.api.models.adoptions.policies.PolicyListParams
-import com.hello_world_testingggg.api.models.adoptions.policies.PolicyRetrieveParams
-import com.hello_world_testingggg.api.models.adoptions.policies.PolicyUpdateParams
+import com.hello_world_testingggg.api.models.AdoptionPolicyCreateParams
+import com.hello_world_testingggg.api.models.AdoptionPolicyListPageAsync
+import com.hello_world_testingggg.api.models.AdoptionPolicyListPageResponse
+import com.hello_world_testingggg.api.models.AdoptionPolicyListParams
+import com.hello_world_testingggg.api.models.AdoptionPolicyRetrieveParams
+import com.hello_world_testingggg.api.models.AdoptionPolicyUpdateParams
+import com.hello_world_testingggg.api.models.Policy
 
 /** Adoption policies and applications */
 class PolicyServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -38,30 +38,30 @@ class PolicyServiceAsyncImpl internal constructor(private val clientOptions: Cli
         PolicyServiceAsyncImpl(clientOptions.toBuilder().apply(modifier).build())
 
     override suspend fun create(
-        params: PolicyCreateParams,
+        params: AdoptionPolicyCreateParams,
         requestOptions: RequestOptions,
     ): Policy =
         // post /adoptions/policies
         withRawResponse().create(params, requestOptions).parse()
 
     override suspend fun retrieve(
-        params: PolicyRetrieveParams,
+        params: AdoptionPolicyRetrieveParams,
         requestOptions: RequestOptions,
     ): Policy =
         // get /adoptions/policies/{policyId}
         withRawResponse().retrieve(params, requestOptions).parse()
 
     override suspend fun update(
-        params: PolicyUpdateParams,
+        params: AdoptionPolicyUpdateParams,
         requestOptions: RequestOptions,
     ): Policy =
         // patch /adoptions/policies/{policyId}
         withRawResponse().update(params, requestOptions).parse()
 
     override suspend fun list(
-        params: PolicyListParams,
+        params: AdoptionPolicyListParams,
         requestOptions: RequestOptions,
-    ): PolicyListPageAsync =
+    ): AdoptionPolicyListPageAsync =
         // get /adoptions/policies
         withRawResponse().list(params, requestOptions).parse()
 
@@ -81,7 +81,7 @@ class PolicyServiceAsyncImpl internal constructor(private val clientOptions: Cli
         private val createHandler: Handler<Policy> = jsonHandler<Policy>(clientOptions.jsonMapper)
 
         override suspend fun create(
-            params: PolicyCreateParams,
+            params: AdoptionPolicyCreateParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<Policy> {
             val request =
@@ -108,7 +108,7 @@ class PolicyServiceAsyncImpl internal constructor(private val clientOptions: Cli
         private val retrieveHandler: Handler<Policy> = jsonHandler<Policy>(clientOptions.jsonMapper)
 
         override suspend fun retrieve(
-            params: PolicyRetrieveParams,
+            params: AdoptionPolicyRetrieveParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<Policy> {
             // We check here instead of in the params builder because this can be specified
@@ -137,7 +137,7 @@ class PolicyServiceAsyncImpl internal constructor(private val clientOptions: Cli
         private val updateHandler: Handler<Policy> = jsonHandler<Policy>(clientOptions.jsonMapper)
 
         override suspend fun update(
-            params: PolicyUpdateParams,
+            params: AdoptionPolicyUpdateParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<Policy> {
             // We check here instead of in the params builder because this can be specified
@@ -164,13 +164,13 @@ class PolicyServiceAsyncImpl internal constructor(private val clientOptions: Cli
             }
         }
 
-        private val listHandler: Handler<PolicyListPageResponse> =
-            jsonHandler<PolicyListPageResponse>(clientOptions.jsonMapper)
+        private val listHandler: Handler<AdoptionPolicyListPageResponse> =
+            jsonHandler<AdoptionPolicyListPageResponse>(clientOptions.jsonMapper)
 
         override suspend fun list(
-            params: PolicyListParams,
+            params: AdoptionPolicyListParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<PolicyListPageAsync> {
+        ): HttpResponseFor<AdoptionPolicyListPageAsync> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -189,7 +189,7 @@ class PolicyServiceAsyncImpl internal constructor(private val clientOptions: Cli
                         }
                     }
                     .let {
-                        PolicyListPageAsync.builder()
+                        AdoptionPolicyListPageAsync.builder()
                             .service(PolicyServiceAsyncImpl(clientOptions))
                             .params(params)
                             .response(it)

@@ -3,7 +3,7 @@
 package com.hello_world_testingggg.api.services.blocking.store
 
 import com.hello_world_testingggg.api.client.okhttp.HelloWorldTestinggggOkHttpClient
-import com.hello_world_testingggg.api.models.store.reports.ReportPauseParams
+import com.hello_world_testingggg.api.models.StoreReportPauseParams
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
@@ -67,7 +67,7 @@ internal class ReportServiceTest {
         val reportService = client.store().reports()
 
         reportService.pause(
-            ReportPauseParams.builder()
+            StoreReportPauseParams.builder()
                 .reportId("reportId")
                 .idempotencyKey("report-pause-123")
                 .build()

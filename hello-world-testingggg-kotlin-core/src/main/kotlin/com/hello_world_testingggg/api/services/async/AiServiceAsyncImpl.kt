@@ -15,8 +15,8 @@ import com.hello_world_testingggg.api.core.http.HttpResponseFor
 import com.hello_world_testingggg.api.core.http.json
 import com.hello_world_testingggg.api.core.http.parseable
 import com.hello_world_testingggg.api.core.prepareAsync
-import com.hello_world_testingggg.api.models.ai.AiAiQueryParams
-import com.hello_world_testingggg.api.models.ai.AiAiQueryResponse
+import com.hello_world_testingggg.api.models.AiAiQueryParams
+import com.hello_world_testingggg.api.models.AiAiQueryResponse
 
 class AiServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     AiServiceAsync {

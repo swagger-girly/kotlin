@@ -7,12 +7,12 @@ import com.hello_world_testingggg.api.core.ClientOptions
 import com.hello_world_testingggg.api.core.RequestOptions
 import com.hello_world_testingggg.api.core.http.HttpResponse
 import com.hello_world_testingggg.api.core.http.HttpResponseFor
-import com.hello_world_testingggg.api.models.store.reports.Report
-import com.hello_world_testingggg.api.models.store.reports.ReportEmbedParams
-import com.hello_world_testingggg.api.models.store.reports.ReportListPage
-import com.hello_world_testingggg.api.models.store.reports.ReportListParams
-import com.hello_world_testingggg.api.models.store.reports.ReportPauseParams
-import com.hello_world_testingggg.api.models.store.reports.ReportRetrieveParams
+import com.hello_world_testingggg.api.models.Report
+import com.hello_world_testingggg.api.models.StoreReportEmbedParams
+import com.hello_world_testingggg.api.models.StoreReportListPage
+import com.hello_world_testingggg.api.models.StoreReportListParams
+import com.hello_world_testingggg.api.models.StoreReportPauseParams
+import com.hello_world_testingggg.api.models.StoreReportRetrieveParams
 import com.hello_world_testingggg.api.services.blocking.store.reports.InventoryService
 
 /** Access to Petstore orders */
@@ -36,60 +36,63 @@ interface ReportService {
     /** Returns a generated store report. */
     fun retrieve(
         reportId: String,
-        params: ReportRetrieveParams = ReportRetrieveParams.none(),
+        params: StoreReportRetrieveParams = StoreReportRetrieveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Report = retrieve(params.toBuilder().reportId(reportId).build(), requestOptions)
 
     /** @see retrieve */
     fun retrieve(
-        params: ReportRetrieveParams,
+        params: StoreReportRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Report
 
     /** @see retrieve */
     fun retrieve(reportId: String, requestOptions: RequestOptions): Report =
-        retrieve(reportId, ReportRetrieveParams.none(), requestOptions)
+        retrieve(reportId, StoreReportRetrieveParams.none(), requestOptions)
 
     /** Returns a cursor-id paginated list of generated store reports. */
     fun list(
-        params: ReportListParams = ReportListParams.none(),
+        params: StoreReportListParams = StoreReportListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): ReportListPage
+    ): StoreReportListPage
 
     /** @see list */
-    fun list(requestOptions: RequestOptions): ReportListPage =
-        list(ReportListParams.none(), requestOptions)
+    fun list(requestOptions: RequestOptions): StoreReportListPage =
+        list(StoreReportListParams.none(), requestOptions)
 
     /** Returns an embeddable HTML representation of a store report. */
     fun embed(
         reportId: String,
-        params: ReportEmbedParams = ReportEmbedParams.none(),
+        params: StoreReportEmbedParams = StoreReportEmbedParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): String = embed(params.toBuilder().reportId(reportId).build(), requestOptions)
 
     /** @see embed */
     fun embed(
-        params: ReportEmbedParams,
+        params: StoreReportEmbedParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): String
 
     /** @see embed */
     fun embed(reportId: String, requestOptions: RequestOptions): String =
-        embed(reportId, ReportEmbedParams.none(), requestOptions)
+        embed(reportId, StoreReportEmbedParams.none(), requestOptions)
 
     /** Pauses a report generation job and returns an empty success response. */
     fun pause(
         reportId: String,
-        params: ReportPauseParams = ReportPauseParams.none(),
+        params: StoreReportPauseParams = StoreReportPauseParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ) = pause(params.toBuilder().reportId(reportId).build(), requestOptions)
 
     /** @see pause */
-    fun pause(params: ReportPauseParams, requestOptions: RequestOptions = RequestOptions.none())
+    fun pause(
+        params: StoreReportPauseParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    )
 
     /** @see pause */
     fun pause(reportId: String, requestOptions: RequestOptions) =
-        pause(reportId, ReportPauseParams.none(), requestOptions)
+        pause(reportId, StoreReportPauseParams.none(), requestOptions)
 
     /** A view of [ReportService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -111,7 +114,7 @@ interface ReportService {
         @MustBeClosed
         fun retrieve(
             reportId: String,
-            params: ReportRetrieveParams = ReportRetrieveParams.none(),
+            params: StoreReportRetrieveParams = StoreReportRetrieveParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Report> =
             retrieve(params.toBuilder().reportId(reportId).build(), requestOptions)
@@ -119,14 +122,14 @@ interface ReportService {
         /** @see retrieve */
         @MustBeClosed
         fun retrieve(
-            params: ReportRetrieveParams,
+            params: StoreReportRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Report>
 
         /** @see retrieve */
         @MustBeClosed
         fun retrieve(reportId: String, requestOptions: RequestOptions): HttpResponseFor<Report> =
-            retrieve(reportId, ReportRetrieveParams.none(), requestOptions)
+            retrieve(reportId, StoreReportRetrieveParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `get /store/reports`, but is otherwise the same as
@@ -134,14 +137,14 @@ interface ReportService {
          */
         @MustBeClosed
         fun list(
-            params: ReportListParams = ReportListParams.none(),
+            params: StoreReportListParams = StoreReportListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<ReportListPage>
+        ): HttpResponseFor<StoreReportListPage>
 
         /** @see list */
         @MustBeClosed
-        fun list(requestOptions: RequestOptions): HttpResponseFor<ReportListPage> =
-            list(ReportListParams.none(), requestOptions)
+        fun list(requestOptions: RequestOptions): HttpResponseFor<StoreReportListPage> =
+            list(StoreReportListParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `get /store/reports/{reportId}/embed`, but is otherwise
@@ -150,7 +153,7 @@ interface ReportService {
         @MustBeClosed
         fun embed(
             reportId: String,
-            params: ReportEmbedParams = ReportEmbedParams.none(),
+            params: StoreReportEmbedParams = StoreReportEmbedParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<String> =
             embed(params.toBuilder().reportId(reportId).build(), requestOptions)
@@ -158,14 +161,14 @@ interface ReportService {
         /** @see embed */
         @MustBeClosed
         fun embed(
-            params: ReportEmbedParams,
+            params: StoreReportEmbedParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<String>
 
         /** @see embed */
         @MustBeClosed
         fun embed(reportId: String, requestOptions: RequestOptions): HttpResponseFor<String> =
-            embed(reportId, ReportEmbedParams.none(), requestOptions)
+            embed(reportId, StoreReportEmbedParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `post /store/reports/{reportId}/pause`, but is otherwise
@@ -174,20 +177,20 @@ interface ReportService {
         @MustBeClosed
         fun pause(
             reportId: String,
-            params: ReportPauseParams = ReportPauseParams.none(),
+            params: StoreReportPauseParams = StoreReportPauseParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponse = pause(params.toBuilder().reportId(reportId).build(), requestOptions)
 
         /** @see pause */
         @MustBeClosed
         fun pause(
-            params: ReportPauseParams,
+            params: StoreReportPauseParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponse
 
         /** @see pause */
         @MustBeClosed
         fun pause(reportId: String, requestOptions: RequestOptions): HttpResponse =
-            pause(reportId, ReportPauseParams.none(), requestOptions)
+            pause(reportId, StoreReportPauseParams.none(), requestOptions)
     }
 }

@@ -18,13 +18,13 @@ import com.hello_world_testingggg.api.core.http.HttpResponseFor
 import com.hello_world_testingggg.api.core.http.json
 import com.hello_world_testingggg.api.core.http.parseable
 import com.hello_world_testingggg.api.core.prepare
-import com.hello_world_testingggg.api.models.store.reports.Report
-import com.hello_world_testingggg.api.models.store.reports.ReportEmbedParams
-import com.hello_world_testingggg.api.models.store.reports.ReportList
-import com.hello_world_testingggg.api.models.store.reports.ReportListPage
-import com.hello_world_testingggg.api.models.store.reports.ReportListParams
-import com.hello_world_testingggg.api.models.store.reports.ReportPauseParams
-import com.hello_world_testingggg.api.models.store.reports.ReportRetrieveParams
+import com.hello_world_testingggg.api.models.Report
+import com.hello_world_testingggg.api.models.ReportList
+import com.hello_world_testingggg.api.models.StoreReportEmbedParams
+import com.hello_world_testingggg.api.models.StoreReportListPage
+import com.hello_world_testingggg.api.models.StoreReportListParams
+import com.hello_world_testingggg.api.models.StoreReportPauseParams
+import com.hello_world_testingggg.api.models.StoreReportRetrieveParams
 import com.hello_world_testingggg.api.services.blocking.store.reports.InventoryService
 import com.hello_world_testingggg.api.services.blocking.store.reports.InventoryServiceImpl
 
@@ -46,19 +46,25 @@ class ReportServiceImpl internal constructor(private val clientOptions: ClientOp
     /** Access to Petstore orders */
     override fun inventory(): InventoryService = inventory
 
-    override fun retrieve(params: ReportRetrieveParams, requestOptions: RequestOptions): Report =
+    override fun retrieve(
+        params: StoreReportRetrieveParams,
+        requestOptions: RequestOptions,
+    ): Report =
         // get /store/reports/{reportId}
         withRawResponse().retrieve(params, requestOptions).parse()
 
-    override fun list(params: ReportListParams, requestOptions: RequestOptions): ReportListPage =
+    override fun list(
+        params: StoreReportListParams,
+        requestOptions: RequestOptions,
+    ): StoreReportListPage =
         // get /store/reports
         withRawResponse().list(params, requestOptions).parse()
 
-    override fun embed(params: ReportEmbedParams, requestOptions: RequestOptions): String =
+    override fun embed(params: StoreReportEmbedParams, requestOptions: RequestOptions): String =
         // get /store/reports/{reportId}/embed
         withRawResponse().embed(params, requestOptions).parse()
 
-    override fun pause(params: ReportPauseParams, requestOptions: RequestOptions) {
+    override fun pause(params: StoreReportPauseParams, requestOptions: RequestOptions) {
         // post /store/reports/{reportId}/pause
         withRawResponse().pause(params, requestOptions)
     }
@@ -84,7 +90,7 @@ class ReportServiceImpl internal constructor(private val clientOptions: ClientOp
         private val retrieveHandler: Handler<Report> = jsonHandler<Report>(clientOptions.jsonMapper)
 
         override fun retrieve(
-            params: ReportRetrieveParams,
+            params: StoreReportRetrieveParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<Report> {
             // We check here instead of in the params builder because this can be specified
@@ -114,9 +120,9 @@ class ReportServiceImpl internal constructor(private val clientOptions: ClientOp
             jsonHandler<ReportList>(clientOptions.jsonMapper)
 
         override fun list(
-            params: ReportListParams,
+            params: StoreReportListParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<ReportListPage> {
+        ): HttpResponseFor<StoreReportListPage> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -135,7 +141,7 @@ class ReportServiceImpl internal constructor(private val clientOptions: ClientOp
                         }
                     }
                     .let {
-                        ReportListPage.builder()
+                        StoreReportListPage.builder()
                             .service(ReportServiceImpl(clientOptions))
                             .params(params)
                             .response(it)
@@ -147,7 +153,7 @@ class ReportServiceImpl internal constructor(private val clientOptions: ClientOp
         private val embedHandler: Handler<String> = stringHandler()
 
         override fun embed(
-            params: ReportEmbedParams,
+            params: StoreReportEmbedParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<String> {
             // We check here instead of in the params builder because this can be specified
@@ -171,7 +177,7 @@ class ReportServiceImpl internal constructor(private val clientOptions: ClientOp
         private val pauseHandler: Handler<Void?> = emptyHandler()
 
         override fun pause(
-            params: ReportPauseParams,
+            params: StoreReportPauseParams,
             requestOptions: RequestOptions,
         ): HttpResponse {
             // We check here instead of in the params builder because this can be specified

@@ -15,8 +15,8 @@ import com.hello_world_testingggg.api.core.http.HttpResponse.Handler
 import com.hello_world_testingggg.api.core.http.HttpResponseFor
 import com.hello_world_testingggg.api.core.http.parseable
 import com.hello_world_testingggg.api.core.prepareAsync
-import com.hello_world_testingggg.api.models.store.reports.InventoryResponse
-import com.hello_world_testingggg.api.models.store.reports.inventory.InventoryListParams
+import com.hello_world_testingggg.api.models.InventoryResponse
+import com.hello_world_testingggg.api.models.StoreReportInventoryListParams
 import com.hello_world_testingggg.api.services.async.store.reports.inventory.DailyServiceAsync
 import com.hello_world_testingggg.api.services.async.store.reports.inventory.DailyServiceAsyncImpl
 
@@ -39,7 +39,7 @@ class InventoryServiceAsyncImpl internal constructor(private val clientOptions: 
     override fun daily(): DailyServiceAsync = daily
 
     override suspend fun list(
-        params: InventoryListParams,
+        params: StoreReportInventoryListParams,
         requestOptions: RequestOptions,
     ): InventoryResponse =
         // get /store/reports/{reportId}/inventory
@@ -69,7 +69,7 @@ class InventoryServiceAsyncImpl internal constructor(private val clientOptions: 
             jsonHandler<InventoryResponse>(clientOptions.jsonMapper)
 
         override suspend fun list(
-            params: InventoryListParams,
+            params: StoreReportInventoryListParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<InventoryResponse> {
             // We check here instead of in the params builder because this can be specified
