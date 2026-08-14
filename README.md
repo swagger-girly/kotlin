@@ -3,7 +3,7 @@
 <!-- x-release-please-start-version -->
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.hello_world_testingggg.api/hello-world-testingggg-kotlin)](https://central.sonatype.com/artifact/com.hello_world_testingggg.api/hello-world-testingggg-kotlin/0.0.1)
-[![javadoc](https://javadoc.io/badge2/com.hello_world_testingggg.api/hello-world-testingggg-kotlin/0.0.1/javadoc.svg)](https://javadoc.io/doc/com.hello_world_testingggg.api/hello-world-testingggg-kotlin/0.0.1)
+[![javadoc](https://javadoc.io/badge2/com.hello_world_testingggg.api/hello-world-testingggg-kotlin/javadoc.svg)](https://javadoc.io/doc/com.hello_world_testingggg.api/hello-world-testingggg-kotlin/0.0.1)
 
 <!-- x-release-please-end -->
 
