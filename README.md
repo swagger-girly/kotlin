@@ -57,7 +57,7 @@ This library requires Java 8 or later.
 ```kotlin
 import com.hello_world_testingggg.api.client.HelloWorldTestinggggClient
 import com.hello_world_testingggg.api.client.okhttp.HelloWorldTestinggggOkHttpClient
-import com.hello_world_testingggg.api.models.Pet
+import com.hello_world_testingggg.api.models.pet.Pet
 
 // Configures using the `helloworldtestingggg.apiKey`, `helloworldtestingggg.basicAuthUsername`, `helloworldtestingggg.basicAuthPassword`, `helloworldtestingggg.petstoreWebhookSecret` and `helloworldtestingggg.baseUrl` system properties
 // Or configures using the `API_KEY`, `BASIC_AUTH_USERNAME`, `BASIC_AUTH_PASSWORD`, `PETSTORE_WEBHOOK_SECRET` and `HELLO_WORLD_TESTINGGGG_BASE_URL` environment variables
@@ -162,7 +162,7 @@ The default client is synchronous. To switch to asynchronous execution, call the
 ```kotlin
 import com.hello_world_testingggg.api.client.HelloWorldTestinggggClient
 import com.hello_world_testingggg.api.client.okhttp.HelloWorldTestinggggOkHttpClient
-import com.hello_world_testingggg.api.models.Pet
+import com.hello_world_testingggg.api.models.pet.Pet
 
 // Configures using the `helloworldtestingggg.apiKey`, `helloworldtestingggg.basicAuthUsername`, `helloworldtestingggg.basicAuthPassword`, `helloworldtestingggg.petstoreWebhookSecret` and `helloworldtestingggg.baseUrl` system properties
 // Or configures using the `API_KEY`, `BASIC_AUTH_USERNAME`, `BASIC_AUTH_PASSWORD`, `PETSTORE_WEBHOOK_SECRET` and `HELLO_WORLD_TESTINGGGG_BASE_URL` environment variables
@@ -180,7 +180,7 @@ Or create an asynchronous client from the beginning:
 ```kotlin
 import com.hello_world_testingggg.api.client.HelloWorldTestinggggClientAsync
 import com.hello_world_testingggg.api.client.okhttp.HelloWorldTestinggggOkHttpClientAsync
-import com.hello_world_testingggg.api.models.Pet
+import com.hello_world_testingggg.api.models.pet.Pet
 
 // Configures using the `helloworldtestingggg.apiKey`, `helloworldtestingggg.basicAuthUsername`, `helloworldtestingggg.basicAuthPassword`, `helloworldtestingggg.petstoreWebhookSecret` and `helloworldtestingggg.baseUrl` system properties
 // Or configures using the `API_KEY`, `BASIC_AUTH_USERNAME`, `BASIC_AUTH_PASSWORD`, `PETSTORE_WEBHOOK_SECRET` and `HELLO_WORLD_TESTINGGGG_BASE_URL` environment variables
@@ -217,8 +217,8 @@ The SDK defines methods that accept files.
 To upload a file, pass a [`Path`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html):
 
 ```kotlin
-import com.hello_world_testingggg.api.models.File
-import com.hello_world_testingggg.api.models.FileUpdateParams
+import com.hello_world_testingggg.api.models.files.File
+import com.hello_world_testingggg.api.models.files.FileUpdateParams
 import java.nio.file.Paths
 
 val params: FileUpdateParams = FileUpdateParams.builder()
@@ -231,8 +231,8 @@ val file: File = client.files().update(params)
 Or an arbitrary [`InputStream`](https://docs.oracle.com/javase/8/docs/api/java/io/InputStream.html):
 
 ```kotlin
-import com.hello_world_testingggg.api.models.File
-import com.hello_world_testingggg.api.models.FileUpdateParams
+import com.hello_world_testingggg.api.models.files.File
+import com.hello_world_testingggg.api.models.files.FileUpdateParams
 import java.net.URL
 
 val params: FileUpdateParams = FileUpdateParams.builder()
@@ -245,8 +245,8 @@ val file: File = client.files().update(params)
 Or a `ByteArray`:
 
 ```kotlin
-import com.hello_world_testingggg.api.models.File
-import com.hello_world_testingggg.api.models.FileUpdateParams
+import com.hello_world_testingggg.api.models.files.File
+import com.hello_world_testingggg.api.models.files.FileUpdateParams
 
 val params: FileUpdateParams = FileUpdateParams.builder()
     .path("path")
@@ -259,8 +259,8 @@ Note that when passing a non-`Path` its filename is unknown so it will not be in
 
 ```kotlin
 import com.hello_world_testingggg.api.core.MultipartField
-import com.hello_world_testingggg.api.models.File
-import com.hello_world_testingggg.api.models.FileUpdateParams
+import com.hello_world_testingggg.api.models.files.File
+import com.hello_world_testingggg.api.models.files.FileUpdateParams
 import java.io.InputStream
 import java.net.URL
 
@@ -282,7 +282,7 @@ These methods return [`HttpResponse`](hello-world-testingggg-kotlin-core/src/mai
 
 ```kotlin
 import com.hello_world_testingggg.api.core.http.HttpResponse
-import com.hello_world_testingggg.api.models.FileDownloadParams
+import com.hello_world_testingggg.api.models.files.FileDownloadParams
 
 val response: HttpResponse = client.files().download("path")
 ```
@@ -323,7 +323,7 @@ To access this data, prefix any HTTP method call on a client or service with `wi
 ```kotlin
 import com.hello_world_testingggg.api.core.http.Headers
 import com.hello_world_testingggg.api.core.http.HttpResponseFor
-import com.hello_world_testingggg.api.models.Pet
+import com.hello_world_testingggg.api.models.pet.Pet
 
 val params: Pet = Pet.builder()
     .name("doggie")
@@ -338,7 +338,7 @@ val headers: Headers = pet.headers()
 You can still deserialize the response into an instance of a Kotlin class if needed:
 
 ```kotlin
-import com.hello_world_testingggg.api.models.Pet
+import com.hello_world_testingggg.api.models.pet.Pet
 
 val parsedPet: Pet = pet.parse()
 ```
@@ -381,7 +381,7 @@ To iterate through all results across all pages, use the `autoPager()` method, w
 When using the synchronous client, the method returns a [`Sequence`](https://kotlinlang.org/docs/sequences.html)
 
 ```kotlin
-import com.hello_world_testingggg.api.models.PetListPage
+import com.hello_world_testingggg.api.models.pet.PetListPage
 
 val page: PetListPage = client.pet().list()
 page.autoPager()
@@ -392,7 +392,7 @@ page.autoPager()
 When using the asynchronous client, the method returns a [`Flow`](https://kotlinlang.org/docs/flow.html):
 
 ```kotlin
-import com.hello_world_testingggg.api.models.PetListPageAsync
+import com.hello_world_testingggg.api.models.pet.PetListPageAsync
 
 val page: PetListPageAsync = client.async().pet().list()
 page.autoPager()
@@ -406,8 +406,8 @@ To access individual page items and manually request the next page, use the `ite
 `hasNextPage()`, and `nextPage()` methods:
 
 ```kotlin
-import com.hello_world_testingggg.api.models.Pet
-import com.hello_world_testingggg.api.models.PetListPage
+import com.hello_world_testingggg.api.models.pet.Pet
+import com.hello_world_testingggg.api.models.pet.PetListPage
 
 val page: PetListPage = client.pet().list()
 while (true) {
@@ -504,7 +504,7 @@ Requests time out after 1 minute by default.
 To set a custom timeout, configure the method call using the `timeout` method:
 
 ```kotlin
-import com.hello_world_testingggg.api.models.Pet
+import com.hello_world_testingggg.api.models.pet.Pet
 
 val pet: Pet = client.pet().update(
   params, RequestOptions.builder().timeout(Duration.ofSeconds(30)).build()
@@ -645,7 +645,7 @@ To set undocumented parameters, call the `putAdditionalHeader`, `putAdditionalQu
 
 ```kotlin
 import com.hello_world_testingggg.api.core.JsonValue
-import com.hello_world_testingggg.api.models.PetUpdateParams
+import com.hello_world_testingggg.api.models.pet.PetUpdateParams
 
 val params: PetUpdateParams = PetUpdateParams.builder()
     .putAdditionalHeader("Secret-Header", "42")
@@ -659,8 +659,8 @@ These can be accessed on the built object later using the `_additionalHeaders()`
 To set a documented parameter or property to an undocumented or not yet supported _value_, pass a [`JsonValue`](hello-world-testingggg-kotlin-core/src/main/kotlin/com/hello_world_testingggg/api/core/Values.kt) object to its setter:
 
 ```kotlin
-import com.hello_world_testingggg.api.models.Pet
-import com.hello_world_testingggg.api.models.PetUpdateParams
+import com.hello_world_testingggg.api.models.pet.Pet
+import com.hello_world_testingggg.api.models.pet.PetUpdateParams
 
 val params: PetUpdateParams = PetUpdateParams.builder()
     .pet(Pet.builder()
@@ -711,8 +711,8 @@ To forcibly omit a required parameter or property, pass [`JsonMissing`](hello-wo
 
 ```kotlin
 import com.hello_world_testingggg.api.core.JsonMissing
-import com.hello_world_testingggg.api.models.Pet
-import com.hello_world_testingggg.api.models.PetUpdateParams
+import com.hello_world_testingggg.api.models.pet.Pet
+import com.hello_world_testingggg.api.models.pet.PetUpdateParams
 
 val params: PetUpdateParams = PetUpdateParams.builder()
     .pet(Pet.builder()
@@ -777,7 +777,7 @@ Validating the response is _not_ forwards compatible with new types from the API
 If you would still prefer to check that the response is completely well-typed upfront, then either call `validate()`:
 
 ```kotlin
-import com.hello_world_testingggg.api.models.Pet
+import com.hello_world_testingggg.api.models.pet.Pet
 
 val pet: Pet = client.pet().update(params).validate()
 ```
@@ -785,7 +785,7 @@ val pet: Pet = client.pet().update(params).validate()
 Or configure the method call to validate the response using the `responseValidation` method:
 
 ```kotlin
-import com.hello_world_testingggg.api.models.Pet
+import com.hello_world_testingggg.api.models.pet.Pet
 
 val pet: Pet = client.pet().update(
   params, RequestOptions.builder().responseValidation(true).build()

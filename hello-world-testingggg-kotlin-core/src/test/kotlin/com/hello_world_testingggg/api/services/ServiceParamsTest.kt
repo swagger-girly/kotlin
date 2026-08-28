@@ -16,9 +16,9 @@ import com.hello_world_testingggg.api.client.okhttp.HelloWorldTestinggggOkHttpCl
 import com.hello_world_testingggg.api.core.JsonValue
 import com.hello_world_testingggg.api.models.Address
 import com.hello_world_testingggg.api.models.Money
-import com.hello_world_testingggg.api.models.Pet
-import com.hello_world_testingggg.api.models.PetStatus
-import com.hello_world_testingggg.api.models.PetUpdateParams
+import com.hello_world_testingggg.api.models.pet.Pet
+import com.hello_world_testingggg.api.models.pet.PetStatus
+import com.hello_world_testingggg.api.models.pet.PetUpdateParams
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -61,7 +61,7 @@ internal class ServiceParamsTest {
                             Address.builder()
                                 .city("Palo Alto")
                                 .geo(
-                                    Address.GeoPoint.builder()
+                                    Address.Geo.builder()
                                         .latitude(37.4443)
                                         .longitude(-122.1598)
                                         .build()

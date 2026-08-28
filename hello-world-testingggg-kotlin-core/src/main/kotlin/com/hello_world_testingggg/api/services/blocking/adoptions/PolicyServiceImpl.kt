@@ -16,13 +16,13 @@ import com.hello_world_testingggg.api.core.http.HttpResponseFor
 import com.hello_world_testingggg.api.core.http.json
 import com.hello_world_testingggg.api.core.http.parseable
 import com.hello_world_testingggg.api.core.prepare
-import com.hello_world_testingggg.api.models.AdoptionPolicyCreateParams
-import com.hello_world_testingggg.api.models.AdoptionPolicyListPage
-import com.hello_world_testingggg.api.models.AdoptionPolicyListPageResponse
-import com.hello_world_testingggg.api.models.AdoptionPolicyListParams
-import com.hello_world_testingggg.api.models.AdoptionPolicyRetrieveParams
-import com.hello_world_testingggg.api.models.AdoptionPolicyUpdateParams
-import com.hello_world_testingggg.api.models.Policy
+import com.hello_world_testingggg.api.models.adoptions.policies.Policy
+import com.hello_world_testingggg.api.models.adoptions.policies.PolicyCreateParams
+import com.hello_world_testingggg.api.models.adoptions.policies.PolicyListPage
+import com.hello_world_testingggg.api.models.adoptions.policies.PolicyListPageResponse
+import com.hello_world_testingggg.api.models.adoptions.policies.PolicyListParams
+import com.hello_world_testingggg.api.models.adoptions.policies.PolicyRetrieveParams
+import com.hello_world_testingggg.api.models.adoptions.policies.PolicyUpdateParams
 
 /** Adoption policies and applications */
 class PolicyServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -37,31 +37,19 @@ class PolicyServiceImpl internal constructor(private val clientOptions: ClientOp
     override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): PolicyService =
         PolicyServiceImpl(clientOptions.toBuilder().apply(modifier).build())
 
-    override fun create(
-        params: AdoptionPolicyCreateParams,
-        requestOptions: RequestOptions,
-    ): Policy =
+    override fun create(params: PolicyCreateParams, requestOptions: RequestOptions): Policy =
         // post /adoptions/policies
         withRawResponse().create(params, requestOptions).parse()
 
-    override fun retrieve(
-        params: AdoptionPolicyRetrieveParams,
-        requestOptions: RequestOptions,
-    ): Policy =
+    override fun retrieve(params: PolicyRetrieveParams, requestOptions: RequestOptions): Policy =
         // get /adoptions/policies/{policyId}
         withRawResponse().retrieve(params, requestOptions).parse()
 
-    override fun update(
-        params: AdoptionPolicyUpdateParams,
-        requestOptions: RequestOptions,
-    ): Policy =
+    override fun update(params: PolicyUpdateParams, requestOptions: RequestOptions): Policy =
         // patch /adoptions/policies/{policyId}
         withRawResponse().update(params, requestOptions).parse()
 
-    override fun list(
-        params: AdoptionPolicyListParams,
-        requestOptions: RequestOptions,
-    ): AdoptionPolicyListPage =
+    override fun list(params: PolicyListParams, requestOptions: RequestOptions): PolicyListPage =
         // get /adoptions/policies
         withRawResponse().list(params, requestOptions).parse()
 
@@ -79,7 +67,7 @@ class PolicyServiceImpl internal constructor(private val clientOptions: ClientOp
         private val createHandler: Handler<Policy> = jsonHandler<Policy>(clientOptions.jsonMapper)
 
         override fun create(
-            params: AdoptionPolicyCreateParams,
+            params: PolicyCreateParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<Policy> {
             val request =
@@ -106,7 +94,7 @@ class PolicyServiceImpl internal constructor(private val clientOptions: ClientOp
         private val retrieveHandler: Handler<Policy> = jsonHandler<Policy>(clientOptions.jsonMapper)
 
         override fun retrieve(
-            params: AdoptionPolicyRetrieveParams,
+            params: PolicyRetrieveParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<Policy> {
             // We check here instead of in the params builder because this can be specified
@@ -135,7 +123,7 @@ class PolicyServiceImpl internal constructor(private val clientOptions: ClientOp
         private val updateHandler: Handler<Policy> = jsonHandler<Policy>(clientOptions.jsonMapper)
 
         override fun update(
-            params: AdoptionPolicyUpdateParams,
+            params: PolicyUpdateParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<Policy> {
             // We check here instead of in the params builder because this can be specified
@@ -162,13 +150,13 @@ class PolicyServiceImpl internal constructor(private val clientOptions: ClientOp
             }
         }
 
-        private val listHandler: Handler<AdoptionPolicyListPageResponse> =
-            jsonHandler<AdoptionPolicyListPageResponse>(clientOptions.jsonMapper)
+        private val listHandler: Handler<PolicyListPageResponse> =
+            jsonHandler<PolicyListPageResponse>(clientOptions.jsonMapper)
 
         override fun list(
-            params: AdoptionPolicyListParams,
+            params: PolicyListParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<AdoptionPolicyListPage> {
+        ): HttpResponseFor<PolicyListPage> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -187,7 +175,7 @@ class PolicyServiceImpl internal constructor(private val clientOptions: ClientOp
                         }
                     }
                     .let {
-                        AdoptionPolicyListPage.builder()
+                        PolicyListPage.builder()
                             .service(PolicyServiceImpl(clientOptions))
                             .params(params)
                             .response(it)

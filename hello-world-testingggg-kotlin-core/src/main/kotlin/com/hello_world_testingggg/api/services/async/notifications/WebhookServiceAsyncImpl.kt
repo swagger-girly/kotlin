@@ -4,7 +4,7 @@ package com.hello_world_testingggg.api.services.async.notifications
 
 import com.hello_world_testingggg.api.core.ClientOptions
 import com.hello_world_testingggg.api.core.UnwrapWebhookParams
-import com.hello_world_testingggg.api.models.ParsePetWebhookEvent
+import com.hello_world_testingggg.api.models.notifications.webhooks.ParsePetWebhookEvent
 import com.hello_world_testingggg.api.services.blocking.notifications.WebhookServiceImpl
 
 class WebhookServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :

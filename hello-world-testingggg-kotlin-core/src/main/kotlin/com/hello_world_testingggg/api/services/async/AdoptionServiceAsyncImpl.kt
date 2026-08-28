@@ -16,11 +16,11 @@ import com.hello_world_testingggg.api.core.http.HttpResponseFor
 import com.hello_world_testingggg.api.core.http.json
 import com.hello_world_testingggg.api.core.http.parseable
 import com.hello_world_testingggg.api.core.prepareAsync
-import com.hello_world_testingggg.api.models.AdoptionCreateParams
-import com.hello_world_testingggg.api.models.AdoptionRetrieveDecisionParams
-import com.hello_world_testingggg.api.models.AdoptionRetrieveDecisionResponse
-import com.hello_world_testingggg.api.models.AdoptionRetrieveParams
-import com.hello_world_testingggg.api.models.Application
+import com.hello_world_testingggg.api.models.adoptions.AdoptionCreateParams
+import com.hello_world_testingggg.api.models.adoptions.AdoptionRetrieveDecisionParams
+import com.hello_world_testingggg.api.models.adoptions.AdoptionRetrieveDecisionResponse
+import com.hello_world_testingggg.api.models.adoptions.AdoptionRetrieveParams
+import com.hello_world_testingggg.api.models.adoptions.Application
 import com.hello_world_testingggg.api.services.async.adoptions.PolicyServiceAsync
 import com.hello_world_testingggg.api.services.async.adoptions.PolicyServiceAsyncImpl
 

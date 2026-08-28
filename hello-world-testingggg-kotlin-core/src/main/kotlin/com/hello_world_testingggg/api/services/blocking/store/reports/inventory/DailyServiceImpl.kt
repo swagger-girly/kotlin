@@ -15,8 +15,8 @@ import com.hello_world_testingggg.api.core.http.HttpResponse.Handler
 import com.hello_world_testingggg.api.core.http.HttpResponseFor
 import com.hello_world_testingggg.api.core.http.parseable
 import com.hello_world_testingggg.api.core.prepare
-import com.hello_world_testingggg.api.models.DailyInventory
-import com.hello_world_testingggg.api.models.StoreReportInventoryDailyRetrieveParams
+import com.hello_world_testingggg.api.models.store.reports.DailyInventory
+import com.hello_world_testingggg.api.models.store.reports.inventory.daily.DailyRetrieveParams
 
 /** Access to Petstore orders */
 class DailyServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -32,7 +32,7 @@ class DailyServiceImpl internal constructor(private val clientOptions: ClientOpt
         DailyServiceImpl(clientOptions.toBuilder().apply(modifier).build())
 
     override fun retrieve(
-        params: StoreReportInventoryDailyRetrieveParams,
+        params: DailyRetrieveParams,
         requestOptions: RequestOptions,
     ): DailyInventory =
         // get /store/reports/{reportId}/inventory/daily/{date}
@@ -53,7 +53,7 @@ class DailyServiceImpl internal constructor(private val clientOptions: ClientOpt
             jsonHandler<DailyInventory>(clientOptions.jsonMapper)
 
         override fun retrieve(
-            params: StoreReportInventoryDailyRetrieveParams,
+            params: DailyRetrieveParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<DailyInventory> {
             // We check here instead of in the params builder because this can be specified

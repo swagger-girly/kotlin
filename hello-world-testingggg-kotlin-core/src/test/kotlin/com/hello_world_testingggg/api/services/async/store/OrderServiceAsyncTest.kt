@@ -6,9 +6,9 @@ import com.hello_world_testingggg.api.client.okhttp.HelloWorldTestinggggOkHttpCl
 import com.hello_world_testingggg.api.core.JsonValue
 import com.hello_world_testingggg.api.models.Address
 import com.hello_world_testingggg.api.models.Money
-import com.hello_world_testingggg.api.models.Pet
-import com.hello_world_testingggg.api.models.PetStatus
-import com.hello_world_testingggg.api.models.StoreOrderCreateParams
+import com.hello_world_testingggg.api.models.pet.Pet
+import com.hello_world_testingggg.api.models.pet.PetStatus
+import com.hello_world_testingggg.api.models.store.order.OrderCreateParams
 import java.time.OffsetDateTime
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -28,7 +28,7 @@ internal class OrderServiceAsyncTest {
 
         val order =
             orderServiceAsync.create(
-                StoreOrderCreateParams.builder()
+                OrderCreateParams.builder()
                     .id(10L)
                     .complete(true)
                     .petId(198772L)
@@ -37,10 +37,7 @@ internal class OrderServiceAsyncTest {
                         Address.builder()
                             .city("Palo Alto")
                             .geo(
-                                Address.GeoPoint.builder()
-                                    .latitude(37.4443)
-                                    .longitude(-122.1598)
-                                    .build()
+                                Address.Geo.builder().latitude(37.4443).longitude(-122.1598).build()
                             )
                             .relatedCategory(JsonValue.from(mapOf<String, Any>()))
                             .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
@@ -109,7 +106,7 @@ internal class OrderServiceAsyncTest {
                                 Address.builder()
                                     .city("Palo Alto")
                                     .geo(
-                                        Address.GeoPoint.builder()
+                                        Address.Geo.builder()
                                             .latitude(37.4443)
                                             .longitude(-122.1598)
                                             .build()
@@ -179,7 +176,7 @@ internal class OrderServiceAsyncTest {
                                 Address.builder()
                                     .city("Palo Alto")
                                     .geo(
-                                        Address.GeoPoint.builder()
+                                        Address.Geo.builder()
                                             .latitude(37.4443)
                                             .longitude(-122.1598)
                                             .build()
@@ -232,7 +229,7 @@ internal class OrderServiceAsyncTest {
                     .relatedTag(JsonValue.from(mapOf<String, Any>()))
                     .relatedUser(JsonValue.from(mapOf<String, Any>()))
                     .shipDate(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                    .status(StoreOrderCreateParams.Status.APPROVED)
+                    .status(OrderCreateParams.Status.APPROVED)
                     .total(
                         Money.builder()
                             .amount(2500L)
@@ -241,7 +238,7 @@ internal class OrderServiceAsyncTest {
                                 Address.builder()
                                     .city("Palo Alto")
                                     .geo(
-                                        Address.GeoPoint.builder()
+                                        Address.Geo.builder()
                                             .latitude(37.4443)
                                             .longitude(-122.1598)
                                             .build()

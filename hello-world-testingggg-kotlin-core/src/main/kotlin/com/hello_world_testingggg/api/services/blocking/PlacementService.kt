@@ -6,12 +6,12 @@ import com.google.errorprone.annotations.MustBeClosed
 import com.hello_world_testingggg.api.core.ClientOptions
 import com.hello_world_testingggg.api.core.RequestOptions
 import com.hello_world_testingggg.api.core.http.HttpResponseFor
-import com.hello_world_testingggg.api.models.Placement
-import com.hello_world_testingggg.api.models.PlacementCreateParams
-import com.hello_world_testingggg.api.models.PlacementListPage
-import com.hello_world_testingggg.api.models.PlacementListParams
-import com.hello_world_testingggg.api.models.PlacementRecordEventParams
-import com.hello_world_testingggg.api.models.PlacementRetrieveParams
+import com.hello_world_testingggg.api.models.placements.Placement
+import com.hello_world_testingggg.api.models.placements.PlacementCreateParams
+import com.hello_world_testingggg.api.models.placements.PlacementListPage
+import com.hello_world_testingggg.api.models.placements.PlacementListParams
+import com.hello_world_testingggg.api.models.placements.PlacementRecordEventParams
+import com.hello_world_testingggg.api.models.placements.PlacementRetrieveParams
 
 /** Post-adoption placement tracking */
 interface PlacementService {

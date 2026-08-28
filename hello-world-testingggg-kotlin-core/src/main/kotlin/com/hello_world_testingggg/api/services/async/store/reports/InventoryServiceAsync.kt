@@ -6,8 +6,8 @@ import com.google.errorprone.annotations.MustBeClosed
 import com.hello_world_testingggg.api.core.ClientOptions
 import com.hello_world_testingggg.api.core.RequestOptions
 import com.hello_world_testingggg.api.core.http.HttpResponseFor
-import com.hello_world_testingggg.api.models.InventoryResponse
-import com.hello_world_testingggg.api.models.StoreReportInventoryListParams
+import com.hello_world_testingggg.api.models.store.reports.InventoryResponse
+import com.hello_world_testingggg.api.models.store.reports.inventory.InventoryListParams
 import com.hello_world_testingggg.api.services.async.store.reports.inventory.DailyServiceAsync
 
 /** Access to Petstore orders */
@@ -31,19 +31,19 @@ interface InventoryServiceAsync {
     /** Returns inventory rows associated with a store report. */
     suspend fun list(
         reportId: String,
-        params: StoreReportInventoryListParams = StoreReportInventoryListParams.none(),
+        params: InventoryListParams = InventoryListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): InventoryResponse = list(params.toBuilder().reportId(reportId).build(), requestOptions)
 
     /** @see list */
     suspend fun list(
-        params: StoreReportInventoryListParams,
+        params: InventoryListParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): InventoryResponse
 
     /** @see list */
     suspend fun list(reportId: String, requestOptions: RequestOptions): InventoryResponse =
-        list(reportId, StoreReportInventoryListParams.none(), requestOptions)
+        list(reportId, InventoryListParams.none(), requestOptions)
 
     /**
      * A view of [InventoryServiceAsync] that provides access to raw HTTP responses for each method.
@@ -69,7 +69,7 @@ interface InventoryServiceAsync {
         @MustBeClosed
         suspend fun list(
             reportId: String,
-            params: StoreReportInventoryListParams = StoreReportInventoryListParams.none(),
+            params: InventoryListParams = InventoryListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<InventoryResponse> =
             list(params.toBuilder().reportId(reportId).build(), requestOptions)
@@ -77,7 +77,7 @@ interface InventoryServiceAsync {
         /** @see list */
         @MustBeClosed
         suspend fun list(
-            params: StoreReportInventoryListParams,
+            params: InventoryListParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<InventoryResponse>
 
@@ -87,6 +87,6 @@ interface InventoryServiceAsync {
             reportId: String,
             requestOptions: RequestOptions,
         ): HttpResponseFor<InventoryResponse> =
-            list(reportId, StoreReportInventoryListParams.none(), requestOptions)
+            list(reportId, InventoryListParams.none(), requestOptions)
     }
 }

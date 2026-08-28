@@ -17,11 +17,11 @@ import com.hello_world_testingggg.api.core.http.HttpResponseFor
 import com.hello_world_testingggg.api.core.http.json
 import com.hello_world_testingggg.api.core.http.parseable
 import com.hello_world_testingggg.api.core.prepareAsync
-import com.hello_world_testingggg.api.models.OrderCreateResponse
-import com.hello_world_testingggg.api.models.OrderRetrieveResponse
-import com.hello_world_testingggg.api.models.StoreOrderCreateParams
-import com.hello_world_testingggg.api.models.StoreOrderDeleteParams
-import com.hello_world_testingggg.api.models.StoreOrderRetrieveParams
+import com.hello_world_testingggg.api.models.store.order.OrderCreateParams
+import com.hello_world_testingggg.api.models.store.order.OrderCreateResponse
+import com.hello_world_testingggg.api.models.store.order.OrderDeleteParams
+import com.hello_world_testingggg.api.models.store.order.OrderRetrieveParams
+import com.hello_world_testingggg.api.models.store.order.OrderRetrieveResponse
 
 /** Access to Petstore orders */
 class OrderServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -37,20 +37,20 @@ class OrderServiceAsyncImpl internal constructor(private val clientOptions: Clie
         OrderServiceAsyncImpl(clientOptions.toBuilder().apply(modifier).build())
 
     override suspend fun create(
-        params: StoreOrderCreateParams,
+        params: OrderCreateParams,
         requestOptions: RequestOptions,
     ): OrderCreateResponse =
         // post /store/order
         withRawResponse().create(params, requestOptions).parse()
 
     override suspend fun retrieve(
-        params: StoreOrderRetrieveParams,
+        params: OrderRetrieveParams,
         requestOptions: RequestOptions,
     ): OrderRetrieveResponse =
         // get /store/order/{orderId}
         withRawResponse().retrieve(params, requestOptions).parse()
 
-    override suspend fun delete(params: StoreOrderDeleteParams, requestOptions: RequestOptions) {
+    override suspend fun delete(params: OrderDeleteParams, requestOptions: RequestOptions) {
         // delete /store/order/{orderId}
         withRawResponse().delete(params, requestOptions)
     }
@@ -72,7 +72,7 @@ class OrderServiceAsyncImpl internal constructor(private val clientOptions: Clie
             jsonHandler<OrderCreateResponse>(clientOptions.jsonMapper)
 
         override suspend fun create(
-            params: StoreOrderCreateParams,
+            params: OrderCreateParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<OrderCreateResponse> {
             val request =
@@ -100,7 +100,7 @@ class OrderServiceAsyncImpl internal constructor(private val clientOptions: Clie
             jsonHandler<OrderRetrieveResponse>(clientOptions.jsonMapper)
 
         override suspend fun retrieve(
-            params: StoreOrderRetrieveParams,
+            params: OrderRetrieveParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<OrderRetrieveResponse> {
             // We check here instead of in the params builder because this can be specified
@@ -129,7 +129,7 @@ class OrderServiceAsyncImpl internal constructor(private val clientOptions: Clie
         private val deleteHandler: Handler<Void?> = emptyHandler()
 
         override suspend fun delete(
-            params: StoreOrderDeleteParams,
+            params: OrderDeleteParams,
             requestOptions: RequestOptions,
         ): HttpResponse {
             // We check here instead of in the params builder because this can be specified

@@ -8,7 +8,7 @@ import com.hello_world_testingggg.api.core.RequestOptions
 import com.hello_world_testingggg.api.core.http.HttpResponseFor
 import com.hello_world_testingggg.api.models.ClientHealthParams
 import com.hello_world_testingggg.api.models.ClientRetrieveRateLimitsParams
-import com.hello_world_testingggg.api.models.RetrieveRateLimitsResponse
+import com.hello_world_testingggg.api.models.ClientRetrieveRateLimitsResponse
 import com.hello_world_testingggg.api.models.SystemHealth
 import com.hello_world_testingggg.api.services.blocking.AdoptionService
 import com.hello_world_testingggg.api.services.blocking.AiService
@@ -104,10 +104,10 @@ interface HelloWorldTestinggggClient {
     fun retrieveRateLimits(
         params: ClientRetrieveRateLimitsParams = ClientRetrieveRateLimitsParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): RetrieveRateLimitsResponse
+    ): ClientRetrieveRateLimitsResponse
 
     /** @see retrieveRateLimits */
-    fun retrieveRateLimits(requestOptions: RequestOptions): RetrieveRateLimitsResponse =
+    fun retrieveRateLimits(requestOptions: RequestOptions): ClientRetrieveRateLimitsResponse =
         retrieveRateLimits(ClientRetrieveRateLimitsParams.none(), requestOptions)
 
     /**
@@ -192,13 +192,13 @@ interface HelloWorldTestinggggClient {
         fun retrieveRateLimits(
             params: ClientRetrieveRateLimitsParams = ClientRetrieveRateLimitsParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<RetrieveRateLimitsResponse>
+        ): HttpResponseFor<ClientRetrieveRateLimitsResponse>
 
         /** @see retrieveRateLimits */
         @MustBeClosed
         fun retrieveRateLimits(
             requestOptions: RequestOptions
-        ): HttpResponseFor<RetrieveRateLimitsResponse> =
+        ): HttpResponseFor<ClientRetrieveRateLimitsResponse> =
             retrieveRateLimits(ClientRetrieveRateLimitsParams.none(), requestOptions)
     }
 }

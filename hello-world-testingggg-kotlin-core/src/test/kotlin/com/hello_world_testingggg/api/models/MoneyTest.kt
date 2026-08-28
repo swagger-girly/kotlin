@@ -5,6 +5,8 @@ package com.hello_world_testingggg.api.models
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import com.hello_world_testingggg.api.core.JsonValue
 import com.hello_world_testingggg.api.core.jsonMapper
+import com.hello_world_testingggg.api.models.pet.Pet
+import com.hello_world_testingggg.api.models.pet.PetStatus
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -19,12 +21,7 @@ internal class MoneyTest {
                 .relatedAddress(
                     Address.builder()
                         .city("Palo Alto")
-                        .geo(
-                            Address.GeoPoint.builder()
-                                .latitude(37.4443)
-                                .longitude(-122.1598)
-                                .build()
-                        )
+                        .geo(Address.Geo.builder().latitude(37.4443).longitude(-122.1598).build())
                         .relatedCategory(JsonValue.from(mapOf<String, Any>()))
                         .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
                         .relatedOrder(JsonValue.from(mapOf<String, Any>()))
@@ -84,7 +81,7 @@ internal class MoneyTest {
             .isEqualTo(
                 Address.builder()
                     .city("Palo Alto")
-                    .geo(Address.GeoPoint.builder().latitude(37.4443).longitude(-122.1598).build())
+                    .geo(Address.Geo.builder().latitude(37.4443).longitude(-122.1598).build())
                     .relatedCategory(JsonValue.from(mapOf<String, Any>()))
                     .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
                     .relatedOrder(JsonValue.from(mapOf<String, Any>()))
@@ -149,12 +146,7 @@ internal class MoneyTest {
                 .relatedAddress(
                     Address.builder()
                         .city("Palo Alto")
-                        .geo(
-                            Address.GeoPoint.builder()
-                                .latitude(37.4443)
-                                .longitude(-122.1598)
-                                .build()
-                        )
+                        .geo(Address.Geo.builder().latitude(37.4443).longitude(-122.1598).build())
                         .relatedCategory(JsonValue.from(mapOf<String, Any>()))
                         .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
                         .relatedOrder(JsonValue.from(mapOf<String, Any>()))

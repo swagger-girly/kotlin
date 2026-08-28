@@ -6,12 +6,12 @@ import com.google.errorprone.annotations.MustBeClosed
 import com.hello_world_testingggg.api.core.ClientOptions
 import com.hello_world_testingggg.api.core.RequestOptions
 import com.hello_world_testingggg.api.core.http.HttpResponseFor
-import com.hello_world_testingggg.api.models.AdoptionPolicyCreateParams
-import com.hello_world_testingggg.api.models.AdoptionPolicyListPage
-import com.hello_world_testingggg.api.models.AdoptionPolicyListParams
-import com.hello_world_testingggg.api.models.AdoptionPolicyRetrieveParams
-import com.hello_world_testingggg.api.models.AdoptionPolicyUpdateParams
-import com.hello_world_testingggg.api.models.Policy
+import com.hello_world_testingggg.api.models.adoptions.policies.Policy
+import com.hello_world_testingggg.api.models.adoptions.policies.PolicyCreateParams
+import com.hello_world_testingggg.api.models.adoptions.policies.PolicyListPage
+import com.hello_world_testingggg.api.models.adoptions.policies.PolicyListParams
+import com.hello_world_testingggg.api.models.adoptions.policies.PolicyRetrieveParams
+import com.hello_world_testingggg.api.models.adoptions.policies.PolicyUpdateParams
 
 /** Adoption policies and applications */
 interface PolicyService {
@@ -33,49 +33,49 @@ interface PolicyService {
      * optional escalation rule group.
      */
     fun create(
-        params: AdoptionPolicyCreateParams,
+        params: PolicyCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Policy
 
     /** Returns a single adoption policy. */
     fun retrieve(
         policyId: String,
-        params: AdoptionPolicyRetrieveParams = AdoptionPolicyRetrieveParams.none(),
+        params: PolicyRetrieveParams = PolicyRetrieveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Policy = retrieve(params.toBuilder().policyId(policyId).build(), requestOptions)
 
     /** @see retrieve */
     fun retrieve(
-        params: AdoptionPolicyRetrieveParams,
+        params: PolicyRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Policy
 
     /** @see retrieve */
     fun retrieve(policyId: String, requestOptions: RequestOptions): Policy =
-        retrieve(policyId, AdoptionPolicyRetrieveParams.none(), requestOptions)
+        retrieve(policyId, PolicyRetrieveParams.none(), requestOptions)
 
     /** Updates either the policy details or its lifecycle state. */
     fun update(
         policyId: String,
-        params: AdoptionPolicyUpdateParams,
+        params: PolicyUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Policy = update(params.toBuilder().policyId(policyId).build(), requestOptions)
 
     /** @see update */
     fun update(
-        params: AdoptionPolicyUpdateParams,
+        params: PolicyUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Policy
 
     /** Returns a cursor-paginated list of adoption policies. */
     fun list(
-        params: AdoptionPolicyListParams = AdoptionPolicyListParams.none(),
+        params: PolicyListParams = PolicyListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): AdoptionPolicyListPage
+    ): PolicyListPage
 
     /** @see list */
-    fun list(requestOptions: RequestOptions): AdoptionPolicyListPage =
-        list(AdoptionPolicyListParams.none(), requestOptions)
+    fun list(requestOptions: RequestOptions): PolicyListPage =
+        list(PolicyListParams.none(), requestOptions)
 
     /** A view of [PolicyService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -93,7 +93,7 @@ interface PolicyService {
          */
         @MustBeClosed
         fun create(
-            params: AdoptionPolicyCreateParams,
+            params: PolicyCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Policy>
 
@@ -104,7 +104,7 @@ interface PolicyService {
         @MustBeClosed
         fun retrieve(
             policyId: String,
-            params: AdoptionPolicyRetrieveParams = AdoptionPolicyRetrieveParams.none(),
+            params: PolicyRetrieveParams = PolicyRetrieveParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Policy> =
             retrieve(params.toBuilder().policyId(policyId).build(), requestOptions)
@@ -112,14 +112,14 @@ interface PolicyService {
         /** @see retrieve */
         @MustBeClosed
         fun retrieve(
-            params: AdoptionPolicyRetrieveParams,
+            params: PolicyRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Policy>
 
         /** @see retrieve */
         @MustBeClosed
         fun retrieve(policyId: String, requestOptions: RequestOptions): HttpResponseFor<Policy> =
-            retrieve(policyId, AdoptionPolicyRetrieveParams.none(), requestOptions)
+            retrieve(policyId, PolicyRetrieveParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `patch /adoptions/policies/{policyId}`, but is otherwise
@@ -128,7 +128,7 @@ interface PolicyService {
         @MustBeClosed
         fun update(
             policyId: String,
-            params: AdoptionPolicyUpdateParams,
+            params: PolicyUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Policy> =
             update(params.toBuilder().policyId(policyId).build(), requestOptions)
@@ -136,7 +136,7 @@ interface PolicyService {
         /** @see update */
         @MustBeClosed
         fun update(
-            params: AdoptionPolicyUpdateParams,
+            params: PolicyUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Policy>
 
@@ -146,13 +146,13 @@ interface PolicyService {
          */
         @MustBeClosed
         fun list(
-            params: AdoptionPolicyListParams = AdoptionPolicyListParams.none(),
+            params: PolicyListParams = PolicyListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<AdoptionPolicyListPage>
+        ): HttpResponseFor<PolicyListPage>
 
         /** @see list */
         @MustBeClosed
-        fun list(requestOptions: RequestOptions): HttpResponseFor<AdoptionPolicyListPage> =
-            list(AdoptionPolicyListParams.none(), requestOptions)
+        fun list(requestOptions: RequestOptions): HttpResponseFor<PolicyListPage> =
+            list(PolicyListParams.none(), requestOptions)
     }
 }

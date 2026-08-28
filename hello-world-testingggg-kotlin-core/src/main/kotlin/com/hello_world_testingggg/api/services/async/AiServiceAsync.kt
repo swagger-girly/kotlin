@@ -6,8 +6,8 @@ import com.google.errorprone.annotations.MustBeClosed
 import com.hello_world_testingggg.api.core.ClientOptions
 import com.hello_world_testingggg.api.core.RequestOptions
 import com.hello_world_testingggg.api.core.http.HttpResponseFor
-import com.hello_world_testingggg.api.models.AiAiQueryParams
-import com.hello_world_testingggg.api.models.AiAiQueryResponse
+import com.hello_world_testingggg.api.models.ai.AiAiQueryParams
+import com.hello_world_testingggg.api.models.ai.AiAiQueryResponse
 
 interface AiServiceAsync {
 

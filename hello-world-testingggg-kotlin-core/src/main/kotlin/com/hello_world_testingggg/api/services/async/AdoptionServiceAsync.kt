@@ -6,11 +6,11 @@ import com.google.errorprone.annotations.MustBeClosed
 import com.hello_world_testingggg.api.core.ClientOptions
 import com.hello_world_testingggg.api.core.RequestOptions
 import com.hello_world_testingggg.api.core.http.HttpResponseFor
-import com.hello_world_testingggg.api.models.AdoptionCreateParams
-import com.hello_world_testingggg.api.models.AdoptionRetrieveDecisionParams
-import com.hello_world_testingggg.api.models.AdoptionRetrieveDecisionResponse
-import com.hello_world_testingggg.api.models.AdoptionRetrieveParams
-import com.hello_world_testingggg.api.models.Application
+import com.hello_world_testingggg.api.models.adoptions.AdoptionCreateParams
+import com.hello_world_testingggg.api.models.adoptions.AdoptionRetrieveDecisionParams
+import com.hello_world_testingggg.api.models.adoptions.AdoptionRetrieveDecisionResponse
+import com.hello_world_testingggg.api.models.adoptions.AdoptionRetrieveParams
+import com.hello_world_testingggg.api.models.adoptions.Application
 import com.hello_world_testingggg.api.services.async.adoptions.PolicyServiceAsync
 
 /** Adoption policies and applications */
@@ -45,13 +45,13 @@ interface AdoptionServiceAsync {
 
     /** @see create */
     suspend fun create(
-        individual: AdoptionCreateParams.Body.IndividualApplicant,
+        individual: AdoptionCreateParams.Body.Individual,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Application = create(AdoptionCreateParams.Body.ofIndividual(individual), requestOptions)
 
     /** @see create */
     suspend fun create(
-        organization: AdoptionCreateParams.Body.OrganizationApplicant,
+        organization: AdoptionCreateParams.Body.Organization,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Application = create(AdoptionCreateParams.Body.ofOrganization(organization), requestOptions)
 
@@ -135,7 +135,7 @@ interface AdoptionServiceAsync {
         /** @see create */
         @MustBeClosed
         suspend fun create(
-            individual: AdoptionCreateParams.Body.IndividualApplicant,
+            individual: AdoptionCreateParams.Body.Individual,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Application> =
             create(AdoptionCreateParams.Body.ofIndividual(individual), requestOptions)
@@ -143,7 +143,7 @@ interface AdoptionServiceAsync {
         /** @see create */
         @MustBeClosed
         suspend fun create(
-            organization: AdoptionCreateParams.Body.OrganizationApplicant,
+            organization: AdoptionCreateParams.Body.Organization,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Application> =
             create(AdoptionCreateParams.Body.ofOrganization(organization), requestOptions)

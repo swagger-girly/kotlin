@@ -7,12 +7,12 @@ import com.hello_world_testingggg.api.core.ClientOptions
 import com.hello_world_testingggg.api.core.RequestOptions
 import com.hello_world_testingggg.api.core.http.HttpResponse
 import com.hello_world_testingggg.api.core.http.HttpResponseFor
-import com.hello_world_testingggg.api.models.Report
-import com.hello_world_testingggg.api.models.StoreReportEmbedParams
-import com.hello_world_testingggg.api.models.StoreReportListPageAsync
-import com.hello_world_testingggg.api.models.StoreReportListParams
-import com.hello_world_testingggg.api.models.StoreReportPauseParams
-import com.hello_world_testingggg.api.models.StoreReportRetrieveParams
+import com.hello_world_testingggg.api.models.store.reports.Report
+import com.hello_world_testingggg.api.models.store.reports.ReportEmbedParams
+import com.hello_world_testingggg.api.models.store.reports.ReportListPageAsync
+import com.hello_world_testingggg.api.models.store.reports.ReportListParams
+import com.hello_world_testingggg.api.models.store.reports.ReportPauseParams
+import com.hello_world_testingggg.api.models.store.reports.ReportRetrieveParams
 import com.hello_world_testingggg.api.services.async.store.reports.InventoryServiceAsync
 
 /** Access to Petstore orders */
@@ -36,63 +36,63 @@ interface ReportServiceAsync {
     /** Returns a generated store report. */
     suspend fun retrieve(
         reportId: String,
-        params: StoreReportRetrieveParams = StoreReportRetrieveParams.none(),
+        params: ReportRetrieveParams = ReportRetrieveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Report = retrieve(params.toBuilder().reportId(reportId).build(), requestOptions)
 
     /** @see retrieve */
     suspend fun retrieve(
-        params: StoreReportRetrieveParams,
+        params: ReportRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Report
 
     /** @see retrieve */
     suspend fun retrieve(reportId: String, requestOptions: RequestOptions): Report =
-        retrieve(reportId, StoreReportRetrieveParams.none(), requestOptions)
+        retrieve(reportId, ReportRetrieveParams.none(), requestOptions)
 
     /** Returns a cursor-id paginated list of generated store reports. */
     suspend fun list(
-        params: StoreReportListParams = StoreReportListParams.none(),
+        params: ReportListParams = ReportListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): StoreReportListPageAsync
+    ): ReportListPageAsync
 
     /** @see list */
-    suspend fun list(requestOptions: RequestOptions): StoreReportListPageAsync =
-        list(StoreReportListParams.none(), requestOptions)
+    suspend fun list(requestOptions: RequestOptions): ReportListPageAsync =
+        list(ReportListParams.none(), requestOptions)
 
     /** Returns an embeddable HTML representation of a store report. */
     suspend fun embed(
         reportId: String,
-        params: StoreReportEmbedParams = StoreReportEmbedParams.none(),
+        params: ReportEmbedParams = ReportEmbedParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): String = embed(params.toBuilder().reportId(reportId).build(), requestOptions)
 
     /** @see embed */
     suspend fun embed(
-        params: StoreReportEmbedParams,
+        params: ReportEmbedParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): String
 
     /** @see embed */
     suspend fun embed(reportId: String, requestOptions: RequestOptions): String =
-        embed(reportId, StoreReportEmbedParams.none(), requestOptions)
+        embed(reportId, ReportEmbedParams.none(), requestOptions)
 
     /** Pauses a report generation job and returns an empty success response. */
     suspend fun pause(
         reportId: String,
-        params: StoreReportPauseParams = StoreReportPauseParams.none(),
+        params: ReportPauseParams = ReportPauseParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ) = pause(params.toBuilder().reportId(reportId).build(), requestOptions)
 
     /** @see pause */
     suspend fun pause(
-        params: StoreReportPauseParams,
+        params: ReportPauseParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     )
 
     /** @see pause */
     suspend fun pause(reportId: String, requestOptions: RequestOptions) =
-        pause(reportId, StoreReportPauseParams.none(), requestOptions)
+        pause(reportId, ReportPauseParams.none(), requestOptions)
 
     /**
      * A view of [ReportServiceAsync] that provides access to raw HTTP responses for each method.
@@ -118,7 +118,7 @@ interface ReportServiceAsync {
         @MustBeClosed
         suspend fun retrieve(
             reportId: String,
-            params: StoreReportRetrieveParams = StoreReportRetrieveParams.none(),
+            params: ReportRetrieveParams = ReportRetrieveParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Report> =
             retrieve(params.toBuilder().reportId(reportId).build(), requestOptions)
@@ -126,7 +126,7 @@ interface ReportServiceAsync {
         /** @see retrieve */
         @MustBeClosed
         suspend fun retrieve(
-            params: StoreReportRetrieveParams,
+            params: ReportRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Report>
 
@@ -135,8 +135,7 @@ interface ReportServiceAsync {
         suspend fun retrieve(
             reportId: String,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<Report> =
-            retrieve(reportId, StoreReportRetrieveParams.none(), requestOptions)
+        ): HttpResponseFor<Report> = retrieve(reportId, ReportRetrieveParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `get /store/reports`, but is otherwise the same as
@@ -144,16 +143,14 @@ interface ReportServiceAsync {
          */
         @MustBeClosed
         suspend fun list(
-            params: StoreReportListParams = StoreReportListParams.none(),
+            params: ReportListParams = ReportListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<StoreReportListPageAsync>
+        ): HttpResponseFor<ReportListPageAsync>
 
         /** @see list */
         @MustBeClosed
-        suspend fun list(
-            requestOptions: RequestOptions
-        ): HttpResponseFor<StoreReportListPageAsync> =
-            list(StoreReportListParams.none(), requestOptions)
+        suspend fun list(requestOptions: RequestOptions): HttpResponseFor<ReportListPageAsync> =
+            list(ReportListParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `get /store/reports/{reportId}/embed`, but is otherwise
@@ -162,7 +159,7 @@ interface ReportServiceAsync {
         @MustBeClosed
         suspend fun embed(
             reportId: String,
-            params: StoreReportEmbedParams = StoreReportEmbedParams.none(),
+            params: ReportEmbedParams = ReportEmbedParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<String> =
             embed(params.toBuilder().reportId(reportId).build(), requestOptions)
@@ -170,7 +167,7 @@ interface ReportServiceAsync {
         /** @see embed */
         @MustBeClosed
         suspend fun embed(
-            params: StoreReportEmbedParams,
+            params: ReportEmbedParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<String>
 
@@ -179,7 +176,7 @@ interface ReportServiceAsync {
         suspend fun embed(
             reportId: String,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<String> = embed(reportId, StoreReportEmbedParams.none(), requestOptions)
+        ): HttpResponseFor<String> = embed(reportId, ReportEmbedParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `post /store/reports/{reportId}/pause`, but is otherwise
@@ -188,20 +185,20 @@ interface ReportServiceAsync {
         @MustBeClosed
         suspend fun pause(
             reportId: String,
-            params: StoreReportPauseParams = StoreReportPauseParams.none(),
+            params: ReportPauseParams = ReportPauseParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponse = pause(params.toBuilder().reportId(reportId).build(), requestOptions)
 
         /** @see pause */
         @MustBeClosed
         suspend fun pause(
-            params: StoreReportPauseParams,
+            params: ReportPauseParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponse
 
         /** @see pause */
         @MustBeClosed
         suspend fun pause(reportId: String, requestOptions: RequestOptions): HttpResponse =
-            pause(reportId, StoreReportPauseParams.none(), requestOptions)
+            pause(reportId, ReportPauseParams.none(), requestOptions)
     }
 }

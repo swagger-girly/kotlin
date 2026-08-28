@@ -6,10 +6,10 @@ import com.google.errorprone.annotations.MustBeClosed
 import com.hello_world_testingggg.api.core.ClientOptions
 import com.hello_world_testingggg.api.core.RequestOptions
 import com.hello_world_testingggg.api.core.http.HttpResponseFor
-import com.hello_world_testingggg.api.models.StoreListInventoryParams
-import com.hello_world_testingggg.api.models.StoreListInventoryResponse
-import com.hello_world_testingggg.api.models.StoreRetrieveActivityParams
-import com.hello_world_testingggg.api.models.StoreRetrieveActivityResponse
+import com.hello_world_testingggg.api.models.store.StoreListInventoryParams
+import com.hello_world_testingggg.api.models.store.StoreListInventoryResponse
+import com.hello_world_testingggg.api.models.store.StoreRetrieveActivityParams
+import com.hello_world_testingggg.api.models.store.StoreRetrieveActivityResponse
 import com.hello_world_testingggg.api.services.async.store.OrderServiceAsync
 import com.hello_world_testingggg.api.services.async.store.ReportServiceAsync
 

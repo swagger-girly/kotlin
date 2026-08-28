@@ -16,20 +16,20 @@ import com.hello_world_testingggg.api.core.http.HttpResponse.Handler
 import com.hello_world_testingggg.api.core.http.HttpResponseFor
 import com.hello_world_testingggg.api.core.http.parseable
 import com.hello_world_testingggg.api.core.prepare
-import com.hello_world_testingggg.api.models.MediaBinaryAndJsonParams
-import com.hello_world_testingggg.api.models.MediaBinaryAndJsonResponse
-import com.hello_world_testingggg.api.models.MediaJsonAndXmlParams
-import com.hello_world_testingggg.api.models.MediaJsonAndXmlResponse
-import com.hello_world_testingggg.api.models.MediaJsonFirstParams
-import com.hello_world_testingggg.api.models.MediaJsonFirstResponse
-import com.hello_world_testingggg.api.models.MediaSchemaOnJsonParams
-import com.hello_world_testingggg.api.models.MediaSchemaOnJsonResponse
-import com.hello_world_testingggg.api.models.MediaSchemaOnTextParams
-import com.hello_world_testingggg.api.models.MediaTextFirstParams
-import com.hello_world_testingggg.api.models.MediaTextFirstResponse
-import com.hello_world_testingggg.api.models.MediaTextOnlyParams
-import com.hello_world_testingggg.api.models.MediaVendorJsonParams
-import com.hello_world_testingggg.api.models.MediaVendorJsonResponse
+import com.hello_world_testingggg.api.models.media.MediaBinaryAndJsonParams
+import com.hello_world_testingggg.api.models.media.MediaBinaryAndJsonResponse
+import com.hello_world_testingggg.api.models.media.MediaJsonAndXmlParams
+import com.hello_world_testingggg.api.models.media.MediaJsonAndXmlResponse
+import com.hello_world_testingggg.api.models.media.MediaJsonFirstParams
+import com.hello_world_testingggg.api.models.media.MediaJsonFirstResponse
+import com.hello_world_testingggg.api.models.media.MediaSchemaOnJsonParams
+import com.hello_world_testingggg.api.models.media.MediaSchemaOnJsonResponse
+import com.hello_world_testingggg.api.models.media.MediaSchemaOnTextParams
+import com.hello_world_testingggg.api.models.media.MediaTextFirstParams
+import com.hello_world_testingggg.api.models.media.MediaTextFirstResponse
+import com.hello_world_testingggg.api.models.media.MediaTextOnlyParams
+import com.hello_world_testingggg.api.models.media.MediaVendorJsonParams
+import com.hello_world_testingggg.api.models.media.MediaVendorJsonResponse
 
 class MediaServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     MediaService {

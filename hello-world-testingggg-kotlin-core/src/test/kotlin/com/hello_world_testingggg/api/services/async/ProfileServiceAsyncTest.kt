@@ -4,10 +4,10 @@ package com.hello_world_testingggg.api.services.async
 
 import com.hello_world_testingggg.api.client.okhttp.HelloWorldTestinggggOkHttpClientAsync
 import com.hello_world_testingggg.api.core.JsonValue
-import com.hello_world_testingggg.api.models.ProfileCreateParams
-import com.hello_world_testingggg.api.models.ProfileCreateRequest
-import com.hello_world_testingggg.api.models.ProfileLegacySearchParams
-import com.hello_world_testingggg.api.models.ProfileUpdateParams
+import com.hello_world_testingggg.api.models.profiles.ProfileCreateParams
+import com.hello_world_testingggg.api.models.profiles.ProfileCreateRequest
+import com.hello_world_testingggg.api.models.profiles.ProfileLegacySearchParams
+import com.hello_world_testingggg.api.models.profiles.ProfileUpdateParams
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
@@ -39,9 +39,9 @@ internal class ProfileServiceAsyncTest {
                                     .build()
                             )
                             .preferences(
-                                ProfileCreateRequest.ProfilePreferences.builder()
+                                ProfileCreateRequest.Preferences.builder()
                                     .alerts(
-                                        ProfileCreateRequest.ProfilePreferences.Alerts.builder()
+                                        ProfileCreateRequest.Preferences.Alerts.builder()
                                             .putAdditionalProperty(
                                                 "inventory",
                                                 JsonValue.from(true),
@@ -103,11 +103,9 @@ internal class ProfileServiceAsyncTest {
                                     .build()
                             )
                             .preferences(
-                                ProfileUpdateParams.Body.ProfileDetailsUpdate.ProfilePreferences
-                                    .builder()
+                                ProfileUpdateParams.Body.ProfileDetailsUpdate.Preferences.builder()
                                     .alerts(
-                                        ProfileUpdateParams.Body.ProfileDetailsUpdate
-                                            .ProfilePreferences
+                                        ProfileUpdateParams.Body.ProfileDetailsUpdate.Preferences
                                             .Alerts
                                             .builder()
                                             .putAdditionalProperty("foo", JsonValue.from(true))
