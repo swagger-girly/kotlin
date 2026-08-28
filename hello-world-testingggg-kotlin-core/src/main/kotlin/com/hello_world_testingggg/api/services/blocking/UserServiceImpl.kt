@@ -18,18 +18,18 @@ import com.hello_world_testingggg.api.core.http.HttpResponseFor
 import com.hello_world_testingggg.api.core.http.json
 import com.hello_world_testingggg.api.core.http.parseable
 import com.hello_world_testingggg.api.core.prepare
-import com.hello_world_testingggg.api.models.UserCreateParams
-import com.hello_world_testingggg.api.models.UserCreateResponse
-import com.hello_world_testingggg.api.models.UserCreateWithListParams
-import com.hello_world_testingggg.api.models.UserCreateWithListResponse
-import com.hello_world_testingggg.api.models.UserDeleteParams
-import com.hello_world_testingggg.api.models.UserLoginParams
-import com.hello_world_testingggg.api.models.UserLogoutParams
-import com.hello_world_testingggg.api.models.UserRetrieveParams
-import com.hello_world_testingggg.api.models.UserRetrieveResponse
-import com.hello_world_testingggg.api.models.UserUpdateParams
-import com.hello_world_testingggg.api.models.UserVerifyIdentityParams
-import com.hello_world_testingggg.api.models.UserVerifyIdentityResponse
+import com.hello_world_testingggg.api.models.user.UserCreateParams
+import com.hello_world_testingggg.api.models.user.UserCreateResponse
+import com.hello_world_testingggg.api.models.user.UserCreateWithListParams
+import com.hello_world_testingggg.api.models.user.UserCreateWithListResponse
+import com.hello_world_testingggg.api.models.user.UserDeleteParams
+import com.hello_world_testingggg.api.models.user.UserLoginParams
+import com.hello_world_testingggg.api.models.user.UserLogoutParams
+import com.hello_world_testingggg.api.models.user.UserRetrieveParams
+import com.hello_world_testingggg.api.models.user.UserRetrieveResponse
+import com.hello_world_testingggg.api.models.user.UserUpdateParams
+import com.hello_world_testingggg.api.models.user.UserVerifyIdentityParams
+import com.hello_world_testingggg.api.models.user.UserVerifyIdentityResponse
 
 /** Operations about user */
 class UserServiceImpl internal constructor(private val clientOptions: ClientOptions) : UserService {

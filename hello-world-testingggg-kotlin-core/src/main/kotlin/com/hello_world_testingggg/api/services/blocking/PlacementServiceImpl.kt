@@ -16,13 +16,13 @@ import com.hello_world_testingggg.api.core.http.HttpResponseFor
 import com.hello_world_testingggg.api.core.http.json
 import com.hello_world_testingggg.api.core.http.parseable
 import com.hello_world_testingggg.api.core.prepare
-import com.hello_world_testingggg.api.models.Placement
-import com.hello_world_testingggg.api.models.PlacementCreateParams
-import com.hello_world_testingggg.api.models.PlacementListPage
-import com.hello_world_testingggg.api.models.PlacementListPageResponse
-import com.hello_world_testingggg.api.models.PlacementListParams
-import com.hello_world_testingggg.api.models.PlacementRecordEventParams
-import com.hello_world_testingggg.api.models.PlacementRetrieveParams
+import com.hello_world_testingggg.api.models.placements.Placement
+import com.hello_world_testingggg.api.models.placements.PlacementCreateParams
+import com.hello_world_testingggg.api.models.placements.PlacementListPage
+import com.hello_world_testingggg.api.models.placements.PlacementListPageResponse
+import com.hello_world_testingggg.api.models.placements.PlacementListParams
+import com.hello_world_testingggg.api.models.placements.PlacementRecordEventParams
+import com.hello_world_testingggg.api.models.placements.PlacementRetrieveParams
 
 /** Post-adoption placement tracking */
 class PlacementServiceImpl internal constructor(private val clientOptions: ClientOptions) :

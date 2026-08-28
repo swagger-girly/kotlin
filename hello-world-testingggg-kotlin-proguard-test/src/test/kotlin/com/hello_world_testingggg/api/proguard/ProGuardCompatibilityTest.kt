@@ -7,10 +7,10 @@ import com.hello_world_testingggg.api.client.okhttp.HelloWorldTestinggggOkHttpCl
 import com.hello_world_testingggg.api.core.JsonValue
 import com.hello_world_testingggg.api.core.jsonMapper
 import com.hello_world_testingggg.api.models.Address
-import com.hello_world_testingggg.api.models.ConnectClientEvent
 import com.hello_world_testingggg.api.models.Money
-import com.hello_world_testingggg.api.models.Pet
-import com.hello_world_testingggg.api.models.PetStatus
+import com.hello_world_testingggg.api.models.pet.ConnectClientEvent
+import com.hello_world_testingggg.api.models.pet.Pet
+import com.hello_world_testingggg.api.models.pet.PetStatus
 import kotlin.reflect.full.memberFunctions
 import kotlin.reflect.jvm.javaMethod
 import org.assertj.core.api.Assertions.assertThat
@@ -87,12 +87,7 @@ internal class ProGuardCompatibilityTest {
                 .relatedAddress(
                     Address.builder()
                         .city("Palo Alto")
-                        .geo(
-                            Address.GeoPoint.builder()
-                                .latitude(37.4443)
-                                .longitude(-122.1598)
-                                .build()
-                        )
+                        .geo(Address.Geo.builder().latitude(37.4443).longitude(-122.1598).build())
                         .relatedCategory(JsonValue.from(mapOf<String, Any>()))
                         .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
                         .relatedMoney(
@@ -146,12 +141,7 @@ internal class ProGuardCompatibilityTest {
     @Test
     fun connectClientEventRoundtrip() {
         val jsonMapper = jsonMapper()
-        val connectClientEvent =
-            ConnectClientEvent.ofPing(
-                ConnectClientEvent.PetClientPingEvent.builder()
-                    .type(ConnectClientEvent.PetClientPingEvent.Type.PING)
-                    .build()
-            )
+        val connectClientEvent = ConnectClientEvent.ofPing()
 
         val roundtrippedConnectClientEvent =
             jsonMapper.readValue(

@@ -5,10 +5,10 @@ package com.hello_world_testingggg.api.services.async
 import com.hello_world_testingggg.api.client.okhttp.HelloWorldTestinggggOkHttpClientAsync
 import com.hello_world_testingggg.api.core.JsonValue
 import com.hello_world_testingggg.api.models.Address
-import com.hello_world_testingggg.api.models.AdoptionCreateParams
 import com.hello_world_testingggg.api.models.Money
-import com.hello_world_testingggg.api.models.Pet
-import com.hello_world_testingggg.api.models.PetStatus
+import com.hello_world_testingggg.api.models.adoptions.AdoptionCreateParams
+import com.hello_world_testingggg.api.models.pet.Pet
+import com.hello_world_testingggg.api.models.pet.PetStatus
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
@@ -27,19 +27,13 @@ internal class AdoptionServiceAsyncTest {
 
         val application =
             adoptionServiceAsync.create(
-                AdoptionCreateParams.Body.IndividualApplicant.builder()
-                    .applicantType(
-                        AdoptionCreateParams.Body.IndividualApplicant.ApplicantType.INDIVIDUAL
-                    )
+                AdoptionCreateParams.Body.Individual.builder()
                     .name("name")
                     .address(
                         Address.builder()
                             .city("Palo Alto")
                             .geo(
-                                Address.GeoPoint.builder()
-                                    .latitude(37.4443)
-                                    .longitude(-122.1598)
-                                    .build()
+                                Address.Geo.builder().latitude(37.4443).longitude(-122.1598).build()
                             )
                             .relatedCategory(JsonValue.from(mapOf<String, Any>()))
                             .relatedCustomer(JsonValue.from(mapOf<String, Any>()))

@@ -15,8 +15,8 @@ import com.hello_world_testingggg.api.core.http.HttpResponseFor
 import com.hello_world_testingggg.api.core.http.json
 import com.hello_world_testingggg.api.core.http.parseable
 import com.hello_world_testingggg.api.core.prepare
-import com.hello_world_testingggg.api.models.AiAiQueryParams
-import com.hello_world_testingggg.api.models.AiAiQueryResponse
+import com.hello_world_testingggg.api.models.ai.AiAiQueryParams
+import com.hello_world_testingggg.api.models.ai.AiAiQueryResponse
 
 class AiServiceImpl internal constructor(private val clientOptions: ClientOptions) : AiService {
 

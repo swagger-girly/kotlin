@@ -1,0 +1,1699 @@
+// File generated from our OpenAPI spec by Stainless.
+
+package com.hello_world_testingggg.api.models.placements
+
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import com.hello_world_testingggg.api.core.JsonValue
+import com.hello_world_testingggg.api.core.jsonMapper
+import com.hello_world_testingggg.api.models.Address
+import com.hello_world_testingggg.api.models.Money
+import com.hello_world_testingggg.api.models.adoptions.Application
+import com.hello_world_testingggg.api.models.pet.Pet
+import com.hello_world_testingggg.api.models.pet.PetStatus
+import com.hello_world_testingggg.api.models.veterinary.MedicalSummary
+import com.hello_world_testingggg.api.models.veterinary.VaccinationRecord
+import java.time.OffsetDateTime
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Test
+
+internal class PlacementListPageResponseTest {
+
+    @Test
+    fun create() {
+        val placementListPageResponse =
+            PlacementListPageResponse.builder()
+                .addItem(
+                    Placement.builder()
+                        .id("id")
+                        .application(
+                            Application.builder()
+                                .id("id")
+                                .applicant(
+                                    Application.Applicant.Individual.builder()
+                                        .name("name")
+                                        .address(
+                                            Address.builder()
+                                                .city("Palo Alto")
+                                                .geo(
+                                                    Address.Geo.builder()
+                                                        .latitude(37.4443)
+                                                        .longitude(-122.1598)
+                                                        .build()
+                                                )
+                                                .relatedCategory(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedCustomer(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedMoney(
+                                                    Money.builder()
+                                                        .amount(2500L)
+                                                        .currency("USD")
+                                                        .relatedCategory(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .relatedCustomer(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .relatedOrder(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .relatedPet(
+                                                            Pet.builder()
+                                                                .name("doggie")
+                                                                .addPhotoUrl("string")
+                                                                .id(10L)
+                                                                .acquisitionChannel(
+                                                                    Pet.AcquisitionChannel.BREEDER
+                                                                )
+                                                                .category(
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    )
+                                                                )
+                                                                .microchipId("string")
+                                                                .relatedCategory(
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    )
+                                                                )
+                                                                .relatedCustomer(
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    )
+                                                                )
+                                                                .relatedOrder(
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    )
+                                                                )
+                                                                .relatedShelter(
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    )
+                                                                )
+                                                                .relatedUser(
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    )
+                                                                )
+                                                                .status(PetStatus.AVAILABLE)
+                                                                .addTag(
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    )
+                                                                )
+                                                                .build()
+                                                        )
+                                                        .relatedShelter(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .relatedTag(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .relatedUser(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .build()
+                                                )
+                                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedPet(
+                                                    Pet.builder()
+                                                        .name("doggie")
+                                                        .addPhotoUrl("string")
+                                                        .id(10L)
+                                                        .acquisitionChannel(
+                                                            Pet.AcquisitionChannel.BREEDER
+                                                        )
+                                                        .category(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .microchipId("string")
+                                                        .relatedCategory(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .relatedCustomer(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .relatedOrder(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .relatedShelter(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .relatedUser(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .status(PetStatus.AVAILABLE)
+                                                        .addTag(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .build()
+                                                )
+                                                .relatedShelter(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                                .state("CA")
+                                                .street("437 Lytton")
+                                                .zip("94301")
+                                                .build()
+                                        )
+                                        .age(0)
+                                        .email("email")
+                                        .build()
+                                )
+                                .status(Application.Status.RECEIVED)
+                                .submittedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                                .decision(
+                                    Application.Decision.DecisionApproved.builder()
+                                        .approvedAt(
+                                            OffsetDateTime.parse("2019-12-27T18:11:19.117Z")
+                                        )
+                                        .addCondition("string")
+                                        .build()
+                                )
+                                .fee(
+                                    Money.builder()
+                                        .amount(2500L)
+                                        .currency("USD")
+                                        .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                        .build()
+                                )
+                                .addHistory(
+                                    Application.History.builder()
+                                        .changedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                                        .status(Application.History.Status.RECEIVED)
+                                        .note("note")
+                                        .build()
+                                )
+                                .latestRejection(
+                                    Application.LatestRejection.builder()
+                                        .reason(Application.LatestRejection.Reason.POLICY)
+                                        .appealDeadline(
+                                            OffsetDateTime.parse("2019-12-27T18:11:19.117Z")
+                                        )
+                                        .build()
+                                )
+                                .pet(
+                                    Pet.builder()
+                                        .name("doggie")
+                                        .addPhotoUrl("string")
+                                        .id(10L)
+                                        .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
+                                        .category(JsonValue.from(mapOf<String, Any>()))
+                                        .microchipId("string")
+                                        .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                        .status(PetStatus.AVAILABLE)
+                                        .addTag(JsonValue.from(mapOf<String, Any>()))
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .createdAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .status(Placement.Status.PENDING)
+                        .addActivity(
+                            Placement.Activity.PlacementTransferEvent.builder()
+                                .id("id")
+                                .leg(
+                                    TransferLeg.builder()
+                                        .location(
+                                            Address.builder()
+                                                .city("Palo Alto")
+                                                .geo(
+                                                    Address.Geo.builder()
+                                                        .latitude(37.4443)
+                                                        .longitude(-122.1598)
+                                                        .build()
+                                                )
+                                                .relatedCategory(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedCustomer(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedShelter(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                                .state("CA")
+                                                .street("437 Lytton")
+                                                .zip("94301")
+                                                .build()
+                                        )
+                                        .contact(
+                                            TransferLeg.Contact.builder()
+                                                .name("name")
+                                                .phone("phone")
+                                                .build()
+                                        )
+                                        .cost(
+                                            Money.builder()
+                                                .amount(2500L)
+                                                .currency("USD")
+                                                .relatedCategory(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedCustomer(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedShelter(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                                .build()
+                                        )
+                                        .window(
+                                            TransferLeg.Window.builder()
+                                                .end(
+                                                    OffsetDateTime.parse("2019-12-27T18:11:19.117Z")
+                                                )
+                                                .start(
+                                                    OffsetDateTime.parse("2019-12-27T18:11:19.117Z")
+                                                )
+                                                .build()
+                                        )
+                                        .build()
+                                )
+                                .occurredAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                                .type(Placement.Activity.PlacementTransferEvent.Type.TRANSFER)
+                                .note("note")
+                                .build()
+                        )
+                        .addEvent(
+                            PlacementEvent.PlacementTransferEvent.builder()
+                                .id("id")
+                                .leg(
+                                    TransferLeg.builder()
+                                        .location(
+                                            Address.builder()
+                                                .city("Palo Alto")
+                                                .geo(
+                                                    Address.Geo.builder()
+                                                        .latitude(37.4443)
+                                                        .longitude(-122.1598)
+                                                        .build()
+                                                )
+                                                .relatedCategory(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedCustomer(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedShelter(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                                .state("CA")
+                                                .street("437 Lytton")
+                                                .zip("94301")
+                                                .build()
+                                        )
+                                        .contact(
+                                            TransferLeg.Contact.builder()
+                                                .name("name")
+                                                .phone("phone")
+                                                .build()
+                                        )
+                                        .cost(
+                                            Money.builder()
+                                                .amount(2500L)
+                                                .currency("USD")
+                                                .relatedCategory(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedCustomer(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedShelter(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                                .build()
+                                        )
+                                        .window(
+                                            TransferLeg.Window.builder()
+                                                .end(
+                                                    OffsetDateTime.parse("2019-12-27T18:11:19.117Z")
+                                                )
+                                                .start(
+                                                    OffsetDateTime.parse("2019-12-27T18:11:19.117Z")
+                                                )
+                                                .build()
+                                        )
+                                        .build()
+                                )
+                                .occurredAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                                .type(PlacementEvent.PlacementTransferEvent.Type.TRANSFER)
+                                .note("note")
+                                .build()
+                        )
+                        .followUpAfter(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .logistics(
+                            Placement.Logistics.builder()
+                                .delivery(
+                                    TransferLeg.builder()
+                                        .location(
+                                            Address.builder()
+                                                .city("Palo Alto")
+                                                .geo(
+                                                    Address.Geo.builder()
+                                                        .latitude(37.4443)
+                                                        .longitude(-122.1598)
+                                                        .build()
+                                                )
+                                                .relatedCategory(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedCustomer(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedShelter(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                                .state("CA")
+                                                .street("437 Lytton")
+                                                .zip("94301")
+                                                .build()
+                                        )
+                                        .contact(
+                                            TransferLeg.Contact.builder()
+                                                .name("name")
+                                                .phone("phone")
+                                                .build()
+                                        )
+                                        .cost(
+                                            Money.builder()
+                                                .amount(2500L)
+                                                .currency("USD")
+                                                .relatedCategory(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedCustomer(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedShelter(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                                .build()
+                                        )
+                                        .window(
+                                            TransferLeg.Window.builder()
+                                                .end(
+                                                    OffsetDateTime.parse("2019-12-27T18:11:19.117Z")
+                                                )
+                                                .start(
+                                                    OffsetDateTime.parse("2019-12-27T18:11:19.117Z")
+                                                )
+                                                .build()
+                                        )
+                                        .build()
+                                )
+                                .handler(
+                                    Placement.Logistics.Handler.builder()
+                                        .certification(
+                                            Placement.Logistics.Handler.Certification.builder()
+                                                .level(
+                                                    Placement.Logistics.Handler.Certification.Level
+                                                        .STANDARD
+                                                )
+                                                .audit(
+                                                    Placement.Logistics.Handler.Certification.Audit
+                                                        .builder()
+                                                        .recordedAt(
+                                                            OffsetDateTime.parse(
+                                                                "2019-12-27T18:11:19.117Z"
+                                                            )
+                                                        )
+                                                        .recordedBy("recordedBy")
+                                                        .source(
+                                                            Placement.Logistics.Handler
+                                                                .Certification
+                                                                .Audit
+                                                                .Source
+                                                                .MANUAL
+                                                        )
+                                                        .build()
+                                                )
+                                                .issuedBy("issuedBy")
+                                                .build()
+                                        )
+                                        .name("name")
+                                        .build()
+                                )
+                                .pickup(
+                                    TransferLeg.builder()
+                                        .location(
+                                            Address.builder()
+                                                .city("Palo Alto")
+                                                .geo(
+                                                    Address.Geo.builder()
+                                                        .latitude(37.4443)
+                                                        .longitude(-122.1598)
+                                                        .build()
+                                                )
+                                                .relatedCategory(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedCustomer(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedShelter(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                                .state("CA")
+                                                .street("437 Lytton")
+                                                .zip("94301")
+                                                .build()
+                                        )
+                                        .contact(
+                                            TransferLeg.Contact.builder()
+                                                .name("name")
+                                                .phone("phone")
+                                                .build()
+                                        )
+                                        .cost(
+                                            Money.builder()
+                                                .amount(2500L)
+                                                .currency("USD")
+                                                .relatedCategory(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedCustomer(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedShelter(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                                .build()
+                                        )
+                                        .window(
+                                            TransferLeg.Window.builder()
+                                                .end(
+                                                    OffsetDateTime.parse("2019-12-27T18:11:19.117Z")
+                                                )
+                                                .start(
+                                                    OffsetDateTime.parse("2019-12-27T18:11:19.117Z")
+                                                )
+                                                .build()
+                                        )
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .medicalClearance(
+                            MedicalSummary.builder()
+                                .petId(0L)
+                                .audit(
+                                    MedicalSummary.Audit.builder()
+                                        .recordedAt(
+                                            OffsetDateTime.parse("2019-12-27T18:11:19.117Z")
+                                        )
+                                        .recordedBy("recordedBy")
+                                        .source(MedicalSummary.Audit.Source.MANUAL)
+                                        .build()
+                                )
+                                .addCondition(
+                                    MedicalSummary.Condition.builder()
+                                        .code("code")
+                                        .severity(MedicalSummary.Condition.Severity.MILD)
+                                        .treatment(
+                                            MedicalSummary.Condition.Treatment.builder()
+                                                .addMedication(
+                                                    MedicalSummary.Condition.Treatment.Medication
+                                                        .builder()
+                                                        .name("name")
+                                                        .dosage("string")
+                                                        .build()
+                                                )
+                                                .plan("plan")
+                                                .build()
+                                        )
+                                        .build()
+                                )
+                                .addVaccination(
+                                    VaccinationRecord.builder()
+                                        .id("id")
+                                        .administeredAt(
+                                            OffsetDateTime.parse("2019-12-27T18:11:19.117Z")
+                                        )
+                                        .vaccine("vaccine")
+                                        .audit(
+                                            VaccinationRecord.Audit.builder()
+                                                .recordedAt(
+                                                    OffsetDateTime.parse("2019-12-27T18:11:19.117Z")
+                                                )
+                                                .recordedBy("recordedBy")
+                                                .source(VaccinationRecord.Audit.Source.MANUAL)
+                                                .build()
+                                        )
+                                        .addBoosterSchedule(
+                                            VaccinationRecord.BoosterSchedule.builder()
+                                                .due(
+                                                    OffsetDateTime.parse("2019-12-27T18:11:19.117Z")
+                                                )
+                                                .completed(true)
+                                                .dose(0.0)
+                                                .build()
+                                        )
+                                        .veterinarian(
+                                            VaccinationRecord.Veterinarian.builder()
+                                                .license(
+                                                    VaccinationRecord.Veterinarian.License.builder()
+                                                        .number("number")
+                                                        .region("region")
+                                                        .build()
+                                                )
+                                                .name("name")
+                                                .build()
+                                        )
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .build()
+                )
+                .nextCursor("next_cursor")
+                .build()
+
+        assertThat(placementListPageResponse.items())
+            .containsExactly(
+                Placement.builder()
+                    .id("id")
+                    .application(
+                        Application.builder()
+                            .id("id")
+                            .applicant(
+                                Application.Applicant.Individual.builder()
+                                    .name("name")
+                                    .address(
+                                        Address.builder()
+                                            .city("Palo Alto")
+                                            .geo(
+                                                Address.Geo.builder()
+                                                    .latitude(37.4443)
+                                                    .longitude(-122.1598)
+                                                    .build()
+                                            )
+                                            .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedMoney(
+                                                Money.builder()
+                                                    .amount(2500L)
+                                                    .currency("USD")
+                                                    .relatedCategory(
+                                                        JsonValue.from(mapOf<String, Any>())
+                                                    )
+                                                    .relatedCustomer(
+                                                        JsonValue.from(mapOf<String, Any>())
+                                                    )
+                                                    .relatedOrder(
+                                                        JsonValue.from(mapOf<String, Any>())
+                                                    )
+                                                    .relatedPet(
+                                                        Pet.builder()
+                                                            .name("doggie")
+                                                            .addPhotoUrl("string")
+                                                            .id(10L)
+                                                            .acquisitionChannel(
+                                                                Pet.AcquisitionChannel.BREEDER
+                                                            )
+                                                            .category(
+                                                                JsonValue.from(mapOf<String, Any>())
+                                                            )
+                                                            .microchipId("string")
+                                                            .relatedCategory(
+                                                                JsonValue.from(mapOf<String, Any>())
+                                                            )
+                                                            .relatedCustomer(
+                                                                JsonValue.from(mapOf<String, Any>())
+                                                            )
+                                                            .relatedOrder(
+                                                                JsonValue.from(mapOf<String, Any>())
+                                                            )
+                                                            .relatedShelter(
+                                                                JsonValue.from(mapOf<String, Any>())
+                                                            )
+                                                            .relatedUser(
+                                                                JsonValue.from(mapOf<String, Any>())
+                                                            )
+                                                            .status(PetStatus.AVAILABLE)
+                                                            .addTag(
+                                                                JsonValue.from(mapOf<String, Any>())
+                                                            )
+                                                            .build()
+                                                    )
+                                                    .relatedShelter(
+                                                        JsonValue.from(mapOf<String, Any>())
+                                                    )
+                                                    .relatedTag(
+                                                        JsonValue.from(mapOf<String, Any>())
+                                                    )
+                                                    .relatedUser(
+                                                        JsonValue.from(mapOf<String, Any>())
+                                                    )
+                                                    .build()
+                                            )
+                                            .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedPet(
+                                                Pet.builder()
+                                                    .name("doggie")
+                                                    .addPhotoUrl("string")
+                                                    .id(10L)
+                                                    .acquisitionChannel(
+                                                        Pet.AcquisitionChannel.BREEDER
+                                                    )
+                                                    .category(JsonValue.from(mapOf<String, Any>()))
+                                                    .microchipId("string")
+                                                    .relatedCategory(
+                                                        JsonValue.from(mapOf<String, Any>())
+                                                    )
+                                                    .relatedCustomer(
+                                                        JsonValue.from(mapOf<String, Any>())
+                                                    )
+                                                    .relatedOrder(
+                                                        JsonValue.from(mapOf<String, Any>())
+                                                    )
+                                                    .relatedShelter(
+                                                        JsonValue.from(mapOf<String, Any>())
+                                                    )
+                                                    .relatedUser(
+                                                        JsonValue.from(mapOf<String, Any>())
+                                                    )
+                                                    .status(PetStatus.AVAILABLE)
+                                                    .addTag(JsonValue.from(mapOf<String, Any>()))
+                                                    .build()
+                                            )
+                                            .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                            .state("CA")
+                                            .street("437 Lytton")
+                                            .zip("94301")
+                                            .build()
+                                    )
+                                    .age(0)
+                                    .email("email")
+                                    .build()
+                            )
+                            .status(Application.Status.RECEIVED)
+                            .submittedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                            .decision(
+                                Application.Decision.DecisionApproved.builder()
+                                    .approvedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                                    .addCondition("string")
+                                    .build()
+                            )
+                            .fee(
+                                Money.builder()
+                                    .amount(2500L)
+                                    .currency("USD")
+                                    .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                    .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                    .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                    .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                    .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                    .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                    .build()
+                            )
+                            .addHistory(
+                                Application.History.builder()
+                                    .changedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                                    .status(Application.History.Status.RECEIVED)
+                                    .note("note")
+                                    .build()
+                            )
+                            .latestRejection(
+                                Application.LatestRejection.builder()
+                                    .reason(Application.LatestRejection.Reason.POLICY)
+                                    .appealDeadline(
+                                        OffsetDateTime.parse("2019-12-27T18:11:19.117Z")
+                                    )
+                                    .build()
+                            )
+                            .pet(
+                                Pet.builder()
+                                    .name("doggie")
+                                    .addPhotoUrl("string")
+                                    .id(10L)
+                                    .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
+                                    .category(JsonValue.from(mapOf<String, Any>()))
+                                    .microchipId("string")
+                                    .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                    .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                    .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                    .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                    .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                    .status(PetStatus.AVAILABLE)
+                                    .addTag(JsonValue.from(mapOf<String, Any>()))
+                                    .build()
+                            )
+                            .build()
+                    )
+                    .createdAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                    .status(Placement.Status.PENDING)
+                    .addActivity(
+                        Placement.Activity.PlacementTransferEvent.builder()
+                            .id("id")
+                            .leg(
+                                TransferLeg.builder()
+                                    .location(
+                                        Address.builder()
+                                            .city("Palo Alto")
+                                            .geo(
+                                                Address.Geo.builder()
+                                                    .latitude(37.4443)
+                                                    .longitude(-122.1598)
+                                                    .build()
+                                            )
+                                            .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                            .state("CA")
+                                            .street("437 Lytton")
+                                            .zip("94301")
+                                            .build()
+                                    )
+                                    .contact(
+                                        TransferLeg.Contact.builder()
+                                            .name("name")
+                                            .phone("phone")
+                                            .build()
+                                    )
+                                    .cost(
+                                        Money.builder()
+                                            .amount(2500L)
+                                            .currency("USD")
+                                            .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                            .build()
+                                    )
+                                    .window(
+                                        TransferLeg.Window.builder()
+                                            .end(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                                            .start(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                                            .build()
+                                    )
+                                    .build()
+                            )
+                            .occurredAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                            .type(Placement.Activity.PlacementTransferEvent.Type.TRANSFER)
+                            .note("note")
+                            .build()
+                    )
+                    .addEvent(
+                        PlacementEvent.PlacementTransferEvent.builder()
+                            .id("id")
+                            .leg(
+                                TransferLeg.builder()
+                                    .location(
+                                        Address.builder()
+                                            .city("Palo Alto")
+                                            .geo(
+                                                Address.Geo.builder()
+                                                    .latitude(37.4443)
+                                                    .longitude(-122.1598)
+                                                    .build()
+                                            )
+                                            .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                            .state("CA")
+                                            .street("437 Lytton")
+                                            .zip("94301")
+                                            .build()
+                                    )
+                                    .contact(
+                                        TransferLeg.Contact.builder()
+                                            .name("name")
+                                            .phone("phone")
+                                            .build()
+                                    )
+                                    .cost(
+                                        Money.builder()
+                                            .amount(2500L)
+                                            .currency("USD")
+                                            .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                            .build()
+                                    )
+                                    .window(
+                                        TransferLeg.Window.builder()
+                                            .end(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                                            .start(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                                            .build()
+                                    )
+                                    .build()
+                            )
+                            .occurredAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                            .type(PlacementEvent.PlacementTransferEvent.Type.TRANSFER)
+                            .note("note")
+                            .build()
+                    )
+                    .followUpAfter(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                    .logistics(
+                        Placement.Logistics.builder()
+                            .delivery(
+                                TransferLeg.builder()
+                                    .location(
+                                        Address.builder()
+                                            .city("Palo Alto")
+                                            .geo(
+                                                Address.Geo.builder()
+                                                    .latitude(37.4443)
+                                                    .longitude(-122.1598)
+                                                    .build()
+                                            )
+                                            .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                            .state("CA")
+                                            .street("437 Lytton")
+                                            .zip("94301")
+                                            .build()
+                                    )
+                                    .contact(
+                                        TransferLeg.Contact.builder()
+                                            .name("name")
+                                            .phone("phone")
+                                            .build()
+                                    )
+                                    .cost(
+                                        Money.builder()
+                                            .amount(2500L)
+                                            .currency("USD")
+                                            .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                            .build()
+                                    )
+                                    .window(
+                                        TransferLeg.Window.builder()
+                                            .end(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                                            .start(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                                            .build()
+                                    )
+                                    .build()
+                            )
+                            .handler(
+                                Placement.Logistics.Handler.builder()
+                                    .certification(
+                                        Placement.Logistics.Handler.Certification.builder()
+                                            .level(
+                                                Placement.Logistics.Handler.Certification.Level
+                                                    .STANDARD
+                                            )
+                                            .audit(
+                                                Placement.Logistics.Handler.Certification.Audit
+                                                    .builder()
+                                                    .recordedAt(
+                                                        OffsetDateTime.parse(
+                                                            "2019-12-27T18:11:19.117Z"
+                                                        )
+                                                    )
+                                                    .recordedBy("recordedBy")
+                                                    .source(
+                                                        Placement.Logistics.Handler.Certification
+                                                            .Audit
+                                                            .Source
+                                                            .MANUAL
+                                                    )
+                                                    .build()
+                                            )
+                                            .issuedBy("issuedBy")
+                                            .build()
+                                    )
+                                    .name("name")
+                                    .build()
+                            )
+                            .pickup(
+                                TransferLeg.builder()
+                                    .location(
+                                        Address.builder()
+                                            .city("Palo Alto")
+                                            .geo(
+                                                Address.Geo.builder()
+                                                    .latitude(37.4443)
+                                                    .longitude(-122.1598)
+                                                    .build()
+                                            )
+                                            .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                            .state("CA")
+                                            .street("437 Lytton")
+                                            .zip("94301")
+                                            .build()
+                                    )
+                                    .contact(
+                                        TransferLeg.Contact.builder()
+                                            .name("name")
+                                            .phone("phone")
+                                            .build()
+                                    )
+                                    .cost(
+                                        Money.builder()
+                                            .amount(2500L)
+                                            .currency("USD")
+                                            .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                            .build()
+                                    )
+                                    .window(
+                                        TransferLeg.Window.builder()
+                                            .end(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                                            .start(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                                            .build()
+                                    )
+                                    .build()
+                            )
+                            .build()
+                    )
+                    .medicalClearance(
+                        MedicalSummary.builder()
+                            .petId(0L)
+                            .audit(
+                                MedicalSummary.Audit.builder()
+                                    .recordedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                                    .recordedBy("recordedBy")
+                                    .source(MedicalSummary.Audit.Source.MANUAL)
+                                    .build()
+                            )
+                            .addCondition(
+                                MedicalSummary.Condition.builder()
+                                    .code("code")
+                                    .severity(MedicalSummary.Condition.Severity.MILD)
+                                    .treatment(
+                                        MedicalSummary.Condition.Treatment.builder()
+                                            .addMedication(
+                                                MedicalSummary.Condition.Treatment.Medication
+                                                    .builder()
+                                                    .name("name")
+                                                    .dosage("string")
+                                                    .build()
+                                            )
+                                            .plan("plan")
+                                            .build()
+                                    )
+                                    .build()
+                            )
+                            .addVaccination(
+                                VaccinationRecord.builder()
+                                    .id("id")
+                                    .administeredAt(
+                                        OffsetDateTime.parse("2019-12-27T18:11:19.117Z")
+                                    )
+                                    .vaccine("vaccine")
+                                    .audit(
+                                        VaccinationRecord.Audit.builder()
+                                            .recordedAt(
+                                                OffsetDateTime.parse("2019-12-27T18:11:19.117Z")
+                                            )
+                                            .recordedBy("recordedBy")
+                                            .source(VaccinationRecord.Audit.Source.MANUAL)
+                                            .build()
+                                    )
+                                    .addBoosterSchedule(
+                                        VaccinationRecord.BoosterSchedule.builder()
+                                            .due(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                                            .completed(true)
+                                            .dose(0.0)
+                                            .build()
+                                    )
+                                    .veterinarian(
+                                        VaccinationRecord.Veterinarian.builder()
+                                            .license(
+                                                VaccinationRecord.Veterinarian.License.builder()
+                                                    .number("number")
+                                                    .region("region")
+                                                    .build()
+                                            )
+                                            .name("name")
+                                            .build()
+                                    )
+                                    .build()
+                            )
+                            .build()
+                    )
+                    .build()
+            )
+        assertThat(placementListPageResponse.nextCursor()).isEqualTo("next_cursor")
+    }
+
+    @Test
+    fun roundtrip() {
+        val jsonMapper = jsonMapper()
+        val placementListPageResponse =
+            PlacementListPageResponse.builder()
+                .addItem(
+                    Placement.builder()
+                        .id("id")
+                        .application(
+                            Application.builder()
+                                .id("id")
+                                .applicant(
+                                    Application.Applicant.Individual.builder()
+                                        .name("name")
+                                        .address(
+                                            Address.builder()
+                                                .city("Palo Alto")
+                                                .geo(
+                                                    Address.Geo.builder()
+                                                        .latitude(37.4443)
+                                                        .longitude(-122.1598)
+                                                        .build()
+                                                )
+                                                .relatedCategory(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedCustomer(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedMoney(
+                                                    Money.builder()
+                                                        .amount(2500L)
+                                                        .currency("USD")
+                                                        .relatedCategory(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .relatedCustomer(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .relatedOrder(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .relatedPet(
+                                                            Pet.builder()
+                                                                .name("doggie")
+                                                                .addPhotoUrl("string")
+                                                                .id(10L)
+                                                                .acquisitionChannel(
+                                                                    Pet.AcquisitionChannel.BREEDER
+                                                                )
+                                                                .category(
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    )
+                                                                )
+                                                                .microchipId("string")
+                                                                .relatedCategory(
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    )
+                                                                )
+                                                                .relatedCustomer(
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    )
+                                                                )
+                                                                .relatedOrder(
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    )
+                                                                )
+                                                                .relatedShelter(
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    )
+                                                                )
+                                                                .relatedUser(
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    )
+                                                                )
+                                                                .status(PetStatus.AVAILABLE)
+                                                                .addTag(
+                                                                    JsonValue.from(
+                                                                        mapOf<String, Any>()
+                                                                    )
+                                                                )
+                                                                .build()
+                                                        )
+                                                        .relatedShelter(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .relatedTag(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .relatedUser(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .build()
+                                                )
+                                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedPet(
+                                                    Pet.builder()
+                                                        .name("doggie")
+                                                        .addPhotoUrl("string")
+                                                        .id(10L)
+                                                        .acquisitionChannel(
+                                                            Pet.AcquisitionChannel.BREEDER
+                                                        )
+                                                        .category(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .microchipId("string")
+                                                        .relatedCategory(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .relatedCustomer(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .relatedOrder(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .relatedShelter(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .relatedUser(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .status(PetStatus.AVAILABLE)
+                                                        .addTag(
+                                                            JsonValue.from(mapOf<String, Any>())
+                                                        )
+                                                        .build()
+                                                )
+                                                .relatedShelter(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                                .state("CA")
+                                                .street("437 Lytton")
+                                                .zip("94301")
+                                                .build()
+                                        )
+                                        .age(0)
+                                        .email("email")
+                                        .build()
+                                )
+                                .status(Application.Status.RECEIVED)
+                                .submittedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                                .decision(
+                                    Application.Decision.DecisionApproved.builder()
+                                        .approvedAt(
+                                            OffsetDateTime.parse("2019-12-27T18:11:19.117Z")
+                                        )
+                                        .addCondition("string")
+                                        .build()
+                                )
+                                .fee(
+                                    Money.builder()
+                                        .amount(2500L)
+                                        .currency("USD")
+                                        .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                        .build()
+                                )
+                                .addHistory(
+                                    Application.History.builder()
+                                        .changedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                                        .status(Application.History.Status.RECEIVED)
+                                        .note("note")
+                                        .build()
+                                )
+                                .latestRejection(
+                                    Application.LatestRejection.builder()
+                                        .reason(Application.LatestRejection.Reason.POLICY)
+                                        .appealDeadline(
+                                            OffsetDateTime.parse("2019-12-27T18:11:19.117Z")
+                                        )
+                                        .build()
+                                )
+                                .pet(
+                                    Pet.builder()
+                                        .name("doggie")
+                                        .addPhotoUrl("string")
+                                        .id(10L)
+                                        .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
+                                        .category(JsonValue.from(mapOf<String, Any>()))
+                                        .microchipId("string")
+                                        .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                        .status(PetStatus.AVAILABLE)
+                                        .addTag(JsonValue.from(mapOf<String, Any>()))
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .createdAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .status(Placement.Status.PENDING)
+                        .addActivity(
+                            Placement.Activity.PlacementTransferEvent.builder()
+                                .id("id")
+                                .leg(
+                                    TransferLeg.builder()
+                                        .location(
+                                            Address.builder()
+                                                .city("Palo Alto")
+                                                .geo(
+                                                    Address.Geo.builder()
+                                                        .latitude(37.4443)
+                                                        .longitude(-122.1598)
+                                                        .build()
+                                                )
+                                                .relatedCategory(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedCustomer(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedShelter(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                                .state("CA")
+                                                .street("437 Lytton")
+                                                .zip("94301")
+                                                .build()
+                                        )
+                                        .contact(
+                                            TransferLeg.Contact.builder()
+                                                .name("name")
+                                                .phone("phone")
+                                                .build()
+                                        )
+                                        .cost(
+                                            Money.builder()
+                                                .amount(2500L)
+                                                .currency("USD")
+                                                .relatedCategory(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedCustomer(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedShelter(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                                .build()
+                                        )
+                                        .window(
+                                            TransferLeg.Window.builder()
+                                                .end(
+                                                    OffsetDateTime.parse("2019-12-27T18:11:19.117Z")
+                                                )
+                                                .start(
+                                                    OffsetDateTime.parse("2019-12-27T18:11:19.117Z")
+                                                )
+                                                .build()
+                                        )
+                                        .build()
+                                )
+                                .occurredAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                                .type(Placement.Activity.PlacementTransferEvent.Type.TRANSFER)
+                                .note("note")
+                                .build()
+                        )
+                        .addEvent(
+                            PlacementEvent.PlacementTransferEvent.builder()
+                                .id("id")
+                                .leg(
+                                    TransferLeg.builder()
+                                        .location(
+                                            Address.builder()
+                                                .city("Palo Alto")
+                                                .geo(
+                                                    Address.Geo.builder()
+                                                        .latitude(37.4443)
+                                                        .longitude(-122.1598)
+                                                        .build()
+                                                )
+                                                .relatedCategory(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedCustomer(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedShelter(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                                .state("CA")
+                                                .street("437 Lytton")
+                                                .zip("94301")
+                                                .build()
+                                        )
+                                        .contact(
+                                            TransferLeg.Contact.builder()
+                                                .name("name")
+                                                .phone("phone")
+                                                .build()
+                                        )
+                                        .cost(
+                                            Money.builder()
+                                                .amount(2500L)
+                                                .currency("USD")
+                                                .relatedCategory(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedCustomer(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedShelter(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                                .build()
+                                        )
+                                        .window(
+                                            TransferLeg.Window.builder()
+                                                .end(
+                                                    OffsetDateTime.parse("2019-12-27T18:11:19.117Z")
+                                                )
+                                                .start(
+                                                    OffsetDateTime.parse("2019-12-27T18:11:19.117Z")
+                                                )
+                                                .build()
+                                        )
+                                        .build()
+                                )
+                                .occurredAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                                .type(PlacementEvent.PlacementTransferEvent.Type.TRANSFER)
+                                .note("note")
+                                .build()
+                        )
+                        .followUpAfter(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .logistics(
+                            Placement.Logistics.builder()
+                                .delivery(
+                                    TransferLeg.builder()
+                                        .location(
+                                            Address.builder()
+                                                .city("Palo Alto")
+                                                .geo(
+                                                    Address.Geo.builder()
+                                                        .latitude(37.4443)
+                                                        .longitude(-122.1598)
+                                                        .build()
+                                                )
+                                                .relatedCategory(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedCustomer(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedShelter(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                                .state("CA")
+                                                .street("437 Lytton")
+                                                .zip("94301")
+                                                .build()
+                                        )
+                                        .contact(
+                                            TransferLeg.Contact.builder()
+                                                .name("name")
+                                                .phone("phone")
+                                                .build()
+                                        )
+                                        .cost(
+                                            Money.builder()
+                                                .amount(2500L)
+                                                .currency("USD")
+                                                .relatedCategory(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedCustomer(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedShelter(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                                .build()
+                                        )
+                                        .window(
+                                            TransferLeg.Window.builder()
+                                                .end(
+                                                    OffsetDateTime.parse("2019-12-27T18:11:19.117Z")
+                                                )
+                                                .start(
+                                                    OffsetDateTime.parse("2019-12-27T18:11:19.117Z")
+                                                )
+                                                .build()
+                                        )
+                                        .build()
+                                )
+                                .handler(
+                                    Placement.Logistics.Handler.builder()
+                                        .certification(
+                                            Placement.Logistics.Handler.Certification.builder()
+                                                .level(
+                                                    Placement.Logistics.Handler.Certification.Level
+                                                        .STANDARD
+                                                )
+                                                .audit(
+                                                    Placement.Logistics.Handler.Certification.Audit
+                                                        .builder()
+                                                        .recordedAt(
+                                                            OffsetDateTime.parse(
+                                                                "2019-12-27T18:11:19.117Z"
+                                                            )
+                                                        )
+                                                        .recordedBy("recordedBy")
+                                                        .source(
+                                                            Placement.Logistics.Handler
+                                                                .Certification
+                                                                .Audit
+                                                                .Source
+                                                                .MANUAL
+                                                        )
+                                                        .build()
+                                                )
+                                                .issuedBy("issuedBy")
+                                                .build()
+                                        )
+                                        .name("name")
+                                        .build()
+                                )
+                                .pickup(
+                                    TransferLeg.builder()
+                                        .location(
+                                            Address.builder()
+                                                .city("Palo Alto")
+                                                .geo(
+                                                    Address.Geo.builder()
+                                                        .latitude(37.4443)
+                                                        .longitude(-122.1598)
+                                                        .build()
+                                                )
+                                                .relatedCategory(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedCustomer(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedShelter(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                                .state("CA")
+                                                .street("437 Lytton")
+                                                .zip("94301")
+                                                .build()
+                                        )
+                                        .contact(
+                                            TransferLeg.Contact.builder()
+                                                .name("name")
+                                                .phone("phone")
+                                                .build()
+                                        )
+                                        .cost(
+                                            Money.builder()
+                                                .amount(2500L)
+                                                .currency("USD")
+                                                .relatedCategory(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedCustomer(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedShelter(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                                .build()
+                                        )
+                                        .window(
+                                            TransferLeg.Window.builder()
+                                                .end(
+                                                    OffsetDateTime.parse("2019-12-27T18:11:19.117Z")
+                                                )
+                                                .start(
+                                                    OffsetDateTime.parse("2019-12-27T18:11:19.117Z")
+                                                )
+                                                .build()
+                                        )
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .medicalClearance(
+                            MedicalSummary.builder()
+                                .petId(0L)
+                                .audit(
+                                    MedicalSummary.Audit.builder()
+                                        .recordedAt(
+                                            OffsetDateTime.parse("2019-12-27T18:11:19.117Z")
+                                        )
+                                        .recordedBy("recordedBy")
+                                        .source(MedicalSummary.Audit.Source.MANUAL)
+                                        .build()
+                                )
+                                .addCondition(
+                                    MedicalSummary.Condition.builder()
+                                        .code("code")
+                                        .severity(MedicalSummary.Condition.Severity.MILD)
+                                        .treatment(
+                                            MedicalSummary.Condition.Treatment.builder()
+                                                .addMedication(
+                                                    MedicalSummary.Condition.Treatment.Medication
+                                                        .builder()
+                                                        .name("name")
+                                                        .dosage("string")
+                                                        .build()
+                                                )
+                                                .plan("plan")
+                                                .build()
+                                        )
+                                        .build()
+                                )
+                                .addVaccination(
+                                    VaccinationRecord.builder()
+                                        .id("id")
+                                        .administeredAt(
+                                            OffsetDateTime.parse("2019-12-27T18:11:19.117Z")
+                                        )
+                                        .vaccine("vaccine")
+                                        .audit(
+                                            VaccinationRecord.Audit.builder()
+                                                .recordedAt(
+                                                    OffsetDateTime.parse("2019-12-27T18:11:19.117Z")
+                                                )
+                                                .recordedBy("recordedBy")
+                                                .source(VaccinationRecord.Audit.Source.MANUAL)
+                                                .build()
+                                        )
+                                        .addBoosterSchedule(
+                                            VaccinationRecord.BoosterSchedule.builder()
+                                                .due(
+                                                    OffsetDateTime.parse("2019-12-27T18:11:19.117Z")
+                                                )
+                                                .completed(true)
+                                                .dose(0.0)
+                                                .build()
+                                        )
+                                        .veterinarian(
+                                            VaccinationRecord.Veterinarian.builder()
+                                                .license(
+                                                    VaccinationRecord.Veterinarian.License.builder()
+                                                        .number("number")
+                                                        .region("region")
+                                                        .build()
+                                                )
+                                                .name("name")
+                                                .build()
+                                        )
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .build()
+                )
+                .nextCursor("next_cursor")
+                .build()
+
+        val roundtrippedPlacementListPageResponse =
+            jsonMapper.readValue(
+                jsonMapper.writeValueAsString(placementListPageResponse),
+                jacksonTypeRef<PlacementListPageResponse>(),
+            )
+
+        assertThat(roundtrippedPlacementListPageResponse).isEqualTo(placementListPageResponse)
+    }
+}

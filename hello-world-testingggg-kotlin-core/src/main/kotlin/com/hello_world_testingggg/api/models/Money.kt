@@ -12,6 +12,7 @@ import com.hello_world_testingggg.api.core.JsonMissing
 import com.hello_world_testingggg.api.core.JsonValue
 import com.hello_world_testingggg.api.core.checkRequired
 import com.hello_world_testingggg.api.errors.HelloWorldTestinggggInvalidDataException
+import com.hello_world_testingggg.api.models.pet.Pet
 import java.util.Collections
 import java.util.Objects
 

@@ -6,12 +6,12 @@ import com.google.errorprone.annotations.MustBeClosed
 import com.hello_world_testingggg.api.core.ClientOptions
 import com.hello_world_testingggg.api.core.RequestOptions
 import com.hello_world_testingggg.api.core.http.HttpResponseFor
-import com.hello_world_testingggg.api.models.Profile
-import com.hello_world_testingggg.api.models.ProfileCreateParams
-import com.hello_world_testingggg.api.models.ProfileCreateRequest
-import com.hello_world_testingggg.api.models.ProfileLegacySearchParams
-import com.hello_world_testingggg.api.models.ProfileRetrieveParams
-import com.hello_world_testingggg.api.models.ProfileUpdateParams
+import com.hello_world_testingggg.api.models.profiles.Profile
+import com.hello_world_testingggg.api.models.profiles.ProfileCreateParams
+import com.hello_world_testingggg.api.models.profiles.ProfileCreateRequest
+import com.hello_world_testingggg.api.models.profiles.ProfileLegacySearchParams
+import com.hello_world_testingggg.api.models.profiles.ProfileRetrieveParams
+import com.hello_world_testingggg.api.models.profiles.ProfileUpdateParams
 
 /** Pet owner profile and compliance operations */
 interface ProfileService {

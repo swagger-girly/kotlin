@@ -1,0 +1,357 @@
+// File generated from our OpenAPI spec by Stainless.
+
+package com.hello_world_testingggg.api.models.adoptions.policies
+
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import com.hello_world_testingggg.api.core.JsonValue
+import com.hello_world_testingggg.api.core.jsonMapper
+import com.hello_world_testingggg.api.models.Address
+import com.hello_world_testingggg.api.models.Money
+import com.hello_world_testingggg.api.models.pet.Pet
+import com.hello_world_testingggg.api.models.pet.PetStatus
+import java.time.OffsetDateTime
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Test
+
+internal class PolicyListPageResponseTest {
+
+    @Test
+    fun create() {
+        val policyListPageResponse =
+            PolicyListPageResponse.builder()
+                .addItem(
+                    Policy.builder()
+                        .id("id")
+                        .createdAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .name("name")
+                        .addRule(
+                            AdoptionRule.builder()
+                                .attribute(RuleAttribute.PET_STATUS)
+                                .operation(AdoptionRule.Operation.IS_ONE_OF)
+                                .value("string")
+                                .build()
+                        )
+                        .status(Policy.Status.DRAFT)
+                        .escalation(
+                            Policy.Escalation.builder()
+                                .operator(Policy.Escalation.Operator.ALL)
+                                .groups(listOf())
+                                .addRule(
+                                    AdoptionRule.builder()
+                                        .attribute(RuleAttribute.PET_STATUS)
+                                        .operation(AdoptionRule.Operation.IS_ONE_OF)
+                                        .value("string")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .feeCap(
+                            Money.builder()
+                                .amount(2500L)
+                                .currency("USD")
+                                .relatedAddress(
+                                    Address.builder()
+                                        .city("Palo Alto")
+                                        .geo(
+                                            Address.Geo.builder()
+                                                .latitude(37.4443)
+                                                .longitude(-122.1598)
+                                                .build()
+                                        )
+                                        .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedPet(
+                                            Pet.builder()
+                                                .name("doggie")
+                                                .addPhotoUrl("string")
+                                                .id(10L)
+                                                .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
+                                                .category(JsonValue.from(mapOf<String, Any>()))
+                                                .microchipId("string")
+                                                .relatedCategory(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedCustomer(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedShelter(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                                .status(PetStatus.AVAILABLE)
+                                                .addTag(JsonValue.from(mapOf<String, Any>()))
+                                                .build()
+                                        )
+                                        .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                        .state("CA")
+                                        .street("437 Lytton")
+                                        .zip("94301")
+                                        .build()
+                                )
+                                .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                .relatedPet(
+                                    Pet.builder()
+                                        .name("doggie")
+                                        .addPhotoUrl("string")
+                                        .id(10L)
+                                        .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
+                                        .category(JsonValue.from(mapOf<String, Any>()))
+                                        .microchipId("string")
+                                        .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                        .status(PetStatus.AVAILABLE)
+                                        .addTag(JsonValue.from(mapOf<String, Any>()))
+                                        .build()
+                                )
+                                .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                .build()
+                        )
+                        .notificationTarget("string")
+                        .regionalOverrides(
+                            Policy.RegionalOverrides.builder()
+                                .putAdditionalProperty("foo", JsonValue.from("string"))
+                                .build()
+                        )
+                        .build()
+                )
+                .nextCursor("next_cursor")
+                .build()
+
+        assertThat(policyListPageResponse.items())
+            .containsExactly(
+                Policy.builder()
+                    .id("id")
+                    .createdAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                    .name("name")
+                    .addRule(
+                        AdoptionRule.builder()
+                            .attribute(RuleAttribute.PET_STATUS)
+                            .operation(AdoptionRule.Operation.IS_ONE_OF)
+                            .value("string")
+                            .build()
+                    )
+                    .status(Policy.Status.DRAFT)
+                    .escalation(
+                        Policy.Escalation.builder()
+                            .operator(Policy.Escalation.Operator.ALL)
+                            .groups(listOf())
+                            .addRule(
+                                AdoptionRule.builder()
+                                    .attribute(RuleAttribute.PET_STATUS)
+                                    .operation(AdoptionRule.Operation.IS_ONE_OF)
+                                    .value("string")
+                                    .build()
+                            )
+                            .build()
+                    )
+                    .feeCap(
+                        Money.builder()
+                            .amount(2500L)
+                            .currency("USD")
+                            .relatedAddress(
+                                Address.builder()
+                                    .city("Palo Alto")
+                                    .geo(
+                                        Address.Geo.builder()
+                                            .latitude(37.4443)
+                                            .longitude(-122.1598)
+                                            .build()
+                                    )
+                                    .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                    .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                    .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                    .relatedPet(
+                                        Pet.builder()
+                                            .name("doggie")
+                                            .addPhotoUrl("string")
+                                            .id(10L)
+                                            .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
+                                            .category(JsonValue.from(mapOf<String, Any>()))
+                                            .microchipId("string")
+                                            .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                            .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                            .status(PetStatus.AVAILABLE)
+                                            .addTag(JsonValue.from(mapOf<String, Any>()))
+                                            .build()
+                                    )
+                                    .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                    .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                    .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                    .state("CA")
+                                    .street("437 Lytton")
+                                    .zip("94301")
+                                    .build()
+                            )
+                            .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                            .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                            .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                            .relatedPet(
+                                Pet.builder()
+                                    .name("doggie")
+                                    .addPhotoUrl("string")
+                                    .id(10L)
+                                    .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
+                                    .category(JsonValue.from(mapOf<String, Any>()))
+                                    .microchipId("string")
+                                    .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                    .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                    .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                    .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                    .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                    .status(PetStatus.AVAILABLE)
+                                    .addTag(JsonValue.from(mapOf<String, Any>()))
+                                    .build()
+                            )
+                            .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                            .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                            .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                            .build()
+                    )
+                    .notificationTarget("string")
+                    .regionalOverrides(
+                        Policy.RegionalOverrides.builder()
+                            .putAdditionalProperty("foo", JsonValue.from("string"))
+                            .build()
+                    )
+                    .build()
+            )
+        assertThat(policyListPageResponse.nextCursor()).isEqualTo("next_cursor")
+    }
+
+    @Test
+    fun roundtrip() {
+        val jsonMapper = jsonMapper()
+        val policyListPageResponse =
+            PolicyListPageResponse.builder()
+                .addItem(
+                    Policy.builder()
+                        .id("id")
+                        .createdAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .name("name")
+                        .addRule(
+                            AdoptionRule.builder()
+                                .attribute(RuleAttribute.PET_STATUS)
+                                .operation(AdoptionRule.Operation.IS_ONE_OF)
+                                .value("string")
+                                .build()
+                        )
+                        .status(Policy.Status.DRAFT)
+                        .escalation(
+                            Policy.Escalation.builder()
+                                .operator(Policy.Escalation.Operator.ALL)
+                                .groups(listOf())
+                                .addRule(
+                                    AdoptionRule.builder()
+                                        .attribute(RuleAttribute.PET_STATUS)
+                                        .operation(AdoptionRule.Operation.IS_ONE_OF)
+                                        .value("string")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .feeCap(
+                            Money.builder()
+                                .amount(2500L)
+                                .currency("USD")
+                                .relatedAddress(
+                                    Address.builder()
+                                        .city("Palo Alto")
+                                        .geo(
+                                            Address.Geo.builder()
+                                                .latitude(37.4443)
+                                                .longitude(-122.1598)
+                                                .build()
+                                        )
+                                        .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedPet(
+                                            Pet.builder()
+                                                .name("doggie")
+                                                .addPhotoUrl("string")
+                                                .id(10L)
+                                                .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
+                                                .category(JsonValue.from(mapOf<String, Any>()))
+                                                .microchipId("string")
+                                                .relatedCategory(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedCustomer(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                                .relatedShelter(
+                                                    JsonValue.from(mapOf<String, Any>())
+                                                )
+                                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                                .status(PetStatus.AVAILABLE)
+                                                .addTag(JsonValue.from(mapOf<String, Any>()))
+                                                .build()
+                                        )
+                                        .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                        .state("CA")
+                                        .street("437 Lytton")
+                                        .zip("94301")
+                                        .build()
+                                )
+                                .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                .relatedPet(
+                                    Pet.builder()
+                                        .name("doggie")
+                                        .addPhotoUrl("string")
+                                        .id(10L)
+                                        .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
+                                        .category(JsonValue.from(mapOf<String, Any>()))
+                                        .microchipId("string")
+                                        .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                        .status(PetStatus.AVAILABLE)
+                                        .addTag(JsonValue.from(mapOf<String, Any>()))
+                                        .build()
+                                )
+                                .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                .build()
+                        )
+                        .notificationTarget("string")
+                        .regionalOverrides(
+                            Policy.RegionalOverrides.builder()
+                                .putAdditionalProperty("foo", JsonValue.from("string"))
+                                .build()
+                        )
+                        .build()
+                )
+                .nextCursor("next_cursor")
+                .build()
+
+        val roundtrippedPolicyListPageResponse =
+            jsonMapper.readValue(
+                jsonMapper.writeValueAsString(policyListPageResponse),
+                jacksonTypeRef<PolicyListPageResponse>(),
+            )
+
+        assertThat(roundtrippedPolicyListPageResponse).isEqualTo(policyListPageResponse)
+    }
+}

@@ -6,12 +6,12 @@ import com.hello_world_testingggg.api.client.okhttp.HelloWorldTestinggggOkHttpCl
 import com.hello_world_testingggg.api.core.JsonValue
 import com.hello_world_testingggg.api.models.Address
 import com.hello_world_testingggg.api.models.Money
-import com.hello_world_testingggg.api.models.Pet
-import com.hello_world_testingggg.api.models.PetStatus
-import com.hello_world_testingggg.api.models.UserCreateParams
-import com.hello_world_testingggg.api.models.UserCreateWithListParams
-import com.hello_world_testingggg.api.models.UserLoginParams
-import com.hello_world_testingggg.api.models.UserUpdateParams
+import com.hello_world_testingggg.api.models.pet.Pet
+import com.hello_world_testingggg.api.models.pet.PetStatus
+import com.hello_world_testingggg.api.models.user.UserCreateParams
+import com.hello_world_testingggg.api.models.user.UserCreateWithListParams
+import com.hello_world_testingggg.api.models.user.UserLoginParams
+import com.hello_world_testingggg.api.models.user.UserUpdateParams
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
@@ -41,10 +41,7 @@ internal class UserServiceAsyncTest {
                         Address.builder()
                             .city("Palo Alto")
                             .geo(
-                                Address.GeoPoint.builder()
-                                    .latitude(37.4443)
-                                    .longitude(-122.1598)
-                                    .build()
+                                Address.Geo.builder().latitude(37.4443).longitude(-122.1598).build()
                             )
                             .relatedCategory(JsonValue.from(mapOf<String, Any>()))
                             .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
@@ -113,7 +110,7 @@ internal class UserServiceAsyncTest {
                                 Address.builder()
                                     .city("Palo Alto")
                                     .geo(
-                                        Address.GeoPoint.builder()
+                                        Address.Geo.builder()
                                             .latitude(37.4443)
                                             .longitude(-122.1598)
                                             .build()
@@ -184,7 +181,7 @@ internal class UserServiceAsyncTest {
                                 Address.builder()
                                     .city("Palo Alto")
                                     .geo(
-                                        Address.GeoPoint.builder()
+                                        Address.Geo.builder()
                                             .latitude(37.4443)
                                             .longitude(-122.1598)
                                             .build()
@@ -282,12 +279,7 @@ internal class UserServiceAsyncTest {
                 .relatedAddress(
                     Address.builder()
                         .city("Palo Alto")
-                        .geo(
-                            Address.GeoPoint.builder()
-                                .latitude(37.4443)
-                                .longitude(-122.1598)
-                                .build()
-                        )
+                        .geo(Address.Geo.builder().latitude(37.4443).longitude(-122.1598).build())
                         .relatedCategory(JsonValue.from(mapOf<String, Any>()))
                         .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
                         .relatedMoney(
@@ -355,7 +347,7 @@ internal class UserServiceAsyncTest {
                             Address.builder()
                                 .city("Palo Alto")
                                 .geo(
-                                    Address.GeoPoint.builder()
+                                    Address.Geo.builder()
                                         .latitude(37.4443)
                                         .longitude(-122.1598)
                                         .build()
@@ -426,7 +418,7 @@ internal class UserServiceAsyncTest {
                             Address.builder()
                                 .city("Palo Alto")
                                 .geo(
-                                    Address.GeoPoint.builder()
+                                    Address.Geo.builder()
                                         .latitude(37.4443)
                                         .longitude(-122.1598)
                                         .build()
@@ -511,7 +503,7 @@ internal class UserServiceAsyncTest {
         val response =
             userServiceAsync.createWithList(
                 listOf(
-                    UserCreateWithListParams.User.builder()
+                    UserCreateWithListParams.Body.builder()
                         .id(10L)
                         .email("john@email.com")
                         .firstName("John")
@@ -522,7 +514,7 @@ internal class UserServiceAsyncTest {
                             Address.builder()
                                 .city("Palo Alto")
                                 .geo(
-                                    Address.GeoPoint.builder()
+                                    Address.Geo.builder()
                                         .latitude(37.4443)
                                         .longitude(-122.1598)
                                         .build()

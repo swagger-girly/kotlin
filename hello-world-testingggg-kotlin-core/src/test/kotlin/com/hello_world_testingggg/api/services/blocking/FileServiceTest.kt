@@ -10,10 +10,10 @@ import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo
 import com.github.tomakehurst.wiremock.junit5.WireMockTest
 import com.hello_world_testingggg.api.client.okhttp.HelloWorldTestinggggOkHttpClient
 import com.hello_world_testingggg.api.core.JsonValue
-import com.hello_world_testingggg.api.models.FileCreateArchiveParams
-import com.hello_world_testingggg.api.models.FileUpdateParams
-import com.hello_world_testingggg.api.models.FileUploadDirectParams
-import com.hello_world_testingggg.api.models.FileUploadParams
+import com.hello_world_testingggg.api.models.files.FileCreateArchiveParams
+import com.hello_world_testingggg.api.models.files.FileUpdateParams
+import com.hello_world_testingggg.api.models.files.FileUploadDirectParams
+import com.hello_world_testingggg.api.models.files.FileUploadParams
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
