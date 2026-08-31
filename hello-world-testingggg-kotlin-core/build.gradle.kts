@@ -22,6 +22,7 @@ dependencies {
     api("com.fasterxml.jackson.core:jackson-core:2.18.2")
     api("com.fasterxml.jackson.core:jackson-databind:2.18.2")
     api("com.google.errorprone:error_prone_annotations:2.33.0")
+    api("com.standardwebhooks:standardwebhooks:1.1.0")
 
     implementation("com.fasterxml.jackson.core:jackson-annotations:2.18.2")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.18.2")
@@ -39,4 +40,5 @@ dependencies {
     testImplementation("org.mockito:mockito-core:5.14.2")
     testImplementation("org.mockito:mockito-junit-jupiter:5.14.2")
     testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
+    testImplementation("org.slf4j:slf4j-nop:1.7.36")
 }

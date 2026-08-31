@@ -67,7 +67,7 @@ This can happen if you are either:
 
 Double-check that you are depending on compatible Jackson versions.
 
-See https://www.github.com/stainless-sdks/hello-world-testingggg-kotlin#jackson for more information.
+See https://www.github.com/swagger-girly/kotlin#jackson for more information.
         """
             .trimIndent()
     }

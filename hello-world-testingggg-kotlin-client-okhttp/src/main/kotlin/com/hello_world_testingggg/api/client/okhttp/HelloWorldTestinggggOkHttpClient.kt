@@ -249,6 +249,21 @@ class HelloWorldTestinggggOkHttpClient private constructor() {
         /** The API key for authorization in the header. */
         fun apiKey(apiKey: String) = apply { clientOptions.apiKey(apiKey) }
 
+        /** Username for HTTP Basic authentication. */
+        fun basicAuthUsername(basicAuthUsername: String) = apply {
+            clientOptions.basicAuthUsername(basicAuthUsername)
+        }
+
+        /** Password for HTTP Basic authentication. */
+        fun basicAuthPassword(basicAuthPassword: String) = apply {
+            clientOptions.basicAuthPassword(basicAuthPassword)
+        }
+
+        /** Secret used to verify incoming webhook signatures. */
+        fun webhookSecret(webhookSecret: String?) = apply {
+            clientOptions.webhookSecret(webhookSecret)
+        }
+
         fun headers(headers: Headers) = apply { clientOptions.headers(headers) }
 
         fun headers(headers: Map<String, Iterable<String>>) = apply {

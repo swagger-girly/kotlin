@@ -28,6 +28,8 @@ import com.hello_world_testingggg.api.models.user.UserLogoutParams
 import com.hello_world_testingggg.api.models.user.UserRetrieveParams
 import com.hello_world_testingggg.api.models.user.UserRetrieveResponse
 import com.hello_world_testingggg.api.models.user.UserUpdateParams
+import com.hello_world_testingggg.api.models.user.UserVerifyIdentityParams
+import com.hello_world_testingggg.api.models.user.UserVerifyIdentityResponse
 
 /** Operations about user */
 class UserServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -81,6 +83,13 @@ class UserServiceAsyncImpl internal constructor(private val clientOptions: Clien
         // get /user/logout
         withRawResponse().logout(params, requestOptions)
     }
+
+    override suspend fun verifyIdentity(
+        params: UserVerifyIdentityParams,
+        requestOptions: RequestOptions,
+    ): UserVerifyIdentityResponse =
+        // post /user/{username}/verifyIdentity
+        withRawResponse().verifyIdentity(params, requestOptions).parse()
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         UserServiceAsync.WithRawResponse {
@@ -267,6 +276,37 @@ class UserServiceAsyncImpl internal constructor(private val clientOptions: Clien
             val response = clientOptions.httpClient.executeAsync(request, requestOptions)
             return errorHandler.handle(response).parseable {
                 response.use { logoutHandler.handle(it) }
+            }
+        }
+
+        private val verifyIdentityHandler: Handler<UserVerifyIdentityResponse> =
+            jsonHandler<UserVerifyIdentityResponse>(clientOptions.jsonMapper)
+
+        override suspend fun verifyIdentity(
+            params: UserVerifyIdentityParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<UserVerifyIdentityResponse> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("username", params.username())
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("user", params._pathParam(0), "verifyIdentity")
+                    .apply { params._body()?.let { body(json(clientOptions.jsonMapper, it)) } }
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { verifyIdentityHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
             }
         }
     }

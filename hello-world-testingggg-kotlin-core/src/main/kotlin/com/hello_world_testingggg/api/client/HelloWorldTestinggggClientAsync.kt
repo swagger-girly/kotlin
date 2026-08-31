@@ -2,10 +2,26 @@
 
 package com.hello_world_testingggg.api.client
 
+import com.google.errorprone.annotations.MustBeClosed
 import com.hello_world_testingggg.api.core.ClientOptions
+import com.hello_world_testingggg.api.core.RequestOptions
+import com.hello_world_testingggg.api.core.http.HttpResponseFor
+import com.hello_world_testingggg.api.models.ClientHealthParams
+import com.hello_world_testingggg.api.models.ClientRetrieveRateLimitsParams
+import com.hello_world_testingggg.api.models.ClientRetrieveRateLimitsResponse
+import com.hello_world_testingggg.api.models.SystemHealth
+import com.hello_world_testingggg.api.services.async.AdoptionServiceAsync
+import com.hello_world_testingggg.api.services.async.AiServiceAsync
+import com.hello_world_testingggg.api.services.async.FileServiceAsync
+import com.hello_world_testingggg.api.services.async.MediaServiceAsync
+import com.hello_world_testingggg.api.services.async.NotificationServiceAsync
 import com.hello_world_testingggg.api.services.async.PetServiceAsync
+import com.hello_world_testingggg.api.services.async.PlacementServiceAsync
+import com.hello_world_testingggg.api.services.async.ProfileServiceAsync
 import com.hello_world_testingggg.api.services.async.StoreServiceAsync
 import com.hello_world_testingggg.api.services.async.UserServiceAsync
+import com.hello_world_testingggg.api.services.async.VeterinaryServiceAsync
+import com.hello_world_testingggg.api.services.async.WebhookServiceAsync
 
 /**
  * A client for interacting with the Hello World Testingggg REST API asynchronously. You can also
@@ -46,11 +62,55 @@ interface HelloWorldTestinggggClientAsync {
     /** Everything about your Pets */
     fun pet(): PetServiceAsync
 
+    /** File storage operations */
+    fun files(): FileServiceAsync
+
+    /** Pet owner profile and compliance operations */
+    fun profiles(): ProfileServiceAsync
+
+    /** Adoption policies and applications */
+    fun adoptions(): AdoptionServiceAsync
+
+    /** Post-adoption placement tracking */
+    fun placements(): PlacementServiceAsync
+
+    fun veterinary(): VeterinaryServiceAsync
+
+    fun webhooks(): WebhookServiceAsync
+
+    fun notifications(): NotificationServiceAsync
+
     /** Access to Petstore orders */
     fun store(): StoreServiceAsync
 
     /** Operations about user */
     fun user(): UserServiceAsync
+
+    fun ai(): AiServiceAsync
+
+    fun media(): MediaServiceAsync
+
+    /** Returns the current API health, including per-service statuses. */
+    suspend fun health(
+        params: ClientHealthParams = ClientHealthParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): SystemHealth
+
+    /** @see health */
+    suspend fun health(requestOptions: RequestOptions): SystemHealth =
+        health(ClientHealthParams.none(), requestOptions)
+
+    /** Returns the caller's current rate-limit budget. */
+    suspend fun retrieveRateLimits(
+        params: ClientRetrieveRateLimitsParams = ClientRetrieveRateLimitsParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): ClientRetrieveRateLimitsResponse
+
+    /** @see retrieveRateLimits */
+    suspend fun retrieveRateLimits(
+        requestOptions: RequestOptions
+    ): ClientRetrieveRateLimitsResponse =
+        retrieveRateLimits(ClientRetrieveRateLimitsParams.none(), requestOptions)
 
     /**
      * Closes this client, relinquishing any underlying resources.
@@ -83,10 +143,64 @@ interface HelloWorldTestinggggClientAsync {
         /** Everything about your Pets */
         fun pet(): PetServiceAsync.WithRawResponse
 
+        /** File storage operations */
+        fun files(): FileServiceAsync.WithRawResponse
+
+        /** Pet owner profile and compliance operations */
+        fun profiles(): ProfileServiceAsync.WithRawResponse
+
+        /** Adoption policies and applications */
+        fun adoptions(): AdoptionServiceAsync.WithRawResponse
+
+        /** Post-adoption placement tracking */
+        fun placements(): PlacementServiceAsync.WithRawResponse
+
+        fun veterinary(): VeterinaryServiceAsync.WithRawResponse
+
+        fun webhooks(): WebhookServiceAsync.WithRawResponse
+
+        fun notifications(): NotificationServiceAsync.WithRawResponse
+
         /** Access to Petstore orders */
         fun store(): StoreServiceAsync.WithRawResponse
 
         /** Operations about user */
         fun user(): UserServiceAsync.WithRawResponse
+
+        fun ai(): AiServiceAsync.WithRawResponse
+
+        fun media(): MediaServiceAsync.WithRawResponse
+
+        /**
+         * Returns a raw HTTP response for `get /health`, but is otherwise the same as
+         * [HelloWorldTestinggggClientAsync.health].
+         */
+        @MustBeClosed
+        suspend fun health(
+            params: ClientHealthParams = ClientHealthParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<SystemHealth>
+
+        /** @see health */
+        @MustBeClosed
+        suspend fun health(requestOptions: RequestOptions): HttpResponseFor<SystemHealth> =
+            health(ClientHealthParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `get /rate_limits`, but is otherwise the same as
+         * [HelloWorldTestinggggClientAsync.retrieveRateLimits].
+         */
+        @MustBeClosed
+        suspend fun retrieveRateLimits(
+            params: ClientRetrieveRateLimitsParams = ClientRetrieveRateLimitsParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<ClientRetrieveRateLimitsResponse>
+
+        /** @see retrieveRateLimits */
+        @MustBeClosed
+        suspend fun retrieveRateLimits(
+            requestOptions: RequestOptions
+        ): HttpResponseFor<ClientRetrieveRateLimitsResponse> =
+            retrieveRateLimits(ClientRetrieveRateLimitsParams.none(), requestOptions)
     }
 }

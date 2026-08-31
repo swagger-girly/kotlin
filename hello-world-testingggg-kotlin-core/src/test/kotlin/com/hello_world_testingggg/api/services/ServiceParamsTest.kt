@@ -13,7 +13,11 @@ import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo
 import com.github.tomakehurst.wiremock.junit5.WireMockTest
 import com.hello_world_testingggg.api.client.HelloWorldTestinggggClient
 import com.hello_world_testingggg.api.client.okhttp.HelloWorldTestinggggOkHttpClient
+import com.hello_world_testingggg.api.core.JsonValue
+import com.hello_world_testingggg.api.models.Address
+import com.hello_world_testingggg.api.models.Money
 import com.hello_world_testingggg.api.models.pet.Pet
+import com.hello_world_testingggg.api.models.pet.PetStatus
 import com.hello_world_testingggg.api.models.pet.PetUpdateParams
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
@@ -32,6 +36,8 @@ internal class ServiceParamsTest {
             HelloWorldTestinggggOkHttpClient.builder()
                 .baseUrl(wmRuntimeInfo.httpBaseUrl)
                 .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
                 .build()
     }
 
@@ -48,9 +54,60 @@ internal class ServiceParamsTest {
                         .name("doggie")
                         .addPhotoUrl("string")
                         .id(10L)
-                        .category(Pet.Category.builder().id(1L).name("Dogs").build())
-                        .status(Pet.Status.AVAILABLE)
-                        .addTag(Pet.Tag.builder().id(0L).name("name").build())
+                        .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
+                        .category(JsonValue.from(mapOf<String, Any>()))
+                        .microchipId("string")
+                        .relatedAddress(
+                            Address.builder()
+                                .city("Palo Alto")
+                                .geo(
+                                    Address.Geo.builder()
+                                        .latitude(37.4443)
+                                        .longitude(-122.1598)
+                                        .build()
+                                )
+                                .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                .relatedMoney(
+                                    Money.builder()
+                                        .amount(2500L)
+                                        .currency("USD")
+                                        .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                        .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                        .build()
+                                )
+                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                .state("CA")
+                                .street("437 Lytton")
+                                .zip("94301")
+                                .build()
+                        )
+                        .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                        .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                        .relatedMoney(
+                            Money.builder()
+                                .amount(2500L)
+                                .currency("USD")
+                                .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                .build()
+                        )
+                        .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                        .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                        .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                        .status(PetStatus.AVAILABLE)
+                        .addTag(JsonValue.from(mapOf<String, Any>()))
                         .build()
                 )
                 .putAdditionalHeader("Secret-Header", "42")

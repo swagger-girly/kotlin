@@ -4,8 +4,13 @@ package com.hello_world_testingggg.api.proguard
 
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import com.hello_world_testingggg.api.client.okhttp.HelloWorldTestinggggOkHttpClient
+import com.hello_world_testingggg.api.core.JsonValue
 import com.hello_world_testingggg.api.core.jsonMapper
+import com.hello_world_testingggg.api.models.Address
+import com.hello_world_testingggg.api.models.Money
+import com.hello_world_testingggg.api.models.pet.ConnectClientEvent
 import com.hello_world_testingggg.api.models.pet.Pet
+import com.hello_world_testingggg.api.models.pet.PetStatus
 import kotlin.reflect.full.memberFunctions
 import kotlin.reflect.jvm.javaMethod
 import org.assertj.core.api.Assertions.assertThat
@@ -46,12 +51,26 @@ internal class ProGuardCompatibilityTest {
 
     @Test
     fun client() {
-        val client = HelloWorldTestinggggOkHttpClient.builder().apiKey("My API Key").build()
+        val client =
+            HelloWorldTestinggggOkHttpClient.builder()
+                .apiKey("My API Key")
+                .basicAuthUsername("My Basic Auth Username")
+                .basicAuthPassword("My Basic Auth Password")
+                .build()
 
         assertThat(client).isNotNull()
         assertThat(client.pet()).isNotNull()
+        assertThat(client.files()).isNotNull()
+        assertThat(client.profiles()).isNotNull()
+        assertThat(client.adoptions()).isNotNull()
+        assertThat(client.placements()).isNotNull()
+        assertThat(client.veterinary()).isNotNull()
+        assertThat(client.webhooks()).isNotNull()
+        assertThat(client.notifications()).isNotNull()
         assertThat(client.store()).isNotNull()
         assertThat(client.user()).isNotNull()
+        assertThat(client.ai()).isNotNull()
+        assertThat(client.media()).isNotNull()
     }
 
     @Test
@@ -62,14 +81,88 @@ internal class ProGuardCompatibilityTest {
                 .name("doggie")
                 .addPhotoUrl("string")
                 .id(10L)
-                .category(Pet.Category.builder().id(1L).name("Dogs").build())
-                .status(Pet.Status.AVAILABLE)
-                .addTag(Pet.Tag.builder().id(0L).name("name").build())
+                .acquisitionChannel(Pet.AcquisitionChannel.BREEDER)
+                .category(JsonValue.from(mapOf<String, Any>()))
+                .microchipId("string")
+                .relatedAddress(
+                    Address.builder()
+                        .city("Palo Alto")
+                        .geo(Address.Geo.builder().latitude(37.4443).longitude(-122.1598).build())
+                        .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                        .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                        .relatedMoney(
+                            Money.builder()
+                                .amount(2500L)
+                                .currency("USD")
+                                .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                                .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                                .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                                .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                                .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                                .build()
+                        )
+                        .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                        .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                        .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                        .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                        .state("CA")
+                        .street("437 Lytton")
+                        .zip("94301")
+                        .build()
+                )
+                .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                .relatedMoney(
+                    Money.builder()
+                        .amount(2500L)
+                        .currency("USD")
+                        .relatedCategory(JsonValue.from(mapOf<String, Any>()))
+                        .relatedCustomer(JsonValue.from(mapOf<String, Any>()))
+                        .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                        .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                        .relatedTag(JsonValue.from(mapOf<String, Any>()))
+                        .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                        .build()
+                )
+                .relatedOrder(JsonValue.from(mapOf<String, Any>()))
+                .relatedShelter(JsonValue.from(mapOf<String, Any>()))
+                .relatedUser(JsonValue.from(mapOf<String, Any>()))
+                .status(PetStatus.AVAILABLE)
+                .addTag(JsonValue.from(mapOf<String, Any>()))
                 .build()
 
         val roundtrippedPet =
             jsonMapper.readValue(jsonMapper.writeValueAsString(pet), jacksonTypeRef<Pet>())
 
         assertThat(roundtrippedPet).isEqualTo(pet)
+    }
+
+    @Test
+    fun connectClientEventRoundtrip() {
+        val jsonMapper = jsonMapper()
+        val connectClientEvent = ConnectClientEvent.ofPing()
+
+        val roundtrippedConnectClientEvent =
+            jsonMapper.readValue(
+                jsonMapper.writeValueAsString(connectClientEvent),
+                jacksonTypeRef<ConnectClientEvent>(),
+            )
+
+        assertThat(roundtrippedConnectClientEvent).isEqualTo(connectClientEvent)
+    }
+
+    @Test
+    fun petStatusRoundtrip() {
+        val jsonMapper = jsonMapper()
+        val petStatus = PetStatus.AVAILABLE
+
+        val roundtrippedPetStatus =
+            jsonMapper.readValue(
+                jsonMapper.writeValueAsString(petStatus),
+                jacksonTypeRef<PetStatus>(),
+            )
+
+        assertThat(roundtrippedPetStatus).isEqualTo(petStatus)
     }
 }

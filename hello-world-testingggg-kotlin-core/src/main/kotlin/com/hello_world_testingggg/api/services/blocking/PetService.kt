@@ -7,16 +7,31 @@ import com.hello_world_testingggg.api.core.ClientOptions
 import com.hello_world_testingggg.api.core.RequestOptions
 import com.hello_world_testingggg.api.core.http.HttpResponse
 import com.hello_world_testingggg.api.core.http.HttpResponseFor
+import com.hello_world_testingggg.api.core.http.StreamResponse
 import com.hello_world_testingggg.api.models.pet.Pet
 import com.hello_world_testingggg.api.models.pet.PetCreateParams
 import com.hello_world_testingggg.api.models.pet.PetDeleteParams
 import com.hello_world_testingggg.api.models.pet.PetFindByStatusParams
 import com.hello_world_testingggg.api.models.pet.PetFindByTagsParams
+import com.hello_world_testingggg.api.models.pet.PetListFakePageInferredPage
+import com.hello_world_testingggg.api.models.pet.PetListFakePageInferredParams
+import com.hello_world_testingggg.api.models.pet.PetListFakePageParams
+import com.hello_world_testingggg.api.models.pet.PetListFakePageResponse
+import com.hello_world_testingggg.api.models.pet.PetListLeaderboardParams
+import com.hello_world_testingggg.api.models.pet.PetListLeaderboardResponse
+import com.hello_world_testingggg.api.models.pet.PetListPage
+import com.hello_world_testingggg.api.models.pet.PetListParams
+import com.hello_world_testingggg.api.models.pet.PetListUnpaginatedParams
+import com.hello_world_testingggg.api.models.pet.PetListUnpaginatedResponse
 import com.hello_world_testingggg.api.models.pet.PetRetrieveParams
+import com.hello_world_testingggg.api.models.pet.PetRetrievePremiumParams
+import com.hello_world_testingggg.api.models.pet.PetRetrievePremiumResponse
+import com.hello_world_testingggg.api.models.pet.PetSearchParams
 import com.hello_world_testingggg.api.models.pet.PetUpdateParams
 import com.hello_world_testingggg.api.models.pet.PetUpdateWithFormParams
 import com.hello_world_testingggg.api.models.pet.PetUploadImageParams
 import com.hello_world_testingggg.api.models.pet.PetUploadImageResponse
+import com.hello_world_testingggg.api.models.pet.PetWatchStatusParams
 
 /** Everything about your Pets */
 interface PetService {
@@ -64,6 +79,16 @@ interface PetService {
     fun update(pet: Pet, requestOptions: RequestOptions = RequestOptions.none()): Pet =
         update(PetUpdateParams.builder().pet(pet).build(), requestOptions)
 
+    /** Returns a cursor-paginated list of pets. */
+    fun list(
+        params: PetListParams = PetListParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): PetListPage
+
+    /** @see list */
+    fun list(requestOptions: RequestOptions): PetListPage =
+        list(PetListParams.none(), requestOptions)
+
     /** Deletes a pet */
     fun delete(
         petId: Long,
@@ -99,6 +124,89 @@ interface PetService {
     /** @see findByTags */
     fun findByTags(requestOptions: RequestOptions): List<Pet> =
         findByTags(PetFindByTagsParams.none(), requestOptions)
+
+    /** Returns a single page-shaped pet response without SDK pagination helpers. */
+    fun listFakePage(
+        params: PetListFakePageParams = PetListFakePageParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): PetListFakePageResponse
+
+    /** @see listFakePage */
+    fun listFakePage(requestOptions: RequestOptions): PetListFakePageResponse =
+        listFakePage(PetListFakePageParams.none(), requestOptions)
+
+    /**
+     * Returns a single page-shaped pet response whose fake pagination behavior is inferred from the
+     * config scheme.
+     */
+    fun listFakePageInferred(
+        params: PetListFakePageInferredParams = PetListFakePageInferredParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): PetListFakePageInferredPage
+
+    /** @see listFakePageInferred */
+    fun listFakePageInferred(requestOptions: RequestOptions): PetListFakePageInferredPage =
+        listFakePageInferred(PetListFakePageInferredParams.none(), requestOptions)
+
+    /**
+     * Returns a bare top-level array of inline objects so generators must mint a distinct element
+     * type instead of reusing the response alias name.
+     */
+    fun listLeaderboard(
+        params: PetListLeaderboardParams = PetListLeaderboardParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): List<PetListLeaderboardResponse>
+
+    /** @see listLeaderboard */
+    fun listLeaderboard(requestOptions: RequestOptions): List<PetListLeaderboardResponse> =
+        listLeaderboard(PetListLeaderboardParams.none(), requestOptions)
+
+    /** Returns the same cursor-shaped pet list response without enabling SDK pagination helpers. */
+    fun listUnpaginated(
+        params: PetListUnpaginatedParams = PetListUnpaginatedParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): PetListUnpaginatedResponse
+
+    /** @see listUnpaginated */
+    fun listUnpaginated(requestOptions: RequestOptions): PetListUnpaginatedResponse =
+        listUnpaginated(PetListUnpaginatedParams.none(), requestOptions)
+
+    /**
+     * Returns the premium profile for a pet, extending the base pet with pedigree and insurance
+     * details.
+     */
+    fun retrievePremium(
+        petId: Long,
+        params: PetRetrievePremiumParams = PetRetrievePremiumParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): PetRetrievePremiumResponse =
+        retrievePremium(params.toBuilder().petId(petId).build(), requestOptions)
+
+    /** @see retrievePremium */
+    fun retrievePremium(
+        params: PetRetrievePremiumParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): PetRetrievePremiumResponse
+
+    /** @see retrievePremium */
+    fun retrievePremium(petId: Long, requestOptions: RequestOptions): PetRetrievePremiumResponse =
+        retrievePremium(petId, PetRetrievePremiumParams.none(), requestOptions)
+
+    /**
+     * Typed query-parameter probe matrix: an object-schema query param mints a typed params model,
+     * an array-of-object query param mints a singularized element type, an empty object
+     * (additionalProperties:false) stays a bare object, and a scalar stays scalar. Isolates the
+     * emitter query-parameter type-resolution branches so object/array-of-object/empty-object
+     * params are each exercised.
+     */
+    fun search(
+        params: PetSearchParams = PetSearchParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): List<Pet>
+
+    /** @see search */
+    fun search(requestOptions: RequestOptions): List<Pet> =
+        search(PetSearchParams.none(), requestOptions)
 
     /** Updates a pet in the store with form data */
     fun updateWithForm(
@@ -139,6 +247,30 @@ interface PetService {
         requestOptions: RequestOptions,
     ): PetUploadImageResponse =
         uploadImage(petId, body, PetUploadImageParams.none(), requestOptions)
+
+    /**
+     * Streams pet status updates over Server-Sent Events. Each `status` event contains a full `Pet`
+     * payload.
+     */
+    @MustBeClosed
+    fun watchStatusStreaming(
+        petId: Long,
+        params: PetWatchStatusParams = PetWatchStatusParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): StreamResponse<Pet> =
+        watchStatusStreaming(params.toBuilder().petId(petId).build(), requestOptions)
+
+    /** @see watchStatusStreaming */
+    @MustBeClosed
+    fun watchStatusStreaming(
+        params: PetWatchStatusParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): StreamResponse<Pet>
+
+    /** @see watchStatusStreaming */
+    @MustBeClosed
+    fun watchStatusStreaming(petId: Long, requestOptions: RequestOptions): StreamResponse<Pet> =
+        watchStatusStreaming(petId, PetWatchStatusParams.none(), requestOptions)
 
     /** A view of [PetService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -208,6 +340,21 @@ interface PetService {
         ): HttpResponseFor<Pet> = update(PetUpdateParams.builder().pet(pet).build(), requestOptions)
 
         /**
+         * Returns a raw HTTP response for `get /pet`, but is otherwise the same as
+         * [PetService.list].
+         */
+        @MustBeClosed
+        fun list(
+            params: PetListParams = PetListParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<PetListPage>
+
+        /** @see list */
+        @MustBeClosed
+        fun list(requestOptions: RequestOptions): HttpResponseFor<PetListPage> =
+            list(PetListParams.none(), requestOptions)
+
+        /**
          * Returns a raw HTTP response for `delete /pet/{petId}`, but is otherwise the same as
          * [PetService.delete].
          */
@@ -261,6 +408,114 @@ interface PetService {
             findByTags(PetFindByTagsParams.none(), requestOptions)
 
         /**
+         * Returns a raw HTTP response for `get /pet/fake-page`, but is otherwise the same as
+         * [PetService.listFakePage].
+         */
+        @MustBeClosed
+        fun listFakePage(
+            params: PetListFakePageParams = PetListFakePageParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<PetListFakePageResponse>
+
+        /** @see listFakePage */
+        @MustBeClosed
+        fun listFakePage(requestOptions: RequestOptions): HttpResponseFor<PetListFakePageResponse> =
+            listFakePage(PetListFakePageParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `get /pet/fake-page-inferred`, but is otherwise the same
+         * as [PetService.listFakePageInferred].
+         */
+        @MustBeClosed
+        fun listFakePageInferred(
+            params: PetListFakePageInferredParams = PetListFakePageInferredParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<PetListFakePageInferredPage>
+
+        /** @see listFakePageInferred */
+        @MustBeClosed
+        fun listFakePageInferred(
+            requestOptions: RequestOptions
+        ): HttpResponseFor<PetListFakePageInferredPage> =
+            listFakePageInferred(PetListFakePageInferredParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `get /pet/leaderboard`, but is otherwise the same as
+         * [PetService.listLeaderboard].
+         */
+        @MustBeClosed
+        fun listLeaderboard(
+            params: PetListLeaderboardParams = PetListLeaderboardParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<List<PetListLeaderboardResponse>>
+
+        /** @see listLeaderboard */
+        @MustBeClosed
+        fun listLeaderboard(
+            requestOptions: RequestOptions
+        ): HttpResponseFor<List<PetListLeaderboardResponse>> =
+            listLeaderboard(PetListLeaderboardParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `get /pet/unpaginated`, but is otherwise the same as
+         * [PetService.listUnpaginated].
+         */
+        @MustBeClosed
+        fun listUnpaginated(
+            params: PetListUnpaginatedParams = PetListUnpaginatedParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<PetListUnpaginatedResponse>
+
+        /** @see listUnpaginated */
+        @MustBeClosed
+        fun listUnpaginated(
+            requestOptions: RequestOptions
+        ): HttpResponseFor<PetListUnpaginatedResponse> =
+            listUnpaginated(PetListUnpaginatedParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `get /pet/{petId}/premium`, but is otherwise the same as
+         * [PetService.retrievePremium].
+         */
+        @MustBeClosed
+        fun retrievePremium(
+            petId: Long,
+            params: PetRetrievePremiumParams = PetRetrievePremiumParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<PetRetrievePremiumResponse> =
+            retrievePremium(params.toBuilder().petId(petId).build(), requestOptions)
+
+        /** @see retrievePremium */
+        @MustBeClosed
+        fun retrievePremium(
+            params: PetRetrievePremiumParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<PetRetrievePremiumResponse>
+
+        /** @see retrievePremium */
+        @MustBeClosed
+        fun retrievePremium(
+            petId: Long,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<PetRetrievePremiumResponse> =
+            retrievePremium(petId, PetRetrievePremiumParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `get /pet/search`, but is otherwise the same as
+         * [PetService.search].
+         */
+        @MustBeClosed
+        fun search(
+            params: PetSearchParams = PetSearchParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<List<Pet>>
+
+        /** @see search */
+        @MustBeClosed
+        fun search(requestOptions: RequestOptions): HttpResponseFor<List<Pet>> =
+            search(PetSearchParams.none(), requestOptions)
+
+        /**
          * Returns a raw HTTP response for `post /pet/{petId}`, but is otherwise the same as
          * [PetService.updateWithForm].
          */
@@ -311,5 +566,32 @@ interface PetService {
             requestOptions: RequestOptions,
         ): HttpResponseFor<PetUploadImageResponse> =
             uploadImage(petId, body, PetUploadImageParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `get /pet/{petId}/status/stream`, but is otherwise the
+         * same as [PetService.watchStatusStreaming].
+         */
+        @MustBeClosed
+        fun watchStatusStreaming(
+            petId: Long,
+            params: PetWatchStatusParams = PetWatchStatusParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<StreamResponse<Pet>> =
+            watchStatusStreaming(params.toBuilder().petId(petId).build(), requestOptions)
+
+        /** @see watchStatusStreaming */
+        @MustBeClosed
+        fun watchStatusStreaming(
+            params: PetWatchStatusParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<StreamResponse<Pet>>
+
+        /** @see watchStatusStreaming */
+        @MustBeClosed
+        fun watchStatusStreaming(
+            petId: Long,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<StreamResponse<Pet>> =
+            watchStatusStreaming(petId, PetWatchStatusParams.none(), requestOptions)
     }
 }
